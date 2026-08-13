@@ -1,10 +1,10 @@
 ---
-title: "Configure SMTP Settings in WP Postman"
+title: "Configure Your SMTP Provider Settings in WP Postman"
 sidebarTitle: "SMTP Configuration"
 description: "Step-by-step instructions for connecting WP Postman to your SMTP provider, with setup guides for Gmail, SendGrid, Mailgun, and Amazon SES."
 ---
 
-This page walks you through every field on the WP Postman SMTP settings screen and provides provider-specific instructions for the most common email services. Once you save a valid SMTP configuration, all email your WordPress site sends — password resets, order notifications, contact-form submissions — will flow through your chosen provider instead of the server's local mail agent.
+Use this guide to connect WP Postman to your SMTP provider so that every email your WordPress site sends — password resets, order notifications, contact-form submissions — is delivered through an authenticated connection rather than the server's local mail agent. The sections below explain each configuration field and provide step-by-step settings for Gmail, SendGrid, Mailgun, and Amazon SES.
 
 ## Configuration Fields
 
@@ -15,7 +15,7 @@ This page walks you through every field on the WP Postman SMTP settings screen a
 | **Encryption** | The security layer for the connection. Choose **TLS** (STARTTLS), **SSL**, or **None**. TLS on port 587 is the most widely supported option. |
 | **Authentication** | Toggle this **on** if your SMTP server requires a username and password, which is true for virtually every modern provider. |
 | **Username** | Your SMTP login name. This is often your email address, but some providers (like SendGrid) use a fixed string. |
-| **Password** | Your SMTP password or API key. Store this securely — WP Postman encrypts it at rest. |
+| **Password** | Your SMTP password or API key. |
 | **From Email** | The email address that appears in the **From** field of every outgoing message. Use an address on a domain you own and have authorized to send mail. |
 | **From Name** | The display name recipients see alongside the From address (e.g. your site name or company name). |
 

@@ -1,5 +1,5 @@
 ---
-title: "Automatic SSL Certificates on WP Stratos Sites"
+title: "Free Automatic SSL Certificates on WP Stratos Sites"
 sidebarTitle: "SSL Certificates"
 description: "WP Stratos automatically provisions and renews free Let's Encrypt SSL certificates for every connected domain — no setup or configuration required."
 ---
@@ -75,3 +75,19 @@ If your domain shows a warning icon or HTTPS is not working after connecting you
 <Tip>
   HTTPS redirect is enabled by default on every WP Stratos site. You do not need to add any redirect rules to your `.htaccess` file or modify your WordPress settings — all `http://` traffic is automatically redirected to `https://` at the server level.
 </Tip>
+
+---
+
+## Next Steps
+
+<CardGroup cols={3}>
+  <Card title="Connect a Domain" icon="globe" href="/domains/connect-domain">
+    Add a custom domain to your site and confirm SSL is active once DNS propagation completes.
+  </Card>
+  <Card title="DNS Configuration" icon="sliders" href="/domains/dns-configuration">
+    Add and manage DNS records — including CAA records — directly in the Cloud Panel.
+  </Card>
+  <Card title="Nameserver Setup" icon="server" href="/domains/nameserver-setup">
+    Point your domain's nameservers to WP Stratos to enable Cloud Panel DNS management.
+  </Card>
+</CardGroup>

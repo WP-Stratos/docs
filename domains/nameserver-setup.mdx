@@ -1,7 +1,7 @@
 ---
-title: "Point Your Domain's Nameservers to WP Stratos"
+title: "How to Point Your Domain Nameservers to WP Stratos"
 sidebarTitle: "Nameserver Setup"
-description: "Update your domain's nameservers to WP Stratos at any registrar to unlock full DNS management inside the Cloud Panel."
+description: "Switch your domain to WP Stratos nameservers at any registrar to unlock full DNS management and automatic SSL inside the Cloud Panel."
 ---
 
 Nameservers are the internet's way of finding out which DNS provider is authoritative for your domain. By default, your domain uses the nameservers provided by your registrar. Switching to WP Stratos nameservers delegates all DNS authority to WP Stratos, letting you manage every DNS record — A, CNAME, MX, TXT, and more — directly inside the Cloud Panel.
@@ -139,3 +139,19 @@ The exact steps vary by registrar, but the process is similar everywhere: find t
 Once your nameserver change has propagated, WP Stratos becomes fully authoritative for your domain's DNS. However, **DNS records from your previous provider are not automatically imported**. You will need to manually recreate any records you rely on — such as MX records for email or CNAME records for third-party services — inside the Cloud Panel.
 
 Before you make the switch, take note of all existing DNS records at your current provider so you can recreate them without interruption. See the [DNS Configuration](/domains/dns-configuration) guide for instructions on adding records in the Cloud Panel.
+
+---
+
+## Next Steps
+
+<CardGroup cols={3}>
+  <Card title="Connect a Domain" icon="globe" href="/domains/connect-domain">
+    Add a custom domain to your site and walk through the full domain connection process.
+  </Card>
+  <Card title="DNS Configuration" icon="sliders" href="/domains/dns-configuration">
+    Add and manage A, CNAME, MX, TXT, and other DNS records directly in the Cloud Panel.
+  </Card>
+  <Card title="SSL Certificates" icon="lock" href="/domains/ssl-certificates">
+    Learn how WP Stratos automatically provisions and renews SSL certificates for your domain.
+  </Card>
+</CardGroup>

@@ -1,7 +1,7 @@
 ---
 title: "Optimize Your WordPress Site with Aero's Speed Tools"
 sidebarTitle: "Optimization"
-description: "Use Aero's built-in speed tools — minification, JS deferral, WebP image conversion, lazy loading, and database cleanup — to improve your site's performance scores."
+description: "Use Aero to minify CSS and JS, defer scripts, convert images to WebP, enable lazy loading, and run database cleanup on your WP Stratos WordPress site."
 ---
 
 Aero's optimization features go beyond page caching to address the other major contributors to slow WordPress sites: oversized asset files, unoptimized images, and a bloated database. Together, these tools can meaningfully improve your Core Web Vitals scores and reduce page weight for both first-time and returning visitors.
@@ -21,7 +21,7 @@ Navigate to **WordPress Admin → Aero → Optimization** to configure the follo
     Moves non-essential JavaScript execution to after the page has finished rendering, improving Time to First Byte and Largest Contentful Paint. Enable the **Defer JavaScript** toggle to load scripts asynchronously.
 
     <Warning>
-      Deferring JavaScript can break scripts that need to run during page load — for example, certain analytics tags, chat widgets, or custom theme scripts. Always test JS deferral on a staging site before enabling it in production. Use the JS exclusion list to carve out any scripts that must load synchronously.
+      Deferring JavaScript can break scripts that need to run during page load — for example, certain analytics tags, chat widgets, or custom theme scripts. Always test JS deferral on a [staging site](/cloud-panel/staging) before enabling it in production. Use the JS exclusion list to carve out any scripts that must load synchronously.
     </Warning>
   </Accordion>
   <Accordion title="GZIP / Brotli Compression">
@@ -85,7 +85,7 @@ Aero can remove the following items:
 You can also enable **Scheduled Cleanup** to run the database optimization automatically on a weekly or monthly basis, keeping your database lean without manual intervention.
 
 <Warning>
-  Post revisions are permanently deleted and cannot be recovered from within WordPress after cleanup. Before running a database cleanup that includes revisions, make sure you have a recent site backup on hand. You can create a backup through the WP Stratos dashboard before proceeding.
+  Post revisions are permanently deleted and cannot be recovered from within WordPress after cleanup. Before running a database cleanup that includes revisions, make sure you have a recent site backup on hand. You can create a backup through the [WP Stratos dashboard](/cloud-panel/backups) before proceeding.
 </Warning>
 
 <Tip>

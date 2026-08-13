@@ -1,7 +1,7 @@
 ---
-title: "Manage DNS Records in the WP Stratos Cloud Panel"
+title: "How to Manage DNS Records in the WP Stratos Cloud Panel"
 sidebarTitle: "DNS Configuration"
-description: "Add, edit, and delete A, CNAME, MX, TXT, and other DNS records for your domain directly inside the WP Stratos Cloud Panel."
+description: "Add, edit, and delete A, CNAME, MX, TXT, and other DNS records for your domain directly inside the WP Stratos Cloud Panel dashboard."
 ---
 
 WP Stratos includes a full-featured DNS manager built into the Cloud Panel, giving you complete control over your domain's DNS records without leaving your hosting dashboard. You can add records for email routing, subdomain configuration, third-party service verification, and more — all in one place.
@@ -104,3 +104,19 @@ Replace the value with the exact string given to you by the service requesting v
 <Warning>
   After saving any DNS record change, allow up to **48 hours** for full propagation worldwide, though most changes take effect within 1–2 hours. Avoid making rapid successive changes, as each edit resets the propagation clock for affected records.
 </Warning>
+
+---
+
+## Next Steps
+
+<CardGroup cols={3}>
+  <Card title="Connect a Domain" icon="globe" href="/domains/connect-domain">
+    Add a custom domain to your site and choose how to connect it using WP Stratos or external DNS.
+  </Card>
+  <Card title="Nameserver Setup" icon="server" href="/domains/nameserver-setup">
+    Point your domain's nameservers to WP Stratos so you can manage DNS from the Cloud Panel.
+  </Card>
+  <Card title="SSL Certificates" icon="lock" href="/domains/ssl-certificates">
+    Learn how automatic SSL provisioning works and how to troubleshoot certificate issues.
+  </Card>
+</CardGroup>

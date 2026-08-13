@@ -23,7 +23,7 @@ A staging environment is a private copy of your live site where you can make cha
     WP Stratos copies all site files and the full database to an isolated staging environment. This typically takes one to three minutes. A status indicator shows progress.
   </Step>
   <Step title="Access your staging site">
-    Once ready, your staging environment is accessible at the URL shown in the Staging tab — usually `yoursite.wpstratos.dev` or a dedicated staging subdomain. Click **Open Staging WP Admin** for direct one-click access.
+    Once ready, your staging environment is accessible at the URL shown in the **Staging** tab. Click **Open Staging WP Admin** for direct one-click access to the staging WordPress dashboard.
   </Step>
 </Steps>
 
@@ -81,5 +81,25 @@ Refresh your staging environment with the latest content and settings from your 
   </Step>
   <Step title="Wait for the pull to complete">
     A progress indicator shows when the pull is finished. Your staging environment now reflects the current state of your live site, ready for the next round of testing.
+  </Step>
+</Steps>
+
+## Deleting a Staging Environment
+
+Each site supports one staging environment at a time. Delete your existing staging site when you want to start fresh or free up resources.
+
+<Warning>
+  Deleting a staging environment permanently removes all staging files and the staging database. Your live site is unaffected, but any changes made exclusively in staging will be lost. Push anything you want to keep to live before deleting.
+</Warning>
+
+<Steps>
+  <Step title="Navigate to Staging">
+    In the Cloud Panel, click your site, then open the **Staging** tab.
+  </Step>
+  <Step title="Click Delete Staging Site">
+    Scroll to the bottom of the Staging tab and click **Delete Staging Site**.
+  </Step>
+  <Step title="Confirm deletion">
+    Type the confirmation text in the dialog and click **Confirm Delete**. The staging environment is permanently removed. You can create a new staging site at any time.
   </Step>
 </Steps>
