@@ -1,0 +1,93 @@
+---
+title: "Optimize Your WordPress Site with Aero's Speed Tools"
+sidebarTitle: "Optimization"
+description: "Use Aero's built-in speed tools — minification, JS deferral, WebP image conversion, lazy loading, and database cleanup — to improve your site's performance scores."
+---
+
+Aero's optimization features go beyond page caching to address the other major contributors to slow WordPress sites: oversized asset files, unoptimized images, and a bloated database. Together, these tools can meaningfully improve your Core Web Vitals scores and reduce page weight for both first-time and returning visitors.
+
+## File Optimization
+
+Navigate to **WordPress Admin → Aero → Optimization** to configure the following file-level optimizations.
+
+<AccordionGroup>
+  <Accordion title="Minify CSS">
+    Strips comments, whitespace, and redundant characters from your CSS files before serving them to visitors. The resulting files are functionally identical but smaller, which reduces the time browsers spend downloading and parsing stylesheets. Enable the **Minify CSS** toggle to activate this feature.
+  </Accordion>
+  <Accordion title="Minify JavaScript">
+    Removes whitespace, comments, and unnecessary characters from JavaScript files. The files remain fully functional, but with a smaller transfer size. After enabling the **Minify JavaScript** toggle, browse through your site's key pages and test interactive elements — some third-party scripts are sensitive to minification and may require exclusion.
+  </Accordion>
+  <Accordion title="Defer JavaScript">
+    Moves non-essential JavaScript execution to after the page has finished rendering, improving Time to First Byte and Largest Contentful Paint. Enable the **Defer JavaScript** toggle to load scripts asynchronously.
+
+    <Warning>
+      Deferring JavaScript can break scripts that need to run during page load — for example, certain analytics tags, chat widgets, or custom theme scripts. Always test JS deferral on a staging site before enabling it in production. Use the JS exclusion list to carve out any scripts that must load synchronously.
+    </Warning>
+  </Accordion>
+  <Accordion title="GZIP / Brotli Compression">
+    Transfer compression is enabled automatically at the server level on all WP Stratos sites — no action is required on your part. WP Stratos serves Brotli-compressed responses to browsers that support it and falls back to GZIP for all others, reducing the transfer size of HTML, CSS, and JS responses significantly.
+  </Accordion>
+</AccordionGroup>
+
+## Image Optimization
+
+Images are typically the largest assets on any web page. Aero reduces image file sizes by converting uploads to the WebP format, which delivers significantly smaller files than JPEG or PNG at equivalent visual quality.
+
+You can choose between two conversion modes in **Aero → Images**:
+
+- **Lossy WebP** — applies compression that discards some image data, producing the smallest possible files. Suitable for photographs and complex images where minor quality reduction is imperceptible.
+- **Lossless WebP** — preserves all image data while still achieving smaller file sizes than PNG. Suitable for logos, icons, and images with flat colours or transparency.
+
+Any image you upload to the Media Library after enabling image optimization is converted automatically on upload. For images already in your library, use the bulk optimizer to process them all at once.
+
+<Steps>
+  <Step title="Open the bulk optimizer">
+    Go to **Aero → Images → Bulk Optimize**.
+  </Step>
+  <Step title="Review the queue">
+    Aero lists all images in your Media Library that have not yet been converted to WebP. Review the count and confirm your compression mode (lossy or lossless) is set correctly before proceeding.
+  </Step>
+  <Step title="Start optimization">
+    Click **Start** to begin the bulk conversion. Aero processes images in batches in the background — you can navigate away and return to check progress.
+  </Step>
+  <Step title="Confirm completion">
+    Once the queue is empty, all existing images have been converted. New uploads will be converted automatically going forward.
+  </Step>
+</Steps>
+
+### Lazy Load Images
+
+Enable the **Lazy Load Images** toggle in **Aero → Optimization** to defer the loading of images that are below the fold. Instead of downloading every image on the page at load time, browsers only fetch images as they scroll into the viewport. This reduces initial page weight and speeds up the visual load of above-the-fold content — often improving Largest Contentful Paint and Total Blocking Time scores.
+
+## Database Cleanup
+
+Over time, WordPress accumulates post revisions, auto-drafts, expired transients, and spam comments that add unnecessary weight to your database and slow down queries. Aero's database optimization tool lets you clean these up on demand or on a schedule.
+
+Aero can remove the following items:
+
+- Post revisions and auto-drafts
+- Trashed posts and pages
+- Expired transients
+- Spam and trashed comments
+
+<Steps>
+  <Step title="Open the database tool">
+    Go to **Aero → Database**.
+  </Step>
+  <Step title="Select items to clean">
+    Check the categories you want to remove. Aero shows a count of items in each category so you can make an informed decision before deleting anything.
+  </Step>
+  <Step title="Run the cleanup">
+    Click **Run Cleanup**. Aero deletes the selected items immediately. The process is usually instantaneous on smaller databases and may take a minute or two on larger sites.
+  </Step>
+</Steps>
+
+You can also enable **Scheduled Cleanup** to run the database optimization automatically on a weekly or monthly basis, keeping your database lean without manual intervention.
+
+<Warning>
+  Post revisions are permanently deleted and cannot be recovered from within WordPress after cleanup. Before running a database cleanup that includes revisions, make sure you have a recent site backup on hand. You can create a backup through the WP Stratos dashboard before proceeding.
+</Warning>
+
+<Tip>
+  If you're new to Aero's optimization features, start by enabling only **Page Cache** and **Lazy Load Images** — both are low-risk and high-impact. Then add minification, JS deferral, and image optimization one at a time, testing your site after each change to catch any compatibility issues early.
+</Tip>

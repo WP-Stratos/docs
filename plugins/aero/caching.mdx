@@ -1,0 +1,67 @@
+---
+title: "Configure Page Caching in Aero for Faster Load Times"
+sidebarTitle: "Caching"
+description: "Learn how Aero's page, browser, and object caching work, how to configure cache settings, exclude URLs, and purge the cache on WP Stratos sites."
+---
+
+Page caching is the single highest-impact performance improvement available to a WordPress site. Instead of running PHP and querying the database on every request, Aero stores a fully rendered HTML copy of each page and serves that copy directly to anonymous visitors — reducing server response times from hundreds of milliseconds to single-digit milliseconds in most cases.
+
+## How Aero Caching Works
+
+When an anonymous visitor lands on your site, Aero checks whether a cached version of that page exists. If it does, Aero serves the cached HTML immediately, bypassing WordPress, PHP, and the database entirely. If no cached version exists — for example, after a fresh publish or a cache purge — Aero renders the page normally and stores the result for future requests.
+
+Cache invalidation is handled automatically. Whenever you publish, update, or delete a post or page, Aero purges the cached version of that content so the next visitor always receives the most current HTML. Browser caching complements this by sending `Cache-Control` headers with static assets (images, CSS, JS), instructing visitors' browsers to store those files locally and skip re-downloading them on repeat visits.
+
+## Caching Settings
+
+Navigate to **WordPress Admin → Aero → Cache** to review and adjust the following settings.
+
+<AccordionGroup>
+  <Accordion title="Enable Page Cache">
+    Toggles full-page HTML caching for anonymous (logged-out) visitors. This setting is **on by default** and should remain enabled for virtually all sites. Disabling it forces WordPress to rebuild every page from scratch on each request.
+  </Accordion>
+  <Accordion title="Enable Browser Cache">
+    Sends `Cache-Control` and `Expires` headers with static assets so visitors' browsers cache those files locally. Reduces repeat-visit load times significantly and decreases bandwidth usage.
+  </Accordion>
+  <Accordion title="Cache Lifespan">
+    Controls how long Aero keeps a cached page before considering it stale and re-generating it on the next request. The default is **24 hours**. Lower this value if your site content changes frequently; raise it for sites that update infrequently to maximize cache hit rates.
+  </Accordion>
+  <Accordion title="Enable Cache Preloading">
+    After a full cache purge, Aero automatically crawls your site's sitemap to rebuild cached pages before a real visitor requests them. Enable this to keep cache hit rates high immediately after purges, especially on sites that receive steady traffic.
+  </Accordion>
+</AccordionGroup>
+
+## Excluding Pages from Cache
+
+Some pages — like checkout, account, or cart pages — should never be served from cache because they contain user-specific content. Use cache exclusions to prevent Aero from caching those URLs.
+
+<Steps>
+  <Step title="Open Cache Exclusions">
+    In your WordPress Admin, go to **Aero → Cache → Exclusions**.
+  </Step>
+  <Step title="Add URLs or URL patterns">
+    Enter the paths you want to exclude, one per line. You can use exact paths (e.g., `/checkout`) or wildcard patterns (e.g., `/account/*`) to match multiple URLs at once.
+  </Step>
+  <Step title="Add query strings or cookie names">
+    If certain query parameters or cookies indicate a personalized or dynamic response, add them to the respective exclusion fields. Any request carrying a matching query string or cookie will bypass the page cache.
+  </Step>
+  <Step title="Save your changes">
+    Click **Save Changes**. The exclusions take effect immediately for new requests — no cache purge is required.
+  </Step>
+</Steps>
+
+## Purging the Cache
+
+There are two ways to clear Aero's page cache, depending on how quickly you need to act.
+
+**Quick purge — admin bar:** Click **Purge Cache** in the WordPress admin bar at the top of any admin page. This clears all cached pages site-wide in one click and is the fastest option when you need to push changes live immediately.
+
+**Full purge — Aero settings:** Navigate to **Aero → Cache** and click the **Purge All** button. This also clears all cached pages and gives you the option to trigger a cache preload immediately after clearing, which is useful after large content updates or theme changes.
+
+<Note>
+  Logged-in users always bypass the page cache — this is by design. WordPress sets authentication cookies for logged-in users, and Aero recognises those cookies as a signal to serve a live, uncached response. This ensures that administrators and editors always see the latest version of their content.
+</Note>
+
+<Tip>
+  If you've made changes to your site — updated a page, changed a menu, or switched themes — and visitors still see the old version, purge the cache from the admin bar. The change will be visible to all visitors immediately after the purge completes.
+</Tip>

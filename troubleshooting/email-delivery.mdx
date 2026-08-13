@@ -1,0 +1,104 @@
+---
+title: "Diagnose and Fix Email Delivery Problems in WP Postman"
+sidebarTitle: "Email Delivery"
+description: "Troubleshoot common WP Postman email delivery failures including authentication errors, spam filtering, connection timeouts, and SPF/DKIM configuration."
+---
+
+Email delivery failures in WordPress typically stem from a handful of root causes: missing or incorrect SMTP credentials, firewall-blocked ports, mismatched sender addresses, or missing DNS authentication records. WP Postman — the pre-installed SMTP plugin on every WP Stratos site — logs all outgoing email attempts and error responses, giving you a clear starting point for diagnosing any problem before you start changing settings.
+
+## Check Email Logs First
+
+Before adjusting any configuration, review the email logs to identify the exact error WP Postman recorded.
+
+<Steps>
+  <Step title="Open WP Postman Email Logs">
+    In your WordPress admin, navigate to **WP Postman → Email Logs**. For a full walkthrough of the logs interface, see the [Email Logs documentation](/plugins/wp-postman/email-logs).
+  </Step>
+  <Step title="Locate failed delivery entries">
+    Filter the log by **Status: Failed**. Click on any failed entry to expand the full SMTP response. The response code and message will tell you precisely where the delivery broke down — for example, an authentication rejection versus a connection refusal.
+  </Step>
+  <Step title="Note the error message">
+    Copy the exact error text before proceeding. Use it to match against the common issues listed below so you apply the right fix without guesswork.
+  </Step>
+</Steps>
+
+## Common Issues
+
+<Accordion title="Emails not sending at all">
+  If no emails are being sent and there are no entries in the log, WP Postman is likely not yet configured with SMTP credentials. Out of the box, WP Postman needs a valid SMTP host, port, username, and password before it can deliver mail.
+
+  Follow the [SMTP Configuration guide](/plugins/wp-postman/smtp-configuration) to complete the setup. Once credentials are saved, use the test email feature (described below) to confirm delivery works.
+</Accordion>
+
+<Accordion title="Authentication error">
+  An authentication error means the SMTP server accepted the connection but rejected your login credentials. Double-check that the **SMTP username and password** in WP Postman → SMTP Settings exactly match those provided by your email service.
+
+  If you are using **Gmail**, standard account passwords no longer work with third-party SMTP clients. You must generate an **App Password**:
+  1. Enable **2-Step Verification** on your Google account at [myaccount.google.com/security](https://myaccount.google.com/security).
+  2. Under **Security → App Passwords**, generate a new password for "Mail."
+  3. Paste the generated 16-character password into the WP Postman password field — do not use your regular Gmail password.
+</Accordion>
+
+<Accordion title="Connection timeout">
+  A connection timeout means WP Postman couldn't establish a connection to the SMTP server at all. The most common causes are an incorrect **SMTP hostname** or **port number**.
+
+  Verify both values with your email provider's documentation. Common port configurations are:
+  - **Port 587** with STARTTLS encryption (recommended by most providers)
+  - **Port 465** with SSL/TLS encryption
+  - **Port 25** (often blocked by hosting environments — avoid this port)
+
+  If you're unsure, try port **587 with STARTTLS** first, as it is the most widely supported combination.
+</Accordion>
+
+<Accordion title="Emails going to spam">
+  Spam placement usually means one of two things: your **From Email** address doesn't match the domain you're sending from, or your domain is missing **SPF and DKIM** authentication records.
+
+  - Set the **From Email** in WP Postman to an address on the same domain as your site (e.g., `hello@yourdomain.com`, not a personal Gmail address).
+  - Add SPF and DKIM records to your DNS — see the [Setting Up SPF and DKIM](#setting-up-spf-and-dkim) section below.
+
+  Even a correctly configured server can land in spam if the sending IP has a poor reputation. Using a dedicated transactional email service dramatically improves deliverability.
+</Accordion>
+
+<Accordion title='"Could not connect to SMTP" error'>
+  This error often indicates a **firewall block** rather than a configuration problem. Many hosting environments, including some ISPs, block outbound traffic on **port 25** to prevent spam. If you're using port 25, switch to **port 587** (STARTTLS) or **port 465** (SSL).
+
+  If the error persists on port 587 or 465, contact WP Stratos support to confirm there are no outbound SMTP restrictions on your specific plan.
+</Accordion>
+
+<Accordion title="Recipient address rejected">
+  A recipient rejection means the receiving server refused to accept the message. This can happen if the recipient's mail server has blocklisted your sending IP or domain. To work around this:
+
+  - Try changing the **From Email** to a different address or domain.
+  - Switch to a reputable transactional email provider (SendGrid, Mailgun, or Amazon SES), whose IP addresses are monitored and maintained to stay off blocklists.
+  - Ask the recipient to check if their IT team has blocked your domain, particularly for corporate or enterprise email systems.
+</Accordion>
+
+## Setting Up SPF and DKIM
+
+SPF (Sender Policy Framework) and DKIM (DomainKeys Identified Mail) are DNS-based authentication standards that prove to receiving mail servers that emails from your domain are legitimate. SPF specifies which servers are allowed to send mail on behalf of your domain. DKIM adds a cryptographic signature to each outgoing message that recipients can verify against a public key in your DNS.
+
+Together, these two records significantly reduce the chance of your emails being flagged as spam or rejected outright. They are especially important when using a third-party SMTP provider.
+
+<Note>
+  SPF and DKIM record values are provided by your SMTP provider (e.g., SendGrid, Mailgun, Postmark). Log in to your provider's dashboard to find the exact TXT record values, then add them to your domain's DNS as **TXT records**. For instructions on adding DNS records, see the [DNS Configuration guide](/domains/dns-configuration).
+</Note>
+
+## Send a Test Email
+
+After making any configuration change, always send a test email to confirm delivery is working before relying on it in production.
+
+<Steps>
+  <Step title="Open SMTP Settings">
+    Go to **WP Postman → SMTP Settings** in your WordPress admin.
+  </Step>
+  <Step title="Send a test email">
+    Scroll to the **Send Test Email** section, enter a recipient address you have access to, and click **Send Test Email**.
+  </Step>
+  <Step title="Check the result">
+    If the test succeeds, check the recipient inbox (and spam folder). If it fails, a new entry will appear in **Email Logs** with the SMTP error — use that to guide your next troubleshooting step.
+  </Step>
+</Steps>
+
+<Tip>
+  For production sites handling transactional email (order confirmations, password resets, notifications), use a dedicated transactional email service such as **SendGrid**, **Mailgun**, or **Amazon SES** instead of Gmail. These services are purpose-built for high-volume delivery, provide detailed analytics, and offer significantly better inbox placement rates and higher sending limits than personal email accounts.
+</Tip>

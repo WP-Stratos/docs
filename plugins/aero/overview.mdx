@@ -1,0 +1,38 @@
+---
+title: "Aero: Caching and Performance for WP Stratos Sites"
+sidebarTitle: "Overview"
+description: "Aero is WP Stratos's built-in performance plugin. It handles page caching, image optimization, minification, and CDN integration for every site."
+---
+
+Aero is the caching and performance optimization plugin pre-installed on every WP Stratos site. It accelerates your WordPress site by serving cached HTML pages to anonymous visitors, converting images to WebP, minifying CSS and JavaScript, and rewriting static asset URLs to deliver through a CDN of your choice — all from a single, unified settings panel inside your WordPress dashboard.
+
+## What Aero Does
+
+<CardGroup cols={2}>
+  <Card title="Page Caching" icon="bolt" href="/plugins/aero/caching">
+    Serves fully cached HTML pages to anonymous visitors, reducing server load and dramatically improving load times across your site.
+  </Card>
+  <Card title="Image Optimization" icon="image" href="/plugins/aero/optimization">
+    Converts uploaded images to WebP format using lossy or lossless compression, and lazy-loads images so they only render when scrolled into view.
+  </Card>
+  <Card title="Minification & Deferral" icon="code" href="/plugins/aero/optimization">
+    Strips whitespace from CSS and JavaScript files and optionally defers non-essential JS so pages render faster for your visitors.
+  </Card>
+  <Card title="CDN Integration" icon="globe" href="/plugins/aero/cdn">
+    Rewrites image, CSS, and JS URLs to use your own CDN hostname, delivering static assets from edge locations closest to each visitor.
+  </Card>
+</CardGroup>
+
+<Note>
+  Aero is pre-installed on all WP Stratos sites. If you deactivate it, it will be automatically reactivated on the next plugin update.
+</Note>
+
+## Getting Started
+
+Aero works with sensible defaults out of the box — page caching and browser caching are enabled automatically, so your site is already faster the moment it launches. Most sites don't need any changes to the default configuration. If you want to fine-tune caching rules or exclusions, see the [Caching](/plugins/aero/caching) page. To enable image optimization, minification, or JS deferral, see the [Optimization](/plugins/aero/optimization) page.
+
+## Accessing Aero
+
+Open your WordPress Admin dashboard and click **Aero** in the left sidebar. From there you can navigate between the Cache, Optimization, Images, CDN, and Database sections using the submenu tabs.
+
+For a faster cache purge without navigating into settings, use the **Purge Cache** shortcut in the WP admin bar at the top of every admin page. This immediately clears all cached pages and is the quickest way to push content changes live to your visitors.

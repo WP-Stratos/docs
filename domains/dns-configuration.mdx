@@ -1,0 +1,106 @@
+---
+title: "Manage DNS Records in the WP Stratos Cloud Panel"
+sidebarTitle: "DNS Configuration"
+description: "Add, edit, and delete A, CNAME, MX, TXT, and other DNS records for your domain directly inside the WP Stratos Cloud Panel."
+---
+
+WP Stratos includes a full-featured DNS manager built into the Cloud Panel, giving you complete control over your domain's DNS records without leaving your hosting dashboard. You can add records for email routing, subdomain configuration, third-party service verification, and more — all in one place.
+
+<Note>
+  DNS management in the Cloud Panel is only available for domains that use **WP Stratos nameservers** (`ns1.wpstratos.com` and `ns2.wpstratos.com`). If your domain points to an external DNS provider, you must manage records there. See [Nameserver Setup](/domains/nameserver-setup) to switch.
+</Note>
+
+## Accessing DNS Settings
+
+To open the DNS manager, log in to the Cloud Panel at [my.wpstratos.com](https://my.wpstratos.com), select your site, click **Domains** in the sidebar, and then click **Manage DNS** next to the domain you want to configure.
+
+---
+
+## DNS Record Types
+
+The Cloud Panel supports the most common DNS record types. Use the table below as a quick reference.
+
+| Record Type | Purpose | Example Value |
+|-------------|---------|---------------|
+| **A** | Maps a hostname to an IPv4 address | `203.0.113.10` |
+| **AAAA** | Maps a hostname to an IPv6 address | `2001:db8::1` |
+| **CNAME** | Aliases one hostname to another | `yourdomain.com` |
+| **MX** | Directs email to a mail server | `mail.example.com` (priority `10`) |
+| **TXT** | Stores arbitrary text; used for verification and SPF/DKIM | `v=spf1 include:sendgrid.net ~all` |
+| **NS** | Delegates a subdomain to different nameservers | `ns1.delegated.example.com` |
+| **SRV** | Specifies a service location for protocols like SIP or XMPP | `10 20 5060 sip.example.com` |
+
+---
+
+## Adding a DNS Record
+
+<Steps>
+  <Step title="Open the DNS manager">
+    In the Cloud Panel, navigate to **Domains** and click **Manage DNS** next to the relevant domain.
+  </Step>
+
+  <Step title="Click Add Record">
+    Click the **Add Record** button in the top-right corner of the DNS records list.
+  </Step>
+
+  <Step title="Select the record type">
+    Use the **Type** dropdown to choose the record type you want to create (for example, **A**, **CNAME**, or **MX**).
+  </Step>
+
+  <Step title="Fill in the record fields">
+    Complete the fields for your chosen record type:
+
+    - **Host** — The subdomain or `@` for the root domain.
+    - **Value** — The target IP address, hostname, or text string.
+    - **TTL** — Time to live in seconds. The default of `3600` (1 hour) is suitable for most use cases. Lower values allow faster propagation of future changes.
+    - **Priority** — Required for MX and SRV records; lower values indicate higher priority.
+  </Step>
+
+  <Step title="Save the record">
+    Click **Save**. The record appears in the DNS list immediately and begins propagating across the internet.
+  </Step>
+</Steps>
+
+---
+
+## Common DNS Setups
+
+### Adding a www Subdomain
+
+To ensure visitors reach your site whether they type `www.yourdomain.com` or `yourdomain.com`, add a CNAME record:
+
+| Type | Host | Value |
+|------|------|-------|
+| CNAME | `www` | `yourdomain.com` |
+
+If you already have an A record for `@` pointing to your site's IP, this CNAME ensures the `www` version resolves to the same destination.
+
+---
+
+### Adding Email Provider MX Records
+
+To route email through a third-party provider like Google Workspace or Microsoft 365, add MX records supplied by your email provider. For example, for Google Workspace:
+
+| Type | Host | Value | Priority |
+|------|------|-------|----------|
+| MX | `@` | `aspmx.l.google.com` | `1` |
+| MX | `@` | `alt1.aspmx.l.google.com` | `5` |
+| MX | `@` | `alt2.aspmx.l.google.com` | `10` |
+
+Always use the exact values and priorities provided by your email service — these examples are for illustration only.
+
+---
+
+### Adding a TXT Record for Domain Verification
+
+Many services (such as Google Search Console, email senders, and security tools) require you to verify domain ownership by adding a TXT record. To add one:
+
+| Type | Host | Value |
+|------|------|-------|
+| TXT | `@` | `google-site-verification=xxxxxxxxxxxxxxxxxxxx` |
+
+Replace the value with the exact string given to you by the service requesting verification.
+
+<Warning>
+  After saving any DNS record change, allow up to **48 hours** for full propagation worldwide, though most changes take effect within 1–2 hours. Avoid making rapid successive changes, as each edit resets the propagation clock for affected records.
+</Warning>

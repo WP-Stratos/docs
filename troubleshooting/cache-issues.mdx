@@ -1,0 +1,80 @@
+---
+title: "Resolve Caching Problems with Aero on WP Stratos"
+sidebarTitle: "Cache Issues"
+description: "Fix stale content, cached WooCommerce pages, and CSS/JS update delays caused by Aero on WP Stratos, with step-by-step purge and exclusion instructions."
+---
+
+Caching is one of the most impactful performance improvements available to a WordPress site — it reduces server load and delivers pages to visitors in a fraction of the time. However, because cached pages are stored snapshots of your content, changes you make in WordPress aren't always immediately visible to visitors or even to yourself. This page covers the most common Aero caching problems and walks you through the fastest way to resolve each one.
+
+## My Site Changes Aren't Showing
+
+This is the most frequent cache-related report and is almost always resolved by purging the cache and performing a hard browser refresh.
+
+<Steps>
+  <Step title="Purge cache from the admin bar">
+    While logged in to WordPress, look for the **Aero** menu in the top admin bar. Click **Purge Cache**. This is the quickest way to clear cached pages for the entire site and is sufficient for most content updates.
+  </Step>
+  <Step title="Purge all cache from the Aero dashboard">
+    If the admin bar purge doesn't resolve the issue, go to **Aero → Cache → Purge All Cache** inside the WordPress dashboard. This clears all cached assets including any object or fragment caches that the admin bar shortcut may not cover.
+  </Step>
+  <Step title="Hard-refresh your browser">
+    Your browser may still be serving a locally cached copy of the page even after the server cache is cleared. Force a fresh download by pressing **Ctrl + Shift + R** on Windows/Linux or **Cmd + Shift + R** on macOS.
+  </Step>
+  <Step title="Check in an incognito window">
+    Open an **incognito or private browsing window** and navigate to your site. Incognito sessions don't use your browser's regular cache, so this confirms whether the issue is on the server side or isolated to your browser profile.
+  </Step>
+</Steps>
+
+## Logged-In Users See Cached Pages
+
+<Note>
+  By design, Aero **bypasses the page cache for all logged-in users**. If you are logged in to WordPress and see stale content, the page cache is not responsible — the content you're viewing is being served fresh from the server on every request.
+
+  If logged-in users are still seeing outdated content, investigate other caching layers: a **CDN cache** in front of your site, or a **browser cache** that hasn't been invalidated. If you have a CDN configured, purge its cache from your CDN provider's dashboard. Browser cache will clear automatically when the browser's cached copy expires, or immediately after a hard-refresh.
+</Note>
+
+## Specific Pages Shouldn't Be Cached
+
+Some pages — such as personalised landing pages, search results, or pages with real-time data — should be excluded from caching entirely to ensure visitors always see fresh content.
+
+<Steps>
+  <Step title="Open Aero Cache Exclusions">
+    Go to **Aero → Cache → Exclusions** in your WordPress admin. For a full reference of all available exclusion options, see the [Aero Caching documentation](/plugins/aero/caching).
+  </Step>
+  <Step title="Add the URL or URL pattern to exclude">
+    Enter the page URL or a URL pattern (such as `/live-results/` to match all pages under that path). Aero supports both exact URLs and wildcard patterns.
+  </Step>
+  <Step title="Save and purge">
+    Save your exclusion rules, then purge the full cache to ensure the previously cached version of that page is removed immediately.
+  </Step>
+</Steps>
+
+## WooCommerce / Cart Pages Are Cached
+
+<Warning>
+  Cart, checkout, and account pages must **never** be served from cache. Caching these pages causes critical problems: visitors see each other's cart contents, orders fail to process correctly, and login states bleed between sessions.
+
+  Aero automatically excludes the standard WooCommerce pages (`/cart`, `/checkout`, `/my-account`) when it detects WooCommerce is active. However, if you have customised these URLs, created additional account pages, or installed a WooCommerce extension that adds new transactional pages, those custom URLs may not be excluded automatically.
+
+  Verify your exclusion rules under **Aero → Cache → Exclusions** and confirm that `/cart`, `/checkout`, and `/my-account` (and any custom equivalents) are present. Add any missing URLs before your store receives live traffic.
+</Warning>
+
+## CSS/JS Changes Not Reflecting
+
+When Aero's minification and asset optimisation features are enabled, CSS and JavaScript files are combined and stored as separate minified copies. Purging the page cache alone does not remove these minified files — you need to clear them separately.
+
+<Steps>
+  <Step title="Purge the page cache">
+    Start with a full cache purge via **Aero → Cache → Purge All Cache**, or use the admin bar shortcut.
+  </Step>
+  <Step title="Clear the minified file cache">
+    If your CSS or JS changes still aren't showing after a page cache purge, go to **Aero → Optimization → Clear Minified Files**. This forces Aero to regenerate all combined and minified asset files on the next page load.
+  </Step>
+  <Step title="Verify with a hard-refresh">
+    Press **Ctrl + Shift + R** (Windows/Linux) or **Cmd + Shift + R** (macOS) to bypass your browser's locally cached copies of the stylesheet and script files.
+  </Step>
+</Steps>
+
+<Tip>
+  Make theme and plugin changes on your **staging environment** first. Staging has its own completely separate cache that won't affect live visitors, so you can verify your changes look correct — including cache behaviour — before pushing to production. You can manage staging environments from **Cloud Panel → your site → Staging**.
+</Tip>

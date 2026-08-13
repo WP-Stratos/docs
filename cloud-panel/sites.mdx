@@ -1,0 +1,77 @@
+---
+title: "Create and Manage WordPress Sites in Cloud Panel"
+sidebarTitle: "Sites"
+description: "Learn how to create, configure, and manage your WordPress sites in the WP Stratos Cloud Panel, from provisioning to settings and deletion."
+---
+
+The Cloud Panel puts complete WordPress site management at your fingertips. From here you can spin up new sites, jump directly into wp-admin, adjust server-level settings, monitor resource usage, and safely decommission sites you no longer need — all without touching a command line.
+
+<Note>
+  All new sites come with **WP Postman**, **Aero**, and **WP Stratos Environment** pre-installed and activated, giving you a performance-optimized foundation from the moment your site is ready.
+</Note>
+
+## Creating a New Site
+
+<Steps>
+  <Step title="Log in to the Cloud Panel">
+    Sign in at [my.wpstratos.com](https://my.wpstratos.com) to reach your dashboard.
+  </Step>
+  <Step title="Click New Site">
+    Select the **New Site** button in the top-right corner of the Sites list.
+  </Step>
+  <Step title="Name your site and choose a region">
+    Enter a descriptive site name and select the data center region closest to your audience for the best performance.
+  </Step>
+  <Step title="Select your hosting plan">
+    Pick the plan that matches your expected traffic and storage needs. You can upgrade at any time from your account settings.
+  </Step>
+  <Step title="Click Create">
+    Click **Create Site**. WP Stratos provisions your WordPress installation automatically — the site is typically ready within a few minutes. You'll receive a notification when it's live.
+  </Step>
+</Steps>
+
+## Accessing Your Site
+
+**One-click WordPress admin** — Every site card in the dashboard has an **Open WP Admin** button. Click it to log straight into your WordPress dashboard without entering credentials.
+
+**Temporary URL** — While you're connecting a custom domain, your site is immediately accessible at `sitename.wpstratos.dev`. Share this URL for reviews or use it during initial setup.
+
+## Site Settings
+
+Open a site's settings by clicking the site name in the dashboard and navigating to the **Settings** tab.
+
+<AccordionGroup>
+  <Accordion title="PHP Version">
+    View and change the PHP version running your WordPress site. For detailed instructions and available versions, see [PHP Settings](/plugins/wp-stratos-environment/php-settings).
+  </Accordion>
+  <Accordion title="Connected Domains">
+    See all domains currently pointing to this site. Add a primary domain, set up redirects, or remove a domain you no longer need. For full instructions, visit [Connect a Domain](/domains/connect-domain).
+  </Accordion>
+  <Accordion title="SSL Certificate Status">
+    Check whether your SSL certificate is active, pending, or due for renewal. WP Stratos provisions and auto-renews Let's Encrypt certificates — no manual action is normally required.
+  </Accordion>
+  <Accordion title="Resource Usage">
+    Monitor your site's current disk usage and bandwidth consumption against your plan limits. Graphs update daily so you can spot growth trends and upgrade before you hit a limit.
+  </Accordion>
+</AccordionGroup>
+
+## Deleting a Site
+
+<Warning>
+  Deleting a site is **permanent and irreversible**. All files, the database, and associated backups are erased. Download any backups you want to keep before proceeding.
+</Warning>
+
+<Steps>
+  <Step title="Open site settings">
+    From the dashboard, click the site you want to remove, then go to the **Settings** tab.
+  </Step>
+  <Step title="Scroll to the Danger Zone">
+    At the bottom of the Settings page, locate the **Danger Zone** section.
+  </Step>
+  <Step title="Click Delete Site">
+    Click **Delete Site**, then type the site name in the confirmation field to verify your intent.
+  </Step>
+  <Step title="Confirm deletion">
+    Click the red **Confirm Delete** button. The site and all its data are permanently removed.
+  </Step>
+</Steps>

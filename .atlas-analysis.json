@@ -1,30 +1,11 @@
 {
-  "$schema": "https://mintlify.com/docs.json",
+  "projectType": "saas",
+  "projectName": "WP Stratos",
+  "projectDescription": "WP Stratos is a managed WordPress hosting platform with a cloud control panel and a suite of built-in plugins covering SMTP, caching/optimization, and environment management.",
   "theme": "almond",
-  "name": "WP Stratos",
-  "colors": {
-    "primary": "#ef7025",
-    "light": "#eec9bc",
-    "dark": "#4fa1ab"
-  },
-  "favicon": "/favicon.svg",
-  "logo": {
-    "light": "/logo/light.svg",
-    "dark": "/logo/dark.svg"
-  },
-  "navbar": {
-    "links": [
-      {
-        "label": "Support",
-        "href": "mailto:support@wpstratos.com"
-      }
-    ],
-    "primary": {
-      "type": "button",
-      "label": "Cloud Panel",
-      "href": "https://my.wpstratos.com"
-    }
-  },
+  "primaryColor": "#ef7025",
+  "lightColor": "#eec9bc",
+  "darkColor": "#4fa1ab",
   "navigation": {
     "tabs": [
       {
@@ -109,7 +90,27 @@
       }
     ]
   },
-  "footer": {
-    "socials": {}
-  }
+  "keyFeatures": [
+    "Managed WordPress hosting with automated updates and security",
+    "WP Stratos Cloud Panel for site, domain, backup, and staging management",
+    "Domain connection with DNS and nameserver configuration",
+    "WP Postman — built-in SMTP plugin for reliable email delivery",
+    "Aero — built-in caching and performance optimization plugin",
+    "WP Stratos Environment — server and PHP environment configuration plugin",
+    "Automatic SSL certificate provisioning",
+    "One-click staging environments"
+  ],
+  "publicApiSurface": [
+    "Cloud Panel: site creation and management",
+    "Cloud Panel: domain connection and DNS settings",
+    "Cloud Panel: backup and restore",
+    "Cloud Panel: staging environment push/pull",
+    "WP Postman: SMTP host, port, credentials, encryption settings",
+    "WP Postman: email send log viewer",
+    "Aero: page cache enable/disable, cache purge",
+    "Aero: image optimization settings",
+    "Aero: CDN configuration",
+    "WP Stratos Environment: PHP version selector, memory limit, execution time",
+    "WP Stratos Environment: server information dashboard"
+  ]
 }

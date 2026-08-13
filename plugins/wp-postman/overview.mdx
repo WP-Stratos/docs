@@ -1,0 +1,38 @@
+---
+title: "WP Postman: Reliable SMTP Email for Your WordPress Site"
+sidebarTitle: "Overview"
+description: "WP Postman replaces WordPress's default mail system with SMTP delivery, ensuring your transactional emails reach the inbox every time."
+---
+
+WP Postman is a first-party plugin developed by the WP Stratos team that takes over WordPress's default email system and routes all outbound mail through a proper SMTP connection. Instead of relying on the server's local mail agent — which is frequently blocked by receiving mail servers — WP Postman authenticates with your chosen email provider and delivers messages reliably, just like any legitimate mail client.
+
+## Why SMTP Matters
+
+Out of the box, WordPress sends email using PHP's `mail()` function, which hands messages off to whatever mail transport is configured on the server. Shared and managed hosting environments often restrict or disable this entirely, and even when it does work, messages sent this way carry no authentication signals. Receiving mail servers have no way to verify the sender's identity, so they frequently flag these emails as spam or silently drop them before they ever reach the inbox. Password resets, order confirmations, and contact-form replies all sent through this path are at constant risk of never being seen.
+
+WP Postman solves this by replacing `wp_mail()` — the WordPress function that all plugins and themes use to send email — with an authenticated SMTP connection to a provider you control. Because the sending server can verify your identity through your SMTP credentials, messages carry proper authentication headers and are far less likely to be filtered. You get a dedicated audit trail of every email your site attempts to send, and a built-in test tool so you can confirm everything is working before your visitors need it.
+
+## Key Features
+
+<CardGroup cols={2}>
+  <Card title="SMTP Configuration" icon="gear" href="/plugins/wp-postman/smtp-configuration">
+    Connect WP Postman to any SMTP provider by entering your host, port, encryption, and credentials.
+  </Card>
+  <Card title="Email Logs" icon="list" href="/plugins/wp-postman/email-logs">
+    Track every outbound email your site sends, including full message details and delivery status.
+  </Card>
+  <Card title="Test Email" icon="paper-plane">
+    Verify your SMTP settings instantly with a one-click test message sent directly from your WordPress dashboard.
+  </Card>
+  <Card title="Provider Support" icon="plug">
+    Works with Gmail, SendGrid, Mailgun, Amazon SES, or any custom SMTP server your business already uses.
+  </Card>
+</CardGroup>
+
+<Note>
+  WP Postman is pre-installed and activated on every WP Stratos site. If you deactivate it, it will be automatically reactivated the next time the plugin receives an update.
+</Note>
+
+## Accessing WP Postman
+
+To open the plugin, log in to your WordPress admin dashboard and click **WP Postman** in the left-hand sidebar. From there you can reach the SMTP settings screen and the Email Logs in one click each.

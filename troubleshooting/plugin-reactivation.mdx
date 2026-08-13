@@ -1,0 +1,49 @@
+---
+title: "Why WP Stratos Plugins Reactivate Automatically"
+sidebarTitle: "Plugin Reactivation"
+description: "Understand why WP Postman, Aero, and WP Stratos Environment auto-reactivate after updates and how to disable individual features without deactivating them."
+---
+
+If you've deactivated WP Postman, Aero, or WP Stratos Environment and found them active again shortly afterwards, this is expected behaviour. These three plugins are part of the WP Stratos managed hosting infrastructure. Unlike standard third-party plugins, they are tied directly to your hosting environment and are automatically reinstated as part of the platform's update process.
+
+## Which Plugins Are Managed?
+
+The following plugins are pre-installed on every WP Stratos site and are considered part of the managed hosting layer:
+
+- **WP Postman** — Handles all outgoing WordPress email via SMTP. Ensures your site can reliably send transactional emails such as order confirmations, password resets, and contact form notifications.
+- **Aero** — Provides full-stack caching and performance optimisation, including page caching, minification, image optimisation, and lazy loading.
+- **WP Stratos Environment** — Manages PHP version selection, server-level configuration, and exposes server diagnostic information within the WordPress admin.
+
+## Why Does This Happen?
+
+These plugins are integral to how WP Stratos manages your hosting environment. They enable the platform to maintain correct PHP behaviour, deliver optimised page responses, and relay outgoing email through a properly configured mail relay. Disabling any of them can silently break features that you or your visitors depend on — without any obvious error message pointing back to the deactivated plugin.
+
+WP Stratos automatically applies updates to managed plugins to deliver security patches, compatibility fixes, and new features without requiring manual action from you. As part of this update process, any deactivated managed plugin is reactivated to ensure it operates correctly under the new version. This safeguard exists because an update to a managed plugin may change internal hooks or dependencies that only function when the plugin is active.
+
+## What If I Need to Disable a Feature?
+
+Rather than deactivating a managed plugin, disable the specific feature you don't need from within the plugin's own settings. All three managed plugins are designed to support this workflow.
+
+<Accordion title="Disable caching (Aero)">
+  You don't need to deactivate Aero to stop it from caching your pages. Navigate to **Aero → Cache** in your WordPress admin and toggle off **Page Cache**. The plugin remains active and continues to handle other tasks (such as image optimisation), but no pages will be cached.
+
+  You can also disable individual optimisation features — such as CSS/JS minification or lazy loading — independently under **Aero → Optimization**, without affecting caching or the plugin's active status.
+</Accordion>
+
+<Accordion title="Stop email sending (WP Postman)">
+  WP Postman only sends email when it has valid SMTP credentials configured. To prevent all outgoing email from your site, go to **WP Postman → SMTP Settings** and remove or clear the SMTP host, username, and password fields, then save. Without credentials, WP Postman will not attempt to deliver any mail.
+
+  This approach is preferable to deactivation because it keeps the plugin active and ready to resume sending the moment you add credentials back.
+</Accordion>
+
+<Accordion title="Hide WP Stratos Environment from admin users">
+  If you want to prevent certain WordPress users (such as Editor-role accounts) from seeing the WP Stratos Environment menu, use a role management plugin — such as **User Role Editor** or **Members** — to restrict access to the relevant admin menu pages. This keeps the plugin active and functional at the server level while removing the UI from users who don't need it.
+</Accordion>
+
+<Info>
+  Deactivating a managed plugin does not cause immediate problems in most cases, but the next scheduled plugin update will reactivate it automatically. If you are troubleshooting a suspected conflict with a managed plugin, we strongly recommend disabling the specific feature within the plugin's settings rather than deactivating the plugin itself — this narrows down the cause without risking the stability of your hosting environment.
+</Info>
+
+<Note>
+  If you believe a managed plugin is directly causing a conflict with your theme or another plugin, contact **WP Stratos support**. Our team can help you diagnose the root cause and find a resolution that doesn't require deactivating a managed plugin.
+</Note>

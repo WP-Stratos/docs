@@ -1,0 +1,113 @@
+---
+title: "Configure SMTP Settings in WP Postman"
+sidebarTitle: "SMTP Configuration"
+description: "Step-by-step instructions for connecting WP Postman to your SMTP provider, with setup guides for Gmail, SendGrid, Mailgun, and Amazon SES."
+---
+
+This page walks you through every field on the WP Postman SMTP settings screen and provides provider-specific instructions for the most common email services. Once you save a valid SMTP configuration, all email your WordPress site sends — password resets, order notifications, contact-form submissions — will flow through your chosen provider instead of the server's local mail agent.
+
+## Configuration Fields
+
+| Field | Description |
+|---|---|
+| **SMTP Host** | The hostname of your SMTP server, supplied by your email provider (e.g. `smtp.sendgrid.net`). |
+| **SMTP Port** | The port number your provider requires. Common values: **587** for TLS (recommended), **465** for SSL, **25** for unencrypted connections. |
+| **Encryption** | The security layer for the connection. Choose **TLS** (STARTTLS), **SSL**, or **None**. TLS on port 587 is the most widely supported option. |
+| **Authentication** | Toggle this **on** if your SMTP server requires a username and password, which is true for virtually every modern provider. |
+| **Username** | Your SMTP login name. This is often your email address, but some providers (like SendGrid) use a fixed string. |
+| **Password** | Your SMTP password or API key. Store this securely — WP Postman encrypts it at rest. |
+| **From Email** | The email address that appears in the **From** field of every outgoing message. Use an address on a domain you own and have authorized to send mail. |
+| **From Name** | The display name recipients see alongside the From address (e.g. your site name or company name). |
+
+## Provider Setup Guides
+
+<Tabs>
+  <Tab title="Gmail">
+    Use these settings to send through a Google account or Google Workspace account.
+
+    | Setting | Value |
+    |---|---|
+    | SMTP Host | `smtp.gmail.com` |
+    | SMTP Port | `587` |
+    | Encryption | TLS |
+    | Authentication | Enabled |
+    | Username | Your full Gmail address (e.g. `you@gmail.com`) |
+    | Password | Your Google App Password (see below) |
+
+    <Warning>
+      You cannot use your regular Gmail password here. Google requires an **App Password** for third-party SMTP access. To generate one, you must first enable two-factor authentication (2FA) on your Google account. Then go to **Google Account → Security → App Passwords**, create a new app password for "Mail", and paste that 16-character code into the Password field in WP Postman.
+    </Warning>
+  </Tab>
+  <Tab title="SendGrid">
+    SendGrid is a dedicated transactional email service well suited to high-volume sending.
+
+    | Setting | Value |
+    |---|---|
+    | SMTP Host | `smtp.sendgrid.net` |
+    | SMTP Port | `587` |
+    | Encryption | TLS |
+    | Authentication | Enabled |
+    | Username | `apikey` (the literal string, not your account name) |
+    | Password | Your SendGrid API key |
+
+    Create your API key in the SendGrid dashboard under **Settings → API Keys**. Grant it at least **Mail Send** permissions. Paste the full key string into the Password field — the Username must be the exact word `apikey` regardless of your account details.
+  </Tab>
+  <Tab title="Mailgun">
+    Mailgun offers reliable deliverability and detailed analytics for transactional email.
+
+    | Setting | Value |
+    |---|---|
+    | SMTP Host | `smtp.mailgun.org` (US region) or `smtp.eu.mailgun.org` (EU region) |
+    | SMTP Port | `587` |
+    | Encryption | TLS |
+    | Authentication | Enabled |
+    | Username | `postmaster@yourdomain.com` (the postmaster address shown in your Mailgun domain settings) |
+    | Password | Your Mailgun SMTP password (found in the domain settings panel) |
+
+    <Note>
+      Mailgun operates separate infrastructure for US and EU customers. If your Mailgun account is on the EU region, use `smtp.eu.mailgun.org` as the host. Check your Mailgun dashboard under **Sending → Domains** to confirm which region your domain is on.
+    </Note>
+  </Tab>
+  <Tab title="Amazon SES">
+    Amazon Simple Email Service (SES) is a cost-effective choice for high-volume or AWS-integrated workloads.
+
+    | Setting | Value |
+    |---|---|
+    | SMTP Host | Region-specific, e.g. `email-smtp.us-east-1.amazonaws.com` |
+    | SMTP Port | `587` |
+    | Encryption | TLS |
+    | Authentication | Enabled |
+    | Username | Your SES SMTP username |
+    | Password | Your SES SMTP password |
+
+    <Warning>
+      SES SMTP credentials are **not** the same as your AWS IAM access keys. You must generate dedicated SMTP credentials inside the SES console: go to **Amazon SES → SMTP Settings → Create SMTP Credentials**. Replace `us-east-1` in the host with the AWS region where you have verified your sending domain or address.
+    </Warning>
+  </Tab>
+</Tabs>
+
+## Testing Your Configuration
+
+After entering your SMTP details, verify everything works before your site sends a real message to a real user.
+
+<Steps>
+  <Step title="Save your SMTP settings">
+    Click **Save Changes** at the bottom of the SMTP settings screen to store your configuration.
+  </Step>
+  <Step title="Click Send Test Email">
+    On the same settings page, locate the **Send Test Email** section below the configuration fields.
+  </Step>
+  <Step title="Enter a recipient address">
+    Type an email address you have immediate access to — your own inbox is ideal — into the recipient field.
+  </Step>
+  <Step title="Send and check your inbox">
+    Click the **Send** button. Switch to your email client and confirm the test message has arrived. Delivery is usually near-instant for a correctly configured provider.
+  </Step>
+  <Step title="Review the logs if the test fails">
+    If the message does not arrive, open [Email Logs](/plugins/wp-postman/email-logs) to find the failed entry. The error message recorded there will tell you exactly what the SMTP server rejected and why.
+  </Step>
+</Steps>
+
+<Tip>
+  Always use port **587 with TLS** when your provider supports it. This combination (STARTTLS on port 587) is the modern standard: it's widely supported, passes through most firewalls, and encrypts the connection before credentials are transmitted. Port 465 (SSL) is an older standard that still works but is less universally accepted.
+</Tip>

@@ -1,0 +1,85 @@
+---
+title: "Use Staging Environments to Test Before Going Live"
+sidebarTitle: "Staging"
+description: "Create a staging clone of your live WordPress site, test themes, plugins, and updates safely, then push changes to production when you're confident."
+---
+
+A staging environment is a private copy of your live site where you can make changes, test new plugins, or experiment with themes without any risk to your production site or visitors. WP Stratos gives every site a one-click staging environment that stays in sync with your live site — making it easy to work safely and ship changes with confidence.
+
+<Note>
+  Each site can have one staging environment at a time. If you need to start fresh, delete the existing staging site and create a new one.
+</Note>
+
+## Creating a Staging Site
+
+<Steps>
+  <Step title="Navigate to Staging">
+    In the Cloud Panel, click your site, then select the **Staging** tab.
+  </Step>
+  <Step title="Click Create Staging Site">
+    Click the **Create Staging Site** button. WP Stratos immediately begins cloning your live site.
+  </Step>
+  <Step title="Wait for the clone to complete">
+    WP Stratos copies all site files and the full database to an isolated staging environment. This typically takes one to three minutes. A status indicator shows progress.
+  </Step>
+  <Step title="Access your staging site">
+    Once ready, your staging environment is accessible at the URL shown in the Staging tab — usually `yoursite.wpstratos.dev` or a dedicated staging subdomain. Click **Open Staging WP Admin** for direct one-click access.
+  </Step>
+</Steps>
+
+## Making Changes on Staging
+
+Your staging environment is fully isolated from your live site, so anything you do there stays contained until you decide to push it. Use staging to:
+
+- Install and evaluate new plugins before adding them to production.
+- Preview theme changes or a full redesign without affecting visitors.
+- Test WordPress core or plugin updates to catch compatibility issues early.
+- Prototype new content, page layouts, or checkout flows.
+
+Changes you make on staging — including database updates, new posts, or configuration changes — have no effect on your live site until you explicitly push them.
+
+<Tip>
+  Always test plugin updates on staging before applying them to your live site. This single habit prevents the vast majority of unexpected outages.
+</Tip>
+
+## Push Staging to Live
+
+When you're satisfied with your changes on staging, push them to your production site.
+
+<Warning>
+  Pushing staging to live **overwrites your production site** with the staging content and database. A pre-push backup of your live site is created automatically, but review your changes carefully before confirming.
+</Warning>
+
+<Steps>
+  <Step title="Navigate to Staging">
+    In the Cloud Panel, click your site, then open the **Staging** tab.
+  </Step>
+  <Step title="Click Push to Live">
+    Click the **Push to Live** button to begin the push workflow.
+  </Step>
+  <Step title="Choose what to push">
+    Select the scope of the push:
+    - **Full site** — Copies both files and the database to live.
+    - **Files only** — Pushes themes, plugins, and uploads without touching the database.
+    - **Database only** — Pushes content and settings changes without overwriting files.
+  </Step>
+  <Step title="Confirm the push">
+    WP Stratos automatically takes a backup of your current live site, then applies the selected staging content. You'll receive a notification when the push is complete.
+  </Step>
+</Steps>
+
+## Pull Live to Staging
+
+Refresh your staging environment with the latest content and settings from your live site.
+
+<Steps>
+  <Step title="Navigate to Staging">
+    In the Cloud Panel, click your site, then open the **Staging** tab.
+  </Step>
+  <Step title="Click Pull from Live">
+    Click the **Pull from Live** button. WP Stratos copies the current live site files and database into your staging environment, replacing whatever was there before.
+  </Step>
+  <Step title="Wait for the pull to complete">
+    A progress indicator shows when the pull is finished. Your staging environment now reflects the current state of your live site, ready for the next round of testing.
+  </Step>
+</Steps>

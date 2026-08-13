@@ -1,0 +1,85 @@
+---
+title: "Connect a Custom Domain to Your WP Stratos Site"
+sidebarTitle: "Connect Domain"
+description: "Learn how to connect a custom domain to your WP Stratos WordPress site using either WP Stratos DNS or your existing external DNS provider."
+---
+
+Connecting a custom domain gives your WordPress site a professional, branded web address. Whether you want to use WP Stratos's built-in DNS management or keep DNS with your existing registrar, this page walks you through every step — from adding the domain in the Cloud Panel to confirming your SSL certificate is active.
+
+<Note>
+  Before you begin, make sure you have a domain name registered with any domain registrar (such as GoDaddy, Namecheap, or Google Domains) and at least one WP Stratos site already created in your Cloud Panel.
+</Note>
+
+<Steps>
+  <Step title="Log in to the Cloud Panel">
+    Go to [my.wpstratos.com](https://my.wpstratos.com) and sign in with your WP Stratos credentials.
+  </Step>
+
+  <Step title="Navigate to your site's domain settings">
+    From the dashboard, select the site you want to connect your domain to. In the left-hand navigation, click **Domains**, then click **Add Domain**.
+  </Step>
+
+  <Step title="Enter your domain name">
+    Type your full domain name (for example, `yourdomain.com`) into the field and click **Add**. The domain will appear in your domain list with a pending status while configuration is completed.
+  </Step>
+
+  <Step title="Choose your connection method">
+    Select how you want to connect your domain. There are two options depending on where you manage your DNS.
+
+    <Tabs>
+      <Tab title="Use WP Stratos DNS (Recommended)">
+        Point your domain's nameservers to WP Stratos. This gives you full DNS management directly inside the Cloud Panel and is the simplest long-term setup.
+
+        Log in to your domain registrar and update the nameservers to:
+
+        ```
+        ns1.wpstratos.com
+        ns2.wpstratos.com
+        ```
+
+        Replace any existing nameservers entirely — do not add these alongside old ones. For step-by-step instructions for specific registrars, see the [Nameserver Setup](/domains/nameserver-setup) guide.
+      </Tab>
+
+      <Tab title="Use External DNS">
+        Keep DNS management at your current registrar or DNS provider, and add the required records manually.
+
+        Log in to your DNS provider and add the following records:
+
+        | Type  | Host | Value |
+        |-------|------|-------|
+        | A     | `@`  | `203.0.113.10` *(your site's IP is shown in the Cloud Panel)* |
+        | CNAME | `www` | `yourdomain.com` |
+
+        Use the exact IP address displayed in your WP Stratos Cloud Panel under **Domains → Connection Details**, as your IP may differ from the example above.
+      </Tab>
+    </Tabs>
+  </Step>
+
+  <Step title="Wait for DNS propagation">
+    After updating nameservers or DNS records, allow time for the changes to propagate across the internet. This typically takes between 15 minutes and a few hours, but can take up to 48 hours in some cases.
+  </Step>
+
+  <Step title="Confirm SSL is active">
+    Once your domain resolves correctly, WP Stratos automatically provisions a free Let's Encrypt SSL certificate for your site. In the Cloud Panel, navigate to **Domains** and check the **SSL** column — a green padlock icon confirms your certificate is active and HTTPS is enabled.
+  </Step>
+</Steps>
+
+<Info>
+  DNS propagation time varies depending on your previous TTL (Time to Live) settings and your visitors' DNS resolvers. Most users will see changes take effect within 1–2 hours. You can use a tool like [whatsmydns.net](https://www.whatsmydns.net) to check propagation status from multiple locations worldwide.
+</Info>
+
+---
+
+## Next Steps
+
+<CardGroup cols={3}>
+  <Card title="DNS Configuration" icon="sliders" href="/domains/dns-configuration">
+    Add and manage A, CNAME, MX, TXT, and other DNS records directly in the Cloud Panel.
+  </Card>
+  <Card title="Nameserver Setup" icon="server" href="/domains/nameserver-setup">
+    Step-by-step instructions for updating nameservers at popular registrars.
+  </Card>
+  <Card title="SSL Certificates" icon="lock" href="/domains/ssl-certificates">
+    Learn how automatic SSL provisioning works and how to troubleshoot certificate issues.
+  </Card>
+</CardGroup>

@@ -1,0 +1,80 @@
+---
+title: "Fix Domain Propagation Issues on WP Stratos"
+sidebarTitle: "Domain Propagation"
+description: "Learn how to check DNS propagation status, flush stale caches, and fix common domain connectivity issues after pointing your domain to WP Stratos."
+---
+
+When you connect a domain to WP Stratos — whether by updating nameservers or adding an A record at your registrar — the change doesn't take effect instantly across the internet. DNS propagation is the process by which your updated DNS records spread to resolvers worldwide. During this window, some visitors may reach your old host while others reach WP Stratos, which is completely normal and expected.
+
+## How Long Does Propagation Take?
+
+Propagation typically completes within **30 minutes to 48 hours**. Most users see their changes reflected within **2 hours**. The exact time depends on the TTL (Time to Live) value set on your previous DNS records and how quickly your ISP's resolvers update their caches. There is no way to force instant global propagation, but you can monitor progress and work around stale results in the meantime.
+
+## Check if Propagation Is Complete
+
+<Steps>
+  <Step title="Open a DNS propagation checker">
+    Visit an external tool such as [dnschecker.org](https://dnschecker.org) or [whatsmydns.net](https://www.whatsmydns.net). These are third-party services not affiliated with WP Stratos, but they reliably show real-time DNS resolution across global locations.
+  </Step>
+  <Step title="Enter your domain and select a record type">
+    Type your domain name into the search field. If you pointed your domain using **nameservers**, select **NS** as the record type and verify both `ns1.wpstratos.com` and `ns2.wpstratos.com` appear. If you added an **A record** instead, select **A** and confirm the IP address matches what is shown in **Cloud Panel → Domains**.
+  </Step>
+  <Step title="Review results across multiple locations">
+    Propagation is a global process — different regions update at different times. Check that the majority of listed locations return the correct values. A handful of locations still showing old values is normal during active propagation and will resolve on its own.
+  </Step>
+</Steps>
+
+## My Site Still Shows the Old Host
+
+<Accordion title="Your local DNS cache is stale">
+  Your computer caches DNS results to speed up browsing. Even after global propagation completes, your machine may still direct you to the old host until that local cache expires or is flushed manually.
+
+  <Steps>
+    <Step title="Flush DNS on Windows">
+      Open **Command Prompt** as Administrator and run:
+      ```bash
+      ipconfig /flushdns
+      ```
+    </Step>
+    <Step title="Flush DNS on macOS">
+      Open **Terminal** and run:
+      ```bash
+      sudo dscacheutil -flushcache && sudo killall -HUP mDNSResponder
+      ```
+      Enter your password when prompted.
+    </Step>
+    <Step title="Flush DNS on Linux">
+      Open a terminal and run:
+      ```bash
+      sudo systemctl restart systemd-resolved
+      ```
+    </Step>
+  </Steps>
+
+  After flushing, close and reopen your browser, then try visiting your domain again.
+</Accordion>
+
+<Accordion title="Your ISP's DNS resolver is slow to update">
+  Your internet provider's DNS servers may cache records longer than average. You can temporarily switch your device to a faster public DNS resolver to bypass your ISP's cache.
+
+  - **Cloudflare DNS**: `1.1.1.1` and `1.0.0.1`
+  - **Google Public DNS**: `8.8.8.8` and `8.8.4.4`
+
+  Change your DNS resolver in your operating system's network settings or on your router. Remember to revert this change once propagation is fully complete, if you prefer to use your ISP's resolver.
+</Accordion>
+
+<Accordion title="You entered the wrong IP address or nameservers">
+  If propagation appears complete but your site still doesn't load, you may have configured incorrect values at your registrar. Log in to **Cloud Panel → Domains**, locate your domain, and verify the exact IP address or nameserver values shown there. Then log in to your domain registrar and confirm those values are entered correctly with no typos or extra spaces.
+</Accordion>
+
+## SSL Not Appearing After Propagation
+
+Once DNS propagation completes, WP Stratos automatically provisions a free SSL certificate via Let's Encrypt. If your site is reachable but shows a certificate error or no HTTPS, refer to the SSL troubleshooting guide for next steps.
+
+<Note>
+  If your SSL certificate hasn't appeared within 24 hours of successful propagation, see the [SSL Certificates troubleshooting section](/domains/ssl-certificates) for detailed diagnostics.
+</Note>
+
+<Tip>
+  Open your site in an **incognito or private browsing window** to check the current live state without interference from your browser's DNS or page cache. This is the fastest way to see what a fresh visitor would experience.
+</Tip>
