@@ -4,64 +4,96 @@ sidebarTitle: "Caching"
 description: "Learn how Aero's page cache and browser cache work on WP Stratos sites, and how to configure cache settings, set exclusion rules, and purge cached pages."
 ---
 
-Page caching is the single highest-impact performance improvement available to a WordPress site. Instead of running PHP and querying the database on every request, Aero stores a fully rendered HTML copy of each page and serves that copy directly to anonymous visitors — reducing server response times from hundreds of milliseconds to single-digit milliseconds in most cases.
+The Cache screen (**Aero → Cache**) controls Batcache, WP Stratos's server-level full-page cache. This is the layer that skips PHP and your database entirely on a hit, and it's the single biggest lever you have over Time to First Byte (TTFB), a metric that feeds directly into Core Web Vitals and, through it, page experience signals in Search.
 
-## How Aero Caching Works
+## Manual purge
 
-When an anonymous visitor lands on your site, Aero checks whether a cached version of that page exists. If it does, Aero serves the cached HTML immediately, bypassing WordPress, PHP, and the database entirely. If no cached version exists — for example, after a fresh publish or a cache purge — Aero renders the page normally and stores the result for future requests.
+Two buttons live at the top of the screen, and they're not the same action.
 
-Cache invalidation is handled automatically. Whenever you publish, update, or delete a post or page, Aero purges the cached version of that content so the next visitor always receives the most current HTML. Browser caching complements this by sending `Cache-Control` headers with static assets (images, CSS, JS), instructing visitors' browsers to store those files locally and skip re-downloading them on repeat visits.
+| Action | What it clears | When to use it |
+| --- | --- | --- |
+| **Flush All Caches — Sequential** | Aero's minified files, then Batcache, then Edge Cache, in the order set on [Purge & Schedule](/plugins/aero/purge-schedule) | After a theme/plugin update, a design change, or anything that could be stale anywhere |
+| **Flush Object Cache & Batcache** | Object cache and Batcache only. Minified assets and Edge Cache are untouched | When you just need Batcache cleared fast and don't want to wait on a full Edge purge |
 
-## Caching Settings
+<Tip>
+  If you only ever click one button, make it "Flush All Caches". The narrower object-cache flush is there for speed when you're certain nothing else needs clearing, not as your default habit.
+</Tip>
 
-Navigate to **WordPress Admin → Aero → Cache** to review and adjust the following settings.
+## Automated flush triggers
+
+These decide what makes Aero purge cache _without you doing anything_. Each one is independently safe to leave on, and each is deliberately scoped to purge only what actually changed, so the rest of your cache stays warm.
 
 <AccordionGroup>
-  <Accordion title="Enable Page Cache">
-    Toggles full-page HTML caching for anonymous (logged-out) visitors. This setting is **on by default** and should remain enabled for virtually all sites. Disabling it forces WordPress to rebuild every page from scratch on each request.
+  <Accordion title="Flush cache on plugin & theme updates — Safe, recommended">
+    Runs the **full sequential flush**, deliberately. An update can change CSS, JS, or markup sitewide, so every layer purges in order and the Cache Warmer rebuilds immediately after. Leave this on unless you have a specific reason to manage flushes manually after deployments.
   </Accordion>
-  <Accordion title="Enable Browser Cache">
-    Sends `Cache-Control` and `Expires` headers with static assets so visitors' browsers cache those files locally. Reduces repeat-visit load times significantly and decreases bandwidth usage.
+
+  <Accordion title="Targeted flush on page/post edit — Safe, recommended">
+    Surgical, not sitewide. Purges the edited URL, its archive pages, the author page, and the feed. The homepage is only included when the edit could plausibly appear there. Everything purged is re-warmed within seconds if the Cache Warmer is on.
   </Accordion>
-  <Accordion title="Cache Lifespan">
-    Controls how long Aero keeps a cached page before considering it stale and re-generating it on the next request. The default is **24 hours**. Lower this value if your site content changes frequently; raise it for sites that update infrequently to maximize cache hit rates.
+
+  <Accordion title="Flush cache on page/post delete — Safe, recommended">
+    Same surgical approach, plus the homepage, since a deletion changes list membership (what shows up in "recent posts," archives, and so on).
   </Accordion>
-  <Accordion title="Enable Cache Preloading">
-    After a full cache purge, Aero automatically crawls your site's sitemap to rebuild cached pages before a real visitor requests them. Enable this to keep cache hit rates high immediately after purges, especially on sites that receive steady traffic.
+
+  <Accordion title="Flush cache on comment delete — Safe">
+    Purges only the commented post. The rest of the site stays warm.
   </Accordion>
 </AccordionGroup>
 
-## Excluding Pages from Cache
+## Per-page flushing
 
-Some pages — like checkout, account, or cart pages — should never be served from cache because they contain user-specific content. Use cache exclusions to prevent Aero from caching those URLs.
+<AccordionGroup>
+  <Accordion title="Flush Batcache for individual pages — Situational">
+    Adds a "Flush Cache" row action on the Pages/Posts list and a toolbar button on the frontend. Useful for editors who need to push a single change live without touching the full Aero dashboard. Turn it on if non-admin editors need self-serve cache control; skip it on tightly locked-down sites.
+  </Accordion>
 
-<Steps>
-  <Step title="Open Cache Exclusions">
-    In your WordPress Admin, go to **Aero → Cache → Exclusions**.
-  </Step>
-  <Step title="Add URLs or URL patterns">
-    Enter the paths you want to exclude, one per line. You can use exact paths (e.g., `/checkout`) or wildcard patterns (e.g., `/account/*`) to match multiple URLs at once.
-  </Step>
-  <Step title="Add query strings or cookie names">
-    If certain query parameters or cookies indicate a personalized or dynamic response, add them to the respective exclusion fields. Any request carrying a matching query string or cookie will bypass the page cache.
-  </Step>
-  <Step title="Save your changes">
-    Click **Save Changes**. The exclusions take effect immediately for new requests — no cache purge is required.
-  </Step>
-</Steps>
+  <Accordion title="Flush Batcache for WooCommerce product pages — Safe if you run WooCommerce">
+    Product pages updated through the WooCommerce REST API (inventory syncs, price updates from a PIM, etc.) get flushed individually, deployed as an mu-plugin so it runs even outside normal WordPress hooks. If you don't run WooCommerce this setting has nothing to do.
+  </Accordion>
+</AccordionGroup>
 
-## Purging the Cache
+## Batcache behavior
 
-There are two ways to clear Aero's page cache, depending on how quickly you need to act.
+These change how Batcache itself decides what to store, not what triggers a purge.
 
-**Quick purge — admin bar:** Click **Purge Cache** in the WordPress admin bar at the top of any admin page. This clears all cached pages site-wide in one click and is the fastest option when you need to push changes live immediately.
+<AccordionGroup>
+  <Accordion title="Extend Batcache storage to 24 hours — Safe, recommended">
+    Raises `max_age` to 86400 seconds so cached pages survive a full day instead of the platform default. Longer cache life means fewer full-render hits on your server, which is almost always a win as long as your automated flush triggers above are on to keep content from actually going stale.
+  </Accordion>
 
-**Full purge — Aero settings:** Navigate to **Aero → Cache** and click the **Purge All** button. This also clears all cached pages and gives you the option to trigger a cache preload immediately after clearing, which is useful after large content updates or theme changes.
+  <Accordion title="Cache pages that set wpp_ cookies — Situational">
+    Some plugins set `wpp_` prefixed cookies for their own tracking, which by default tells Batcache to treat the visitor as unique and skip caching. This setting overrides that and lets those pages cache normally. Turn it on if you've confirmed the plugin's cookie doesn't carry personalized content; leave it off if you're not sure what's setting that cookie.
+  </Accordion>
+
+  <Accordion title="Ignore gclid query strings — Safe, recommended">
+    Google Ads click IDs (`?gclid=...`) are unique per click, and without this setting each one fragments your cache into a separate, useless entry. Ignoring them for cache-key purposes means ad traffic actually benefits from caching instead of missing it every single time. This has no effect on your analytics, it only affects what Batcache treats as "the same page."
+  </Accordion>
+</AccordionGroup>
+
+### Exclude pages from Batcache & Edge Cache
+
+A comma-separated list of relative paths (`/checkout/, /my-account/`) that should never be cached, served with `no-store` via an mu-plugin so the rule holds even if Batcache's own logic would otherwise cache them.
+
+<Warning>
+  Cart, checkout, and account pages must never be served from cache, full stop. Caching them means one visitor can see another visitor's cart or session state. Aero auto-excludes standard WooCommerce URLs when WooCommerce is active, but if you've customized those URLs or added extensions with their own transactional pages, add them here explicitly. See [Cache Issues](/troubleshooting/cache-issues) for the WooCommerce-specific walkthrough.
+</Warning>
+
+## Page cache configuration (WP Stratos hosting)
+
+If your site runs on WP Stratos infrastructure, an additional panel lets you tune Batcache's own `wp-config.php` constants directly, with one-click auto-configuration if they're not set yet.
+
+| Field | Default | What it controls | Guidance |
+| --- | --- | --- | --- |
+| **Cache Duration (max\_age)** | 86400s | How long a cached page is stored before Batcache re-renders it | 86400 to 604800 (1 to 7 days) covers nearly every site. Push it higher only on sites that update rarely and purge reliably on every change. |
+| **Wait Time (seconds)** | 0 | Delay before Batcache starts caching a URL after its first request | Recommended: 0. There's rarely a reason to delay caching. |
+| **Visitor Threshold (times)** | 1 | Number of visits required before a page gets cached | Recommended: 1. Waiting for multiple visits mostly just means more uncached, slower first loads for no real benefit on typical traffic patterns. |
+| **No-Skip Cookies** | empty | Cookies that should _not_ cause Batcache to bypass caching | Add cookies here only after confirming they don't carry per-visitor personalization. Guess wrong and you'll leak one visitor's state to another. |
 
 <Note>
-  Logged-in users always bypass the page cache — this is by design. WordPress sets authentication cookies for logged-in users, and Aero recognises those cookies as a signal to serve a live, uncached response. This ensures that administrators and editors always see the latest version of their content.
+  This panel only appears when Aero detects it's running on WP Stratos hosting and `wp-config.php` is writable. If `wp-config.php` isn't writable, values are shown read-only, since Aero can't safely persist a change it can't verify was written.
 </Note>
 
-<Tip>
-  If you've made changes to your site — updated a page, changed a menu, or switched themes — and visitors still see the old version, purge the cache from the admin bar. The change will be visible to all visitors immediately after the purge completes.
-</Tip>
+## What this means for load time and rankings
+
+Batcache's job is TTFB, the time before the browser gets its first byte of HTML. TTFB sits upstream of every other Core Web Vitals metric: a slow TTFB delays LCP, delays INP readiness, and delays the point where any of Aero's [Optimization](/plugins/aero/optimization) work even starts mattering. A well-tuned cache layer is the highest-leverage 10 minutes you can spend in this plugin. Get the automated triggers right, extend Batcache to 24 hours, and exclude the handful of pages that genuinely need to stay dynamic. Everything else here is refinement.

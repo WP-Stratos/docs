@@ -1,0 +1,44 @@
+---
+title: "Aero Debug Screen: Full-Plugin Diagnostic Report"
+sidebarTitle: "Debug"
+description: "Aero's Debug screen provides a copy-ready diagnostic report covering every module: settings, cache state, triggers, Batcache configuration, Guest Mode, and server environment."
+---
+
+The Debug screen (**Aero → Debug**) has one job: give you a single, copy-ready diagnostic report covering the entire plugin, every module, every setting, every timestamp, in one text block you can paste into a support ticket or read through yourself when something's not behaving as expected.
+
+## Debug Mode
+
+A single toggle. On, it makes the diagnostic report available and keeps it current. There's no frontend behavior change and no performance cost to leaving this on; it's safe to enable permanently and simply ignore until you need it.
+
+## What the report contains
+
+One click generates a plain-text report covering:
+
+- **Core Aero settings**: every Optimization-screen toggle and its current state
+- **Cache directories and file counts**: what Aero has actually generated on disk
+- **Batcache configuration**: the live `wp-config.php` values if WP Stratos hosting configuration is in play
+- **Flush triggers and last-run timestamps**: exactly when each automated trigger last fired, useful for confirming a trigger is actually working rather than just enabled
+- **Purge order and schedule**: current sequence, whether scheduled flushing is on, next and last scheduled run, and whether `DISABLE_WP_CRON` is set
+- **Edge Cache status**: enabled/disabled, last backend status, Defensive Mode state
+- **Batcache status**: a live browser probe of actual response headers, not just configuration
+- **Guest Mode and isolation**: level, both isolation layers' status, whether the wp-config snippet is detected
+- **Deployed mu-plugin modules**: which mu-plugin files Aero has written and whether they're present
+- **Server environment**: PHP version, web server, relevant extensions
+
+## When to use it
+
+<AccordionGroup>
+  <Accordion title="Filing a support request">
+    Generate and paste the full report rather than describing your settings from memory. It answers most of the clarifying questions a support agent would otherwise need to ask, which materially speeds up resolution.
+  </Accordion>
+
+  <Accordion title="After a change that didn't behave as expected">
+    Check the relevant timestamp section, did the trigger actually fire when you think it did? Is the purge order what you configured, or did an edit not save? The report is a faster way to confirm the plugin's actual state than clicking back through every screen individually.
+  </Accordion>
+
+  <Accordion title="Auditing a site you didn't originally configure">
+    If you've inherited a site, the debug report is the fastest way to understand everything Aero is currently doing without reconstructing it screen by screen.
+  </Accordion>
+</AccordionGroup>
+
+For issues that specifically look like stale content, mismatched WooCommerce behavior, or CSS/JS not updating, check [Cache Issues](/troubleshooting/cache-issues) first, the debug report is diagnostic, that page is the fix.

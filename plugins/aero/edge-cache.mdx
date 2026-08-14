@@ -1,0 +1,45 @@
+---
+title: "Aero Edge Cache: CDN Purging and Defensive Mode"
+sidebarTitle: "Edge Cache"
+description: "How Aero's Edge Cache screen controls Pressable's CDN layer, including enable/disable/purge controls and Defensive Mode for traffic spikes or attacks."
+---
+
+The Edge Cache screen (**Aero → Edge Cache**) controls Pressable's global edge network, the layer that sits in front of Batcache and serves cached pages from a server physically close to each visitor. This is separate infrastructure from Batcache, which is why it gets its own screen and its own purge step in the [sequential flush order](/plugins/aero/purge-schedule).
+
+<Note>
+  This screen only does something if the Edge Cache Plugin (Pressable infrastructure) is active on your site. If it isn't, the controls are visible but disabled. This is expected on non-WP Stratos hosting and isn't something to troubleshoot.
+</Note>
+
+## Enable, purge, disable
+
+| Action | Effect | Notes |
+| --- | --- | --- |
+| **Enable Edge Cache** | Turns on edge serving for the site | Safe to leave on permanently. This is the state you want for production traffic. |
+| **Purge Edge Cache** | Clears every cached copy across all edge nodes | If Edge Cache is currently disabled, purging auto-enables it first. |
+| **Disable Edge Cache** | Stops serving from the edge; requests fall through to Batcache | Situational. Mainly useful for debugging: if you suspect the edge layer is serving something stale or wrong and want to isolate whether Batcache alone reproduces the issue. |
+
+The status row shows your current state plus the timestamp of the last purge, which is worth checking before you assume a content change didn't take, since an old Edge copy is a common cause of "I updated it but it still looks old" reports days after a deploy.
+
+## Defensive Mode
+
+Defensive Mode is a deliberate, temporary trade: it tells the edge to serve aggressively cached pages for a set duration, shielding your PHP workers and database from a traffic spike or an active attack, at the cost of freshness. Real visitors get a cached page even in situations that would normally force a fresh render, like a logged-out shopping cart count or a comment count that lags by a few minutes.
+
+<Steps>
+  <Step title="Recognize when you need it">
+    Sudden traffic spikes (a viral post, a product launch, a press mention) or signs of an active bot/DDoS pattern are the right triggers. This is not a setting to leave on by default.
+  </Step>
+  <Step title="Pick a duration">
+    Choose from the duration dropdown and click **Enable Defensive Mode**. Shorter durations are safer since freshness returns sooner; only reach for the longest option if the spike is genuinely sustained.
+  </Step>
+  <Step title="Monitor and disable when it's over">
+    The status row shows the exact expiry time. You can click **Disable Defensive Mode** manually the moment traffic normalizes, rather than waiting out the full duration.
+  </Step>
+</Steps>
+
+<Warning>
+  Defensive Mode trades content freshness for server survival. It's the right call when the alternative is your site going down entirely, but it's not a setting to reach for casually, and it's not a substitute for fixing an underlying performance problem that keeps recurring. If you find yourself enabling it weekly, that's a signal to look at your actual server resources or a bot-mitigation layer, not to leave Defensive Mode permanently on.
+</Warning>
+
+## Why edge caching matters for Core Web Vitals and crawl efficiency
+
+Edge delivery mostly moves the needle on TTFB and, by extension, LCP, since the browser gets bytes faster the closer the serving node is to the requester. It also matters for crawlers: Googlebot and other crawlers fetch pages from wherever they're routed, and a consistently fast, consistently available response is part of what Google's own [technical SEO guidance](https://developers.google.com/search/docs/fundamentals/ai-optimization-guide) means by "meet the Search technical requirements." A site that's slow or intermittently down under load doesn't just hurt visitors, it can affect how much of your site gets crawled and indexed in a given crawl budget. Keeping Edge Cache warm (see [Cache Warmer](/plugins/aero/cache-warmer)) is as much a crawlability decision as a UX one.

@@ -4,90 +4,157 @@ sidebarTitle: "Optimization"
 description: "Use Aero to minify CSS and JS, defer scripts, convert images to WebP, enable lazy loading, and run database cleanup on your WP Stratos WordPress site."
 ---
 
-Aero's optimization features go beyond page caching to address the other major contributors to slow WordPress sites: oversized asset files, unoptimized images, and a bloated database. Together, these tools can meaningfully improve your Core Web Vitals scores and reduce page weight for both first-time and returning visitors.
+The Optimization screen (**Aero → Optimization**) is where Aero rewrites your page output: minifying assets, changing how CSS and JS load, self-hosting fonts, and trimming what WordPress core loads on every request. This is also the screen most directly responsible for your PageSpeed Insights and Lighthouse scores, since nearly every setting here maps to a specific PSI audit.
 
-## File Optimization
+To verify Aero is actually running on a given page, view source (`Ctrl+U` / `Cmd+Option+U`) and look for a comment near the end reading `Optimized by Aero vX.X.X`.
 
-Navigate to **WordPress Admin → Aero → Optimization** to configure the following file-level optimizations.
+## Core Optimizations
+
+On by default, and there's rarely a reason to turn any of these off.
 
 <AccordionGroup>
-  <Accordion title="Minify CSS">
-    Strips comments, whitespace, and redundant characters from your CSS files before serving them to visitors. The resulting files are functionally identical but smaller, which reduces the time browsers spend downloading and parsing stylesheets. Enable the **Minify CSS** toggle to activate this feature.
+  <Accordion title="Minify & Cache CSS — Safe, recommended">
+    Minifies every stylesheet and serves it from Aero's local cache. Pure whitespace and comment removal, no behavior change to your site's appearance.
   </Accordion>
-  <Accordion title="Minify JavaScript">
-    Removes whitespace, comments, and unnecessary characters from JavaScript files. The files remain fully functional, but with a smaller transfer size. After enabling the **Minify JavaScript** toggle, browse through your site's key pages and test interactive elements — some third-party scripts are sensitive to minification and may require exclusion.
-  </Accordion>
-  <Accordion title="Defer JavaScript">
-    Moves non-essential JavaScript execution to after the page has finished rendering, improving Time to First Byte and Largest Contentful Paint. Enable the **Defer JavaScript** toggle to load scripts asynchronously.
 
-    <Warning>
-      Deferring JavaScript can break scripts that need to run during page load — for example, certain analytics tags, chat widgets, or custom theme scripts. Always test JS deferral on a [staging site](/cloud-panel/staging) before enabling it in production. Use the JS exclusion list to carve out any scripts that must load synchronously.
-    </Warning>
+  <Accordion title="Minify & Cache JavaScript — Safe, recommended">
+    Same idea for scripts. Aero regenerates the minified copy automatically the moment a source file changes, so you never manage this by hand.
   </Accordion>
-  <Accordion title="GZIP / Brotli Compression">
-    Transfer compression is enabled automatically at the server level on all WP Stratos sites — no action is required on your part. WP Stratos serves Brotli-compressed responses to browsers that support it and falls back to GZIP for all others, reducing the transfer size of HTML, CSS, and JS responses significantly.
+
+  <Accordion title="Compress HTML — Safe, recommended">
+    Strips whitespace and comments from the final rendered HTML. Shaves bytes off every single page load, purely mechanical, no visual effect.
+  </Accordion>
+
+  <Accordion title="Defer JavaScript — Safe, recommended, verify after enabling">
+    Defers non-critical JS so it doesn't block rendering. jQuery is excluded automatically since so much of the WordPress plugin ecosystem assumes it loads synchronously. If a specific script depends on load order in a way defer breaks, add it to [Exclusions](#exclusions) below rather than turning this off site-wide.
   </Accordion>
 </AccordionGroup>
 
-## Image Optimization
+## Delivery Optimization
 
-Images are typically the largest assets on any web page. Aero reduces image file sizes by converting uploads to the WebP format, which delivers significantly smaller files than JPEG or PNG at equivalent visual quality.
+This is where PageSpeed scores are actually won or lost. These settings change _when_ and _how_ resources load, which is more impactful than pure minification but also where you're most likely to need to test after flipping a switch.
 
-You can choose between two conversion modes in **Aero → Images**:
+<AccordionGroup>
+  <Accordion title="Preload the LCP Image — Safe">
+    Detects your page's likely Largest Contentful Paint image, preloads it with `fetchpriority="high"`, and removes lazy-loading from it specifically. This directly answers PageSpeed's "LCP image was lazily loaded" and "LCP image discovered late" warnings, two of the most common LCP-score killers on image-heavy pages.
+  </Accordion>
 
-- **Lossy WebP** — applies compression that discards some image data, producing the smallest possible files. Suitable for photographs and complex images where minor quality reduction is imperceptible.
-- **Lossless WebP** — preserves all image data while still achieving smaller file sizes than PNG. Suitable for logos, icons, and images with flat colours or transparency.
+  <Accordion title="Delay JavaScript Until Interaction — High impact, test after enabling">
+    No JavaScript runs until the visitor moves, scrolls, taps, or types, then everything restores in the original order. Because lab testing tools like Lighthouse never interact with a page, Total Blocking Time collapses, often by one to three full seconds. This is the single highest-leverage setting on this screen for a poor mobile PSI score, and also the one most likely to break something if a script needs to run immediately (a chat widget, an above-fold slider, anything triggering on `DOMContentLoaded`). Test your menus, sliders, and any interactive above-fold element after turning this on, and use **Exclude from Delay** below for anything that broke.
+  </Accordion>
 
-Any image you upload to the Media Library after enabling image optimization is converted automatically on upload. For images already in your library, use the bulk optimizer to process them all at once.
+  <Accordion title="Load CSS Asynchronously — High impact, pair with Critical CSS">
+    Stylesheets stop blocking first paint, using a `media="print"` swap technique with a no-JS fallback. Without Critical CSS filled in below, the page can flash unstyled for a moment ("FOUC"). Add your header/hero rules to Critical CSS before or immediately after enabling this to avoid that.
+  </Accordion>
+</AccordionGroup>
 
-<Steps>
-  <Step title="Open the bulk optimizer">
-    Go to **Aero → Images → Bulk Optimize**.
-  </Step>
-  <Step title="Review the queue">
-    Aero lists all images in your Media Library that have not yet been converted to WebP. Review the count and confirm your compression mode (lossy or lossless) is set correctly before proceeding.
-  </Step>
-  <Step title="Start optimization">
-    Click **Start** to begin the bulk conversion. Aero processes images in batches in the background — you can navigate away and return to check progress.
-  </Step>
-  <Step title="Confirm completion">
-    Once the queue is empty, all existing images have been converted. New uploads will be converted automatically going forward.
-  </Step>
-</Steps>
+### Delay and async fine-tuning
 
-### Lazy Load Images
+| Field | What it does | Guidance |
+| --- | --- | --- |
+| **Delay Fallback Timeout** | Loads JS after a set time even without interaction (None / 5s / 10s) | "None" gives the best score, since it waits purely for real interaction. A timeout is worth setting if you rely on analytics counting passive visitors who never interact, at a modest score cost. |
+| **Exclude from Delay** | One entry per line, matched against script URLs and inline code | Add anything that must run immediately: cookie banners, instant search, live chat triggers. Scripts can also opt out directly with a `data-aero-nodelay` attribute if you control the markup. |
+| **Exclude from Async CSS** | One stylesheet per line | Excluded stylesheets stay render-blocking, which is correct for anything genuinely needed before first paint. Links can opt out with `data-aero-noasync`. |
+| **Critical CSS** | Inlined into `<head>` when Async CSS is on | Paste your above-the-fold rules (header, hero, first-view typography) here, generated from any critical-CSS extraction tool or written by hand. This is what prevents the unstyled flash that async CSS can otherwise cause. |
 
-Enable the **Lazy Load Images** toggle in **Aero → Optimization** to defer the loading of images that are below the fold. Instead of downloading every image on the page at load time, browsers only fetch images as they scroll into the viewport. This reduces initial page weight and speeds up the visual load of above-the-fold content — often improving Largest Contentful Paint and Total Blocking Time scores.
+## Font Optimization
 
-## Database Cleanup
+Remote web fonts force two serial cross-origin round trips before any text renders at all, consistently one of the largest single PageSpeed penalties on typical WordPress sites. This section is Aero's answer.
 
-Over time, WordPress accumulates post revisions, auto-drafts, expired transients, and spam comments that add unnecessary weight to your database and slow down queries. Aero's database optimization tool lets you clean these up on demand or on a schedule.
+<AccordionGroup>
+  <Accordion title="Optimize Font Loading — Safe, recommended, master switch">
+    Enforces `font-display: swap` everywhere, so text is never blocked waiting on a font download. Text renders immediately in a fallback font and swaps once the real font arrives.
+  </Accordion>
 
-Aero can remove the following items:
+  <Accordion title="Self-Host Google Fonts — Safe, recommended">
+    Downloads Google Fonts into Aero's own cache and serves them from your domain, removing the external `fonts.googleapis.com` / `fonts.gstatic.com` round trips from your critical path entirely. Falls back to remote automatically if a download ever fails, so this degrades gracefully rather than breaking fonts outright.
+  </Accordion>
 
-- Post revisions and auto-drafts
-- Trashed posts and pages
-- Expired transients
-- Spam and trashed comments
+  <Accordion title="Inline Font CSS — Safe, recommended">
+    Embeds the localized `@font-face` rules directly in `<head>` instead of linking a separate stylesheet, removing one more render-blocking request.
+  </Accordion>
 
-<Steps>
-  <Step title="Open the database tool">
-    Go to **Aero → Database**.
-  </Step>
-  <Step title="Select items to clean">
-    Check the categories you want to remove. Aero shows a count of items in each category so you can make an informed decision before deleting anything.
-  </Step>
-  <Step title="Run the cleanup">
-    Click **Run Cleanup**. Aero deletes the selected items immediately. The process is usually instantaneous on smaller databases and may take a minute or two on larger sites.
-  </Step>
-</Steps>
+  <Accordion title="Preconnect Hints — Safe, recommended">
+    Warms connections to any font origin that's still remote (fonts.gstatic.com, Adobe Fonts/TypeKit), so the download starts 100 to 500ms sooner when it does happen. Only emitted for providers actually present on a given page, since a preconnect to an unused origin wastes a connection slot rather than helping.
+  </Accordion>
 
-You can also enable **Scheduled Cleanup** to run the database optimization automatically on a weekly or monthly basis, keeping your database lean without manual intervention.
+  <Accordion title="Preload Primary Fonts — Safe, recommended">
+    Preloads up to two latin `woff2` faces so your primary text fonts download in parallel with CSS instead of waiting behind it.
+  </Accordion>
 
-<Warning>
-  Post revisions are permanently deleted and cannot be recovered from within WordPress after cleanup. Before running a database cleanup that includes revisions, make sure you have a recent site backup on hand. You can create a backup through the [WP Stratos dashboard](/cloud-panel/backups) before proceeding.
-</Warning>
+  <Accordion title="Disable Google Fonts Entirely — Changes appearance, situational">
+    Strips every Google Fonts request outright, the browser falls back to system fonts. Only for sites deliberately using a system-font stack. This overrides every other font setting above, so leave it off unless that's specifically your intent.
+  </Accordion>
+</AccordionGroup>
 
-<Tip>
-  If you're new to Aero's optimization features, start by enabling only **Page Cache** and **Lazy Load Images** — both are low-risk and high-impact. Then add minification, JS deferral, and image optimization one at a time, testing your site after each change to catch any compatibility issues early.
-</Tip>
+<Note>
+  Adobe Fonts (TypeKit) can't be self-hosted, since kit CSS is licensed and dynamically subset per account. Aero applies preconnect and preload to TypeKit instead of localizing it.
+</Note>
+
+The screen also shows a live status row: how many stylesheets and files are localized, and what Aero detected on your last frontend visit (Google Fonts localized vs. remote, TypeKit detected or not). Check this after enabling font optimization to confirm it actually caught your theme's font requests.
+
+## Exclusions
+
+Compatibility escape hatches. If one specific file misbehaves when optimized, exclude that file here instead of disabling the feature for your entire site. Each field takes one entry per line, matched as a case-insensitive fragment of the file URL, so `slider-pro` matches any file with that string anywhere in its path.
+
+| Field | Matches against |
+| --- | --- |
+| **Exclude from CSS Minification** | Stylesheet URLs |
+| **Exclude from JS Minification** | Script URLs |
+| **Exclude from JS Defer** | Script URLs (jQuery is always excluded automatically, you don't need to add it) |
+
+## WordPress Bloat
+
+WordPress core loads a surprising amount of markup and JavaScript on every page that most sites never use. This section trims it, and it's a section worth reading carefully rather than enabling wholesale, since a few of these genuinely depend on your setup.
+
+<AccordionGroup>
+  <Accordion title="Remove Emoji Script — Safe">
+    Drops roughly 15KB of emoji-detection JS/CSS loaded on every page. Emojis still render correctly, since every modern browser supports them natively without WordPress's polyfill.
+  </Accordion>
+
+  <Accordion title="Clean Up <head> — Safe">
+    Removes the RSD link, Windows Live Writer manifest, shortlink tag, and the WordPress version meta tag. That last one is a minor security win too, since it stops broadcasting your exact core version to anyone looking.
+  </Accordion>
+
+  <Accordion title="Disable Embeds — Review before enabling">
+    Removes `wp-embed.js` and oEmbed discovery links. Keep this **off** if other sites embed your posts as rich cards (a common pattern for news and blog content); turn it on if you know that never happens for your content.
+  </Accordion>
+
+  <Accordion title="Remove jQuery Migrate — Review, test after enabling">
+    Frontend only. Safe on modern, actively maintained themes. Only plugins written for pre-2016 jQuery patterns actually need Migrate. Test your interactive elements after enabling; if something breaks, that plugin or theme is the reason, and you may need to leave this off until it's updated.
+  </Accordion>
+
+  <Accordion title="Remove Dashicons for Visitors — Review before enabling">
+    Dequeues the ~46KB admin icon font for logged-out visitors. Keep this **off** if your theme displays Dashicons on the public-facing site (some themes do, for social icons or UI elements); it's safe if Dashicons only ever show up in wp-admin.
+  </Accordion>
+
+  <Accordion title="Disable XML-RPC — Review before enabling">
+    Blocks a common brute-force attack target and removes the X-Pingback header, a genuine security improvement for most sites. Keep this **off** if you use Jetpack or post to your site through the WordPress mobile apps, both of which rely on XML-RPC.
+  </Accordion>
+</AccordionGroup>
+
+### Admin-side tuning
+
+| Field | Options | Guidance |
+| --- | --- | --- |
+| **Heartbeat API** | Default / Disable on frontend (recommended) / Disable everywhere | Frontend heartbeat polling is almost never needed by anything a typical visitor does. "Everywhere" also silences post-lock warnings in the editor, worth knowing before you pick it if your team relies on those. |
+| **Autosave Interval** | 1 / 2 / 5 minutes | Fewer autosave requests means less admin-side server load. Mostly relevant on sites with heavy concurrent editing. |
+| **Post Revisions Limit** | Number, empty = unlimited | Keeps the posts table lean over time. 5 to 10 is plenty for almost any editorial workflow; leave empty only if you specifically need a long edit history. |
+
+## Custom CSS
+
+A site-wide custom CSS field, injected on the frontend for all regular visitors. This is a plain styling tool, not an optimization setting, useful for quick fixes (hiding a broken element, patching a layout issue) without editing your theme directly.
+
+<Note>
+  Guest-Mode-only custom CSS is a separate field, covered on the [Experimental](/plugins/aero/experimental) page. Don't confuse the two: this field's CSS is seen by everyone, that one's is seen only by PageSpeed-style testing tools.
+</Note>
+
+## How this maps to real metrics
+
+If you're chasing a specific Core Web Vitals number, here's the honest mapping:
+
+- **LCP (Largest Contentful Paint)**: Preload the LCP Image, font self-hosting, and Async CSS \+ Critical CSS.
+- **INP / TBT (interactivity)**: Delay JavaScript Until Interaction is the single biggest lever, by a wide margin.
+- **CLS (layout shift)**: mostly outside this screen's scope; it's usually an image-dimension or web-font-swap issue. Font-display: swap (on by default here) helps, but check your theme for missing width/height attributes on images too.
+
+None of this replaces having genuinely useful content on the page. Speed is a floor, not a ceiling: Google's own [guidance on optimizing for AI search](https://developers.google.com/search/docs/fundamentals/ai-optimization-guide) is explicit that a fast, technically clean site is table stakes, not a substitute for content that's actually worth someone's time.

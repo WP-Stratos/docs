@@ -76,8 +76,13 @@
             "pages": [
               "plugins/aero/overview",
               "plugins/aero/caching",
+              "plugins/aero/edge-cache",
+              "plugins/aero/cache-warmer",
+              "plugins/aero/purge-schedule",
               "plugins/aero/optimization",
-              "plugins/aero/cdn"
+              "plugins/aero/images",
+              "plugins/aero/experimental",
+              "plugins/aero/debug"
             ]
           },
           {

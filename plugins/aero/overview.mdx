@@ -4,35 +4,86 @@ sidebarTitle: "Overview"
 description: "Discover how Aero's caching, image optimization, minification, and CDN tools work together to speed up your WP Stratos site from the moment it launches."
 ---
 
-Aero is the caching and performance optimization plugin pre-installed on every WP Stratos site. It accelerates your WordPress site by serving cached HTML pages to anonymous visitors, converting images to WebP, minifying CSS and JavaScript, and rewriting static asset URLs to deliver through a CDN of your choice — all from a single, unified settings panel inside your WordPress dashboard.
+Aero is the performance plugin that ships on every WP Stratos site. It isn't one feature wearing a caching label. It's eight modules that each own a different part of the request lifecycle, from the moment a bot or visitor hits your server to the moment the last byte of CSS reaches their browser.
 
-## What Aero Does
+If you've used a typical "all in one speed plugin" before, drop your assumptions. Aero was built specifically for WP Stratos's Batcache and Edge Cache stack, and several of its screens exist purely to keep those layers coherent with each other. Here's the map before you go module by module.
+
+## The eight screens
 
 <CardGroup cols={2}>
-  <Card title="Page Caching" icon="bolt" href="/plugins/aero/caching">
-    Serves fully cached HTML pages to anonymous visitors, reducing server load and dramatically improving load times across your site.
+  <Card title="Cache" icon="database" href="/plugins/aero/caching">
+    Page-level Batcache: what triggers a purge automatically, per-page flushing, and the mu-plugin behaviors that shape how Batcache stores your pages.
   </Card>
-  <Card title="Image Optimization" icon="image" href="/plugins/aero/optimization">
-    Converts uploaded images to WebP format using lossy or lossless compression, and lazy-loads images so they only render when scrolled into view.
+
+  <Card title="Edge Cache" icon="globe" href="/plugins/aero/edge-cache">
+    Enable, purge, and disable WP Stratos's Edge Cache CDN layer. Includes Defensive Mode for traffic spikes or attacks.
   </Card>
-  <Card title="Minification & Deferral" icon="code" href="/plugins/aero/optimization">
-    Strips whitespace from CSS and JavaScript files and optionally defers non-essential JS so pages render faster for your visitors.
+
+  <Card title="Cache Warmer" icon="fire" href="/plugins/aero/cache-warmer">
+    Rebuilds cache in the background right after a flush, so real visitors never pay the "first hit after purge" cost. Reads your sitemap and llms.txt.
   </Card>
-  <Card title="CDN Integration" icon="globe" href="/plugins/aero/cdn">
-    Rewrites image, CSS, and JS URLs to use your own CDN hostname, delivering static assets from edge locations closest to each visitor.
+
+  <Card title="Purge & Schedule" icon="arrow-down-up-across-line" href="/plugins/aero/purge-schedule">
+    Sets the order caches flush in (Aero, Batcache, Edge) and puts a WP-Cron safety net under the whole system.
+  </Card>
+
+  <Card title="Optimization" icon="bolt" href="/plugins/aero/optimization">
+    Minification, JS deferral, async CSS, font self-hosting, and the WordPress-bloat cleanup that most Core Web Vitals advice actually points at.
+  </Card>
+
+  <Card title="Images" icon="image" href="/plugins/aero/images">
+    Local WebP and AVIF conversion for your whole media library, plus custom folders, media replacement, and three delivery modes.
+  </Card>
+
+  <Card title="Experimental" icon="flask" href="/plugins/aero/experimental">
+    Guest Mode and cache isolation. Powerful, situational, and worth reading closely before you touch it.
+  </Card>
+
+  <Card title="Debug" icon="bug" href="/plugins/aero/debug">
+    A single copy-paste diagnostic report covering every module, for support tickets and your own sanity checks.
   </Card>
 </CardGroup>
 
+## What actually happens on a page load
+
+It helps to picture the pipeline instead of memorizing eight menu names.
+
+<Steps>
+  <Step title="Edge Cache serves the response, if it's warm">
+    WP Stratos's global edge nodes hold a copy of the page closest to the visitor. If it's there, nothing else in this list runs. This is the fastest possible outcome and the one Cache Warmer works hardest to guarantee.
+  </Step>
+  <Step title="Batcache serves the response, if Edge missed">
+    Batcache holds full-page HTML in the object cache, keyed by URL and cookie state. A hit here skips PHP and the database entirely.
+  </Step>
+  <Step title="WordPress renders the page">
+    On a miss, WordPress builds the page as normal: theme, plugins, database queries, the works. This is the expensive path, and it's exactly what caching exists to avoid repeating.
+  </Step>
+  <Step title="Aero rewrites the output before it's sent">
+    While the page streams out, Aero swaps in minified CSS/JS, applies font optimizations, defers non-critical scripts, and (if enabled) rewrites images to WebP/AVIF markup. This step runs on every uncached render.
+  </Step>
+  <Step title="Batcache and Edge store the result">
+    The rewritten page gets cached at both layers so the next visitor lands back at step 1.
+  </Step>
+</Steps>
+
+Two things follow directly from this pipeline, and they explain most of what you'll read on the other pages:
+
+**Caching and optimization are separate jobs.** A page can be perfectly minified and still slow, because nothing is caching it. A page can be cached instantly and still fail PageSpeed, because nothing is minifying it. Turning on every checkbox on one screen and ignoring the others is the most common way people under-use Aero.
+
+**Multiple cache layers mean multiple things to purge.** Clearing Batcache doesn't touch Edge Cache, and clearing Aero's minified file cache doesn't touch either. This is why [Purge & Schedule](/plugins/aero/purge-schedule) exists as its own screen instead of a single "clear everything" button buried somewhere.
+
+## Where to start
+
+Aero ships with sane defaults. Minification, HTML compression, JS deferral, LCP preloading, and font optimization are all on from install. For most sites, the highest-leverage next step isn't flipping more switches, it's making sure the _cache_ side is actually keeping up with the _optimization_ side:
+
+1. Confirm your [purge order](/plugins/aero/purge-schedule) matches how your cache layers are actually stacked.
+2. Turn on the [Cache Warmer](/plugins/aero/cache-warmer) so flushes don't leave your homepage cold for the next visitor.
+3. Only reach for [Experimental](/plugins/aero/experimental) features if the first two steps don't get you where you need to be. Guest Mode solves a narrow problem and isn't free.
+
 <Note>
-  Aero is pre-installed on all WP Stratos sites. If you deactivate it, it will be automatically reactivated on the next plugin update.
+  Aero is pre-installed and managed as part of WP Stratos hosting. If you deactivate it, it reactivates automatically on the next plugin update cycle. See [Plugin Reactivation](/troubleshooting/plugin-reactivation) if you need to disable specific features instead of the whole plugin.
 </Note>
 
-## Getting Started
+## A note on where the wins actually come from
 
-Aero works with sensible defaults out of the box — page caching and browser caching are enabled automatically, so your site is already faster the moment it launches. Most sites don't need any changes to the default configuration. If you want to fine-tune caching rules or exclusions, see the [Caching](/plugins/aero/caching) page. To enable image optimization, minification, or JS deferral, see the [Optimization](/plugins/aero/optimization) page.
-
-## Accessing Aero
-
-Open your WordPress Admin dashboard and click **Aero** in the left sidebar. From there you can navigate between the Cache, Optimization, Images, CDN, and Database sections using the submenu tabs.
-
-For a faster cache purge without navigating into settings, use the **Purge Cache** shortcut in the WP admin bar at the top of every admin page. This immediately clears all cached pages and is the quickest way to push content changes live to your visitors.
+Every screen in Aero eventually touches PageSpeed Insights or Core Web Vitals in some way, and it's worth saying plainly: the biggest, most durable ranking and UX lever is still **your content and your site's technical crawlability**, not shaving another 200ms off Time to Interactive. Google's own [generative AI search guidance](https://developers.google.com/search/docs/fundamentals/ai-optimization-guide) is explicit that speed and technical cleanliness support visibility, they don't replace having something genuinely useful on the page. Aero's job is to remove speed as a variable so your content gets judged on its actual merits, not on a slow server.

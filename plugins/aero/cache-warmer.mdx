@@ -1,0 +1,59 @@
+---
+title: "Aero Cache Warmer: Automatic Warming, llms.txt, and Priority Edge"
+sidebarTitle: "Cache Warmer"
+description: "Configure Aero's Cache Warmer to rebuild Batcache and Edge Cache automatically after every flush, using your sitemap, priority URLs, and llms.txt."
+---
+
+A cold cache is a trap. You purge (correctly) after a content change, and the very next visitor, maybe a real person, maybe Googlebot, pays the full render cost while the cache rebuilds around them. The Cache Warmer (**Aero → Cache Warmer**) exists to close that gap: it proactively re-requests your pages right after a flush, so the cache is already warm before real traffic arrives.
+
+## Warmer settings
+
+<AccordionGroup>
+  <Accordion title="Enable Cache Warmer — Safe, recommended">
+    Master switch. With this off, nothing warms, manually or automatically, regardless of what else is configured below.
+  </Accordion>
+
+  <Accordion title="Warm automatically after every flush — Safe, recommended">
+    The moment any full flush completes (manual, admin bar, automated trigger, or scheduled), the warmer rebuilds cache before real visitors arrive. This is the setting that actually delivers on the promise above; without it, warming only happens when you remember to trigger it by hand.
+  </Accordion>
+
+  <Accordion title="Also warm the Guest (bot) cache bucket — Situational, only relevant with Guest Mode">
+    When Guest Mode cache isolation is active (see the [Experimental](/plugins/aero/experimental) page), each URL gets warmed twice: once as a regular visitor, once as a PageSpeed-style bot, so both buckets stay hot. This doubles request volume during warming. It's inert and grayed out if Guest Mode isolation is off.
+  </Accordion>
+
+  <Accordion title="Include URLs from llms.txt — Safe if you maintain an llms.txt file">
+    If a file exists at `/llms.txt`, the warmer treats it as a curated list of your most important pages and warms those ahead of the general sitemap crawl. Read the callout below before treating this as an SEO feature; it isn't one, at least not for Google.
+  </Accordion>
+
+  <Accordion title="Priority Edge — keep top URLs admitted at the Edge — Safe, recommended">
+    Runs a lightweight pass every 10 minutes against the URLs in your Priority Edge list (below), keeping them continuously admitted at the fastest cache tier. With just a homepage in the list, that's three tiny requests every ten minutes, negligible load for guaranteed fast serving on the pages that matter most.
+  </Accordion>
+</AccordionGroup>
+
+<Warning title="On llms.txt and Google Search">
+  Aero's llms.txt support is a **warming convenience**, not an SEO or AI-visibility feature for Google. Google has stated directly that it doesn't use llms.txt or any similar machine-readable file for Search or its generative AI features, and that creating one "will neither harm nor help your site's visibility or rankings in Google Search." (Source: [Google's generative AI search guide](https://developers.google.com/search/docs/fundamentals/ai-optimization-guide), under "Mythbusting generative AI search.") If you already maintain an llms.txt for other AI tools or agents that do read it, this setting is a nice bonus: those same important pages get warmed first. Don't create one purely on the assumption it moves the needle in Google Search, because it doesn't.
+</Warning>
+
+## Warming behavior
+
+| Field | Options | Guidance |
+| --- | --- | --- |
+| **URLs per warm run** | 10 / 25 / 50 / 100 / 250 / 500 / all detectable | Homepage and priority URLs always warm first, then llms.txt, then the sitemap fills the rest. Start around 50 to 100 for most sites. "All detectable" is capped at 5,000 URLs for safety, but on a large site a full run takes a while and generates real load, schedule it off-peak if you use it. |
+| **Requests per batch** | 2 (gentle) / 5 (balanced) / 8 (aggressive) | Batches run roughly 15 seconds apart via WP-Cron. Lower is kinder to resource-constrained hosting; only go aggressive if you've confirmed your server handles it without slowing down live traffic. |
+| **Sitemap URL** | auto-detect by default | Leave empty unless you have a nonstandard sitemap location. Yoast, RankMath, and core sitemap indexes are followed automatically, including nested sitemap-of-sitemaps structures. |
+| **Priority URLs** | one per line | Warmed first, every run, regardless of the limit above. Good candidates: pricing, contact, and any landing page you're actively driving paid or campaign traffic to. |
+| **Exclude from warming** | one per line, case-insensitive fragment match | Add anything dynamic that never benefits from caching: `/cart/`, `/my-account/`, search results pages, and similar. Warming these wastes requests on pages that shouldn't be cached in the first place. |
+
+## Priority Edge
+
+A short list (up to 10 URLs) that gets kept continuously admitted at Pressable's Edge Cache tier, the fastest possible serve, regardless of normal traffic patterns. Edge admission normally requires two visits within two minutes; Priority Edge sidesteps that by generating the qualifying hits itself on a 10-minute cycle, then verifies admission actually took by checking the response's `x-ac` header.
+
+Use this for your handful of highest-value pages: homepage, primary conversion page, anything you'd be embarrassed to have serve slowly during a spike in interest. It isn't meant to hold your whole site, that's what general warming and the URL limit setting are for.
+
+## Scheduled warming
+
+A belt-and-suspenders setting independent of the after-flush warming above: runs a full warm pass on an interval (hourly through weekly), so pages whose Batcache TTL naturally expired get rebuilt before a visitor notices the gap. Pair the interval here with your [Batcache max\_age](/plugins/aero/caching#page-cache-configuration-wp-stratos-hosting): if pages are cached for 24 hours, a daily scheduled warm keeps things from ever going fully cold between expirations.
+
+## Why this matters beyond "faster pages"
+
+A warm cache isn't only a visitor-experience metric. Crawlers, including Googlebot, are sensitive to response time and server load when deciding how much of a site to crawl in a given window, a concept Google calls crawl budget and covers in its [crawl budget guidance](https://developers.google.com/crawling/docs/crawl-budget). A site that's consistently fast to respond, because pages are warm rather than regenerating on demand, is a site that's easier and cheaper for a crawler to work through. That's a quiet, compounding advantage that has nothing to do with keyword density and everything to do with technical reliability.
