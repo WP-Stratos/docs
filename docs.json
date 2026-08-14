@@ -131,7 +131,8 @@
       "claude",
       "perplexity",
       "aistudio",
-      "cursor"
+      "cursor",
+      "vscode"
     ],
     "display": "toc"
   },
