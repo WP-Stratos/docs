@@ -2,6 +2,7 @@
 title: "Aero: Caching and Performance for WP Stratos Sites"
 sidebarTitle: "Overview"
 description: "Discover how Aero's caching, image optimization, minification, and CDN tools work together to speed up your WP Stratos site from the moment it launches."
+keywords: ["wordpress caching plugin", "wp stratos aero", "core web vitals wordpress", "page speed optimization plugin", "batcache and edge cache", "wordpress performance plugin"]
 ---
 
 Aero is the performance plugin that ships on every WP Stratos site, and it's built from eight separate modules, each one owning a different part of the request lifecycle. A single request touches several of them on its way from the moment a bot or visitor hits your server to the moment the last byte of CSS reaches their browser.
@@ -70,7 +71,7 @@ Two things follow directly from this pipeline, and they explain most of what you
 
 **Caching and optimization are separate jobs.** A page can be perfectly minified and still slow, because nothing is caching it. A page can be cached instantly and still fail PageSpeed, because nothing is minifying it. Turning on every checkbox on one screen and ignoring the others is the most common way people under-use Aero.
 
-**Multiple cache layers mean multiple things to purge.** Clearing Batcache doesn't touch Edge Cache, and clearing Aero's minified file cache doesn't touch either. This is why [Purge & Schedule](/plugins/aero/purge-schedule) exists as its own screen instead of a single "clear everything" button buried somewhere.
+**Multiple cache layers mean multiple things to purge.** Clearing Batcache doesn't touch Edge Cache, and clearing Aero's minified file cache doesn't touch either. This is why [Purge & Schedule](/plugins/aero/purge-schedule) exists as its own screen instead of a single "clear everything" button buried somewhere. If a change still isn't showing after a full flush, [Cache Issues](/troubleshooting/cache-issues) walks through the rest of the checklist.
 
 ## Where to start
 

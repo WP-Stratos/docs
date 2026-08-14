@@ -2,6 +2,7 @@
 title: "Configure Page Caching in Aero for Faster Load Times"
 sidebarTitle: "Caching"
 description: "Learn how Aero's page cache and browser cache work on WP Stratos sites, and how to configure cache settings, set exclusion rules, and purge cached pages."
+keywords: ["batcache wordpress", "wordpress page cache settings", "cache exclusions woocommerce", "time to first byte optimization", "purge wordpress cache", "batcache max_age configuration"]
 ---
 
 The Cache screen (**Aero → Cache**) controls Batcache, WP Stratos's server-level full-page cache. This is the layer that skips PHP and your database entirely on a hit, and it's the single biggest lever you have over Time to First Byte (TTFB), a metric that feeds directly into Core Web Vitals and, through it, page experience signals in Search.
@@ -21,7 +22,7 @@ Two buttons live at the top of the screen, and they're not the same action.
 
 ## Automated flush triggers
 
-These decide what makes Aero purge cache _without you doing anything_. Each one is independently safe to leave on, and each is deliberately scoped to purge only what actually changed, so the rest of your cache stays warm.
+These decide what makes Aero purge cache _without you doing anything_. Each one is independently safe to leave on, and each is deliberately scoped to purge only what actually changed, so the rest of your cache stays warm. Each trigger below has its own last-run timestamp, and the [Debug](/plugins/aero/debug) report lists all of them together if you ever need to confirm one actually fired.
 
 <AccordionGroup>
   <Accordion title="Flush cache on plugin & theme updates: Safe, recommended">
@@ -29,7 +30,7 @@ These decide what makes Aero purge cache _without you doing anything_. Each one 
   </Accordion>
 
   <Accordion title="Targeted flush on page/post edit: Safe, recommended">
-    Surgical, not sitewide. Purges the edited URL, its archive pages, the author page, and the feed. The homepage is only included when the edit could plausibly appear there. Everything purged is re-warmed within seconds if the Cache Warmer is on.
+    Surgical, not sitewide. Purges the edited URL, its archive pages, the author page, and the feed. The homepage is only included when the edit could plausibly appear there. Everything purged is re-warmed within seconds if the [Cache Warmer](/plugins/aero/cache-warmer) is on.
   </Accordion>
 
   <Accordion title="Flush cache on page/post delete: Safe, recommended">

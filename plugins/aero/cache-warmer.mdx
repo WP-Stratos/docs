@@ -2,9 +2,10 @@
 title: "Aero Cache Warmer: Automatic Warming, llms.txt, and Priority Edge"
 sidebarTitle: "Cache Warmer"
 description: "Configure Aero's Cache Warmer to rebuild Batcache and Edge Cache automatically after every flush, using your sitemap, priority URLs, and llms.txt."
+keywords: ["cache warming wordpress", "llms.txt wordpress plugin", "sitemap cache warmer", "priority edge cache", "wp-cron cache warming", "crawl budget wordpress"]
 ---
 
-A cold cache is a trap. You purge (correctly) after a content change, and the very next visitor, maybe a real person, maybe Googlebot, pays the full render cost while the cache rebuilds around them. The Cache Warmer (**Aero → Cache Warmer**) exists to close that gap: it proactively re-requests your pages right after a flush, so the cache is already warm before real traffic arrives.
+A cold cache is a trap. You purge (correctly) after a content change, and the very next visitor, maybe a real person, maybe Googlebot, pays the full render cost while the cache rebuilds around them. The Cache Warmer (**Aero → Cache Warmer**) exists to close that gap: it proactively re-requests your pages right after a flush, so [Batcache](/plugins/aero/caching) and [Edge Cache](/plugins/aero/edge-cache) are already warm before real traffic arrives.
 
 ## Warmer settings
 
@@ -46,13 +47,13 @@ A cold cache is a trap. You purge (correctly) after a content change, and the ve
 
 ## Priority Edge
 
-A short list (up to 10 URLs) that gets kept continuously admitted at WP Stratos's Edge Cache tier, the fastest possible serve, regardless of normal traffic patterns. Edge admission normally requires two visits within two minutes; Priority Edge sidesteps that by generating the qualifying hits itself on a 10-minute cycle, then verifies admission actually took by checking the response's `x-ac` header.
+A short list (up to 10 URLs) that gets kept continuously admitted at [WP Stratos's Edge Cache](/plugins/aero/edge-cache) tier, the fastest possible serve, regardless of normal traffic patterns. Edge admission normally requires two visits within two minutes; Priority Edge sidesteps that by generating the qualifying hits itself on a 10-minute cycle, then verifies admission actually took by checking the response's `x-ac` header.
 
 Use this for your handful of highest-value pages: homepage, primary conversion page, anything you'd be embarrassed to have serve slowly during a spike in interest. General warming and the URL limit setting handle the rest of the site.
 
 ## Scheduled warming
 
-A belt-and-suspenders setting independent of the after-flush warming above: runs a full warm pass on an interval (hourly through weekly), so pages whose Batcache TTL naturally expired get rebuilt before a visitor notices the gap. Pair the interval here with your [Batcache max\_age](/plugins/aero/caching#page-cache-configuration-wp-stratos-hosting): if pages are cached for 24 hours, a daily scheduled warm keeps things from ever going fully cold between expirations.
+A belt-and-suspenders setting independent of the after-flush warming above: runs a full warm pass on an interval (hourly through weekly), so pages whose Batcache TTL naturally expired get rebuilt before a visitor notices the gap. This runs on its own schedule, separate from the flush schedule on [Purge & Schedule](/plugins/aero/purge-schedule), but the two are worth coordinating: pair the interval here with your [Batcache max\_age](/plugins/aero/caching#page-cache-configuration-wp-stratos-hosting), if pages are cached for 24 hours, a daily scheduled warm keeps things from ever going fully cold between expirations.
 
 ## Why this matters beyond "faster pages"
 

@@ -2,11 +2,12 @@
 title: "Optimize Your WordPress Site with Aero's Speed Tools"
 sidebarTitle: "Optimization"
 description: "Use Aero to minify CSS and JS, defer scripts, convert images to WebP, enable lazy loading, and run database cleanup on your WP Stratos WordPress site."
+keywords: ["minify css js wordpress", "defer javascript wordpress", "core web vitals lcp inp", "font optimization wordpress", "pagespeed insights wordpress", "critical css above the fold"]
 ---
 
-The Optimization screen (**Aero → Optimization**) is where Aero rewrites your page output: minifying assets, changing how CSS and JS load, self-hosting fonts, and trimming what WordPress core loads on every request. This is also the screen most directly responsible for your PageSpeed Insights and Lighthouse scores, since nearly every setting here maps to a specific PSI audit.
+The Optimization screen (**Aero → Optimization**) is where Aero rewrites your page output: minifying assets, changing how CSS and JS load, self-hosting fonts, and trimming what WordPress core loads on every request. This runs on every render that isn't already served from [Batcache or Edge Cache](/plugins/aero/caching), and it's also the screen most directly responsible for your PageSpeed Insights and Lighthouse scores, since nearly every setting here maps to a specific PSI audit.
 
-To verify Aero is actually running on a given page, view source (`Ctrl+U` / `Cmd+Option+U`) and look for a comment near the end reading `Optimized by Aero vX.X.X`.
+To verify Aero is actually running on a given page, view source (`Ctrl+U` / `Cmd+Option+U`) and look for a comment near the end reading `Optimized by Aero vX.X.X`. For a full settings summary instead of a single page check, use the [Debug](/plugins/aero/debug) report.
 
 ## Core Optimizations
 
@@ -153,7 +154,7 @@ A site-wide custom CSS field, injected on the frontend for all regular visitors.
 
 If you're chasing a specific Core Web Vitals number, here's the honest mapping:
 
-- **LCP (Largest Contentful Paint)**: Preload the LCP Image, font self-hosting, and Async CSS \+ Critical CSS.
+- **LCP (Largest Contentful Paint)**: Preload the LCP Image, font self-hosting, and Async CSS \+ Critical CSS here, plus [WebP/AVIF conversion](/plugins/aero/images) to shrink the image payload itself.
 - **INP / TBT (interactivity)**: Delay JavaScript Until Interaction is the single biggest lever, by a wide margin.
 - **CLS (layout shift)**: mostly outside this screen's scope; it's usually an image-dimension or web-font-swap issue. Font-display: swap (on by default here) helps, but check your theme for missing width/height attributes on images too.
 

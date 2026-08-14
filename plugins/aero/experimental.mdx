@@ -2,6 +2,7 @@
 title: "Aero Experimental Features: Guest Mode and Cache Isolation"
 sidebarTitle: "Experimental"
 description: "Aero's Experimental screen covers Guest Mode, which serves a more optimized page to PageSpeed-style testing bots, and the cache isolation layers that keep those renders separate from real visitors."
+keywords: ["guest mode pagespeed score", "core web vitals crux field data", "cache isolation bots", "pagespeed insights score wordpress"]
 ---
 
 <Warning title="Read this whole page before touching anything here">
@@ -30,7 +31,7 @@ A separate CSS field, appended to the combined stylesheet only when Guest Mode i
 
 ## Guest Mode Cache Isolation
 
-A real, separate problem this section solves: without isolation, if a testing bot happens to be the _first_ visitor after a cache flush, Batcache or Edge Cache can store that stripped-down bot render and then serve it to actual human visitors. Isolation keeps guest (bot) responses out of the shared cache pool entirely, so this never happens.
+A real, separate problem this section solves: without isolation, if a testing bot happens to be the _first_ visitor after a cache flush, [Batcache or Edge Cache](/plugins/aero/caching) can store that stripped-down bot render and then serve it to actual human visitors. Isolation keeps guest (bot) responses out of the shared cache pool entirely, so this never happens. If isolation is on, turn on [warming the Guest bucket](/plugins/aero/cache-warmer) too, otherwise the bot-facing cache stays cold and the first real bot visit after a flush pays the full render cost anyway.
 
 <Note>
   Isolation only does anything while Guest Mode itself is enabled above. With Guest Mode off, there's no divergent render to isolate, so the isolation toggle has no effect and the screen tells you so directly.
