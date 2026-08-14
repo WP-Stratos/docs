@@ -1,38 +1,71 @@
 ---
-title: "WP Postman: Reliable SMTP Email for Your WordPress Site"
+title: "WP Postman: Reliable Email Delivery for Your WordPress Site"
 sidebarTitle: "Overview"
-description: "WP Postman replaces WordPress's default mail system with SMTP delivery, ensuring your transactional emails reach the inbox every time."
+description: "WP Postman replaces WordPress's default mail system with a custom API relay for WP Stratos websites with optional SMTP delivery, ensuring your transactional emails reach the inbox every time."
 ---
 
-WP Postman is WP Stratos's built-in SMTP plugin that takes over WordPress's default email system and routes all outbound mail through a proper SMTP connection. Instead of relying on the server's local mail agent — which is frequently blocked by receiving mail servers — WP Postman authenticates with your chosen email provider and delivers messages reliably, just like any legitimate mail client.
+WordPress ships with one method for sending mail: PHP's `mail()` function, called through the `wp_mail()` wrapper every plugin and theme relies on. It works fine in a demo. It falls apart the moment a real inbox provider gets involved, because a message sent through local `mail()` carries no authentication, no reputation, and no way for Gmail or Outlook to confirm your server is who it says it is. Password resets, order receipts, and quote requests routed this way are guesswork, not delivery.
 
-## Why SMTP Matters
+WP Postman replaces that transport. It's pre-installed and pre-activated on every WP Stratos site, and it gives you a working delivery path from the moment your site launches, plus the logging you need to prove (or disprove) that a specific message actually went out.
 
-Out of the box, WordPress sends email using PHP's `mail()` function, which hands messages off to whatever mail transport is configured on the server. Shared and managed hosting environments often restrict or disable this entirely, and even when it does work, messages sent this way carry no authentication signals. Receiving mail servers have no way to verify the sender's identity, so they frequently flag these emails as spam or silently drop them before they ever reach the inbox. Password resets, order confirmations, and contact-form replies all sent through this path are at constant risk of never being seen.
+## What it actually does
 
-WP Postman solves this by replacing `wp_mail()` — the WordPress function that all plugins and themes use to send email — with an authenticated SMTP connection to a provider you control. Because the sending server can verify your identity through your SMTP credentials, messages carry proper authentication headers and are far less likely to be filtered. You get a dedicated audit trail of every email your site attempts to send, and a built-in test tool so you can confirm everything is working before your visitors need it.
+WP Postman doesn't add one SMTP connection. It gives you eight, and they work in two structurally different ways:
 
-## Key Features
+<Steps>
+  <Step title="The native WP Postman relay">
+    When you select the default **WP Postman** delivery method, the plugin skips SMTP entirely. It hooks `pre_wp_mail`, builds a signed MIME message with PHPMailer locally, then hands that raw message to WP Stratos's managed delivery API over an outbound HTTPS request. No SMTP handshake, no SMTP port. This matters on hosts and networks that throttle or block outbound port 587/465/2525, since HTTPS on port 443 almost never is. It's also why this is the fastest path to get working: paste one API key into `wp-config.php` and mail starts flowing, no host or port lookup required.
+  </Step>
+  <Step title="Every other delivery method">
+    SMTP.com, Brevo, Mailgun, SendGrid, Gmail, and Other SMTP all configure PHPMailer's native SMTP client through the `phpmailer_init` hook, the same mechanism most SMTP plugins use. These are real SMTP connections to real SMTP hosts, authenticated with the credentials you provide.
+  </Step>
+</Steps>
 
-<CardGroup cols={2}>
-  <Card title="SMTP Configuration" icon="gear" href="/plugins/wp-postman/smtp-configuration">
-    Connect WP Postman to any SMTP provider by entering your host, port, encryption, and credentials.
-  </Card>
-  <Card title="Email Logs" icon="list" href="/plugins/wp-postman/email-logs">
-    Track every outbound email your site sends, including full message details and delivery status.
-  </Card>
-  <Card title="Test Email" icon="paper-plane">
-    Verify your SMTP settings instantly with a one-click test message sent directly from your WordPress dashboard.
-  </Card>
-  <Card title="Provider Support" icon="plug">
-    Works with Gmail, SendGrid, Mailgun, Amazon SES, or any custom SMTP server your business already uses.
-  </Card>
-</CardGroup>
+That split is worth understanding before you touch any settings, because it changes what shows up in your [email logs](/plugins/wp-postman/email-logs) later. Messages sent through the native relay get a transaction ID and a live, queryable delivery status. Messages sent through SMTP only ever report **Sent** or **Failed**, because standard SMTP has no built-in mechanism to confirm the receiving server actually placed the message in an inbox.
+
+## The eight delivery methods, at a glance
+
+| Method | Connection type | Best for |
+| --- | --- | --- |
+| **WP Postman** | Managed HTTPS relay | Default choice. Works with one API key, no SMTP port dependency, gives you delivery status tracking. |
+| **PHP Mail** | Local `mail()` | Testing only. No authentication headers, weakest deliverability of any option here. |
+| **SMTP.com** | SMTP, port 2525 | Sites already running a SMTP.com relay account. |
+| **Brevo** | SMTP, port 587 | Sites already sending marketing or transactional mail through Brevo (formerly Sendinblue). |
+| **Mailgun** | SMTP, port 587 | Developer-heavy stacks already using Mailgun for other services. |
+| **SendGrid** | SMTP, port 587 | Existing SendGrid accounts, high-volume senders who want SendGrid's analytics. |
+| **Gmail** | SMTP, port 587 (configurable) | Low-volume sites, internal tools, staging environments. Not for production transactional load, see the [configuration guide](/plugins/wp-postman/smtp-configuration) for why. |
+| **Other SMTP** | SMTP, any host/port | Any provider not listed above, including Amazon SES, Postmark, or an internal mail server. |
+
+Every field on every panel, including which settings are safe to change freely versus which ones need a test send afterward, is documented on the [Delivery Method Configuration](/plugins/wp-postman/smtp-configuration) page.
+
+## What gets recorded
+
+Every send attempt, regardless of which method handled it, writes a row to a dedicated database table (`wp_wpp_mail_log`). That table tracks the recipient, sender, subject, delivery method, status, HTTP response code where applicable, error message on failure, and optionally the full message body. Nothing here depends on WordPress's own transient or debug log, so the record survives independently of `WP_DEBUG` settings and doesn't compete with anything else for log space. Retention is configurable from one day to forever, and body storage can be switched off entirely if you'd rather the database not hold copies of message content. The full breakdown of the log screen, including the difference between **Sent** and **Delivered**, is on the [Email Logs](/plugins/wp-postman/email-logs) page.
+
+## Finding your way around
+
+WP Postman adds one sub-level admin menu item with five tabs **(Settings → WP Postman)**:
+
+| Tab | What lives there |
+| --- | --- |
+| **General** | The delivery method picker and every provider's connection fields. |
+| **Test Email** | A minimal send form: To, Subject, Message. The fastest way to confirm a configuration change actually works. |
+| **Debug Log** | The raw request and response from the most recent API-based send attempt, useful when a support ticket needs exact detail. |
+| **Server Info** | PHP version, WordPress version, OS, and whether the `WP_POSTMAN_API_KEY` constant is currently defined. |
+| **Mail Log** | The full send history described above, with a live count badge showing total logged messages. |
 
 <Note>
-  WP Postman is pre-installed and activated on every WP Stratos site. If you deactivate it, it will be automatically reactivated the next time the plugin receives an update. See [Plugin Reactivation](/troubleshooting/plugin-reactivation) if you have questions about this behaviour.
+  WP Postman is a WP Stratos managed plugin. If you deactivate it, it reactivates automatically the next time it receives an update, the same behavior as Aero and WP Stratos Environment. See [Plugin Reactivation](/troubleshooting/plugin-reactivation) if that's unexpected.
 </Note>
 
-## Accessing WP Postman
+## Where to go next
 
-To open the plugin, log in to your WordPress admin dashboard and click **WP Postman** in the left-hand sidebar. From there you can reach the SMTP settings screen and the Email Logs in one click each.
+<CardGroup cols={2}>
+  <Card title="Delivery Method Configuration" icon="gear" href="/plugins/wp-postman/smtp-configuration">
+    Every field, every panel, and which settings are safe to change without testing.
+  </Card>
+
+  <Card title="Email Logs" icon="list" href="/plugins/wp-postman/email-logs">
+    Read delivery status correctly, tell a bounce apart from a misconfiguration, and manage log retention.
+  </Card>
+</CardGroup>
