@@ -12,7 +12,7 @@ Two buttons live at the top of the screen, and they're not the same action.
 
 | Action | What it clears | When to use it |
 | --- | --- | --- |
-| **Flush All Caches — Sequential** | Aero's minified files, then Batcache, then Edge Cache, in the order set on [Purge & Schedule](/plugins/aero/purge-schedule) | After a theme/plugin update, a design change, or anything that could be stale anywhere |
+| **Flush All Caches: Sequential** | Aero's minified files, then Batcache, then Edge Cache, in the order set on [Purge & Schedule](/plugins/aero/purge-schedule) | After a theme/plugin update, a design change, or anything that could be stale anywhere |
 | **Flush Object Cache & Batcache** | Object cache and Batcache only. Minified assets and Edge Cache are untouched | When you just need Batcache cleared fast and don't want to wait on a full Edge purge |
 
 <Tip>
@@ -24,19 +24,19 @@ Two buttons live at the top of the screen, and they're not the same action.
 These decide what makes Aero purge cache _without you doing anything_. Each one is independently safe to leave on, and each is deliberately scoped to purge only what actually changed, so the rest of your cache stays warm.
 
 <AccordionGroup>
-  <Accordion title="Flush cache on plugin & theme updates — Safe, recommended">
+  <Accordion title="Flush cache on plugin & theme updates: Safe, recommended">
     Runs the **full sequential flush**, deliberately. An update can change CSS, JS, or markup sitewide, so every layer purges in order and the Cache Warmer rebuilds immediately after. Leave this on unless you have a specific reason to manage flushes manually after deployments.
   </Accordion>
 
-  <Accordion title="Targeted flush on page/post edit — Safe, recommended">
+  <Accordion title="Targeted flush on page/post edit: Safe, recommended">
     Surgical, not sitewide. Purges the edited URL, its archive pages, the author page, and the feed. The homepage is only included when the edit could plausibly appear there. Everything purged is re-warmed within seconds if the Cache Warmer is on.
   </Accordion>
 
-  <Accordion title="Flush cache on page/post delete — Safe, recommended">
+  <Accordion title="Flush cache on page/post delete: Safe, recommended">
     Same surgical approach, plus the homepage, since a deletion changes list membership (what shows up in "recent posts," archives, and so on).
   </Accordion>
 
-  <Accordion title="Flush cache on comment delete — Safe">
+  <Accordion title="Flush cache on comment delete: Safe">
     Purges only the commented post. The rest of the site stays warm.
   </Accordion>
 </AccordionGroup>
@@ -44,11 +44,11 @@ These decide what makes Aero purge cache _without you doing anything_. Each one 
 ## Per-page flushing
 
 <AccordionGroup>
-  <Accordion title="Flush Batcache for individual pages — Situational">
+  <Accordion title="Flush Batcache for individual pages: Situational">
     Adds a "Flush Cache" row action on the Pages/Posts list and a toolbar button on the frontend. Useful for editors who need to push a single change live without touching the full Aero dashboard. Turn it on if non-admin editors need self-serve cache control; skip it on tightly locked-down sites.
   </Accordion>
 
-  <Accordion title="Flush Batcache for WooCommerce product pages — Safe if you run WooCommerce">
+  <Accordion title="Flush Batcache for WooCommerce product pages: Safe if you run WooCommerce">
     Product pages updated through the WooCommerce REST API (inventory syncs, price updates from a PIM, etc.) get flushed individually, deployed as an mu-plugin so it runs even outside normal WordPress hooks. If you don't run WooCommerce this setting has nothing to do.
   </Accordion>
 </AccordionGroup>
@@ -58,15 +58,15 @@ These decide what makes Aero purge cache _without you doing anything_. Each one 
 These change how Batcache itself decides what to store, not what triggers a purge.
 
 <AccordionGroup>
-  <Accordion title="Extend Batcache storage to 24 hours — Safe, recommended">
+  <Accordion title="Extend Batcache storage to 24 hours: Safe, recommended">
     Raises `max_age` to 86400 seconds so cached pages survive a full day instead of the platform default. Longer cache life means fewer full-render hits on your server, which is almost always a win as long as your automated flush triggers above are on to keep content from actually going stale.
   </Accordion>
 
-  <Accordion title="Cache pages that set wpp_ cookies — Situational">
+  <Accordion title="Cache pages that set wpp_ cookies: Situational">
     Some plugins set `wpp_` prefixed cookies for their own tracking, which by default tells Batcache to treat the visitor as unique and skip caching. This setting overrides that and lets those pages cache normally. Turn it on if you've confirmed the plugin's cookie doesn't carry personalized content; leave it off if you're not sure what's setting that cookie.
   </Accordion>
 
-  <Accordion title="Ignore gclid query strings — Safe, recommended">
+  <Accordion title="Ignore gclid query strings: Safe, recommended">
     Google Ads click IDs (`?gclid=...`) are unique per click, and without this setting each one fragments your cache into a separate, useless entry. Ignoring them for cache-key purposes means ad traffic actually benefits from caching instead of missing it every single time. This has no effect on your analytics, it only affects what Batcache treats as "the same page."
   </Accordion>
 </AccordionGroup>

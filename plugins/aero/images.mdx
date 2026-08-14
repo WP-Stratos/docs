@@ -19,11 +19,11 @@ Aero also actively checks for other image optimization plugins (around twenty co
 ## Formats & Quality
 
 <AccordionGroup>
-  <Accordion title="Convert to WebP — Safe, recommended">
+  <Accordion title="Convert to WebP: Safe, recommended">
     Generates a `.webp` derivative for every JPG/PNG, and compresses originals already in WebP. Universally supported across every modern browser, this is the safe default format.
   </Accordion>
 
-  <Accordion title="Convert to AVIF — Safe, recommended where supported">
+  <Accordion title="Convert to AVIF: Safe, recommended where supported">
     Smaller than WebP at equivalent visual quality. AVIF is served first when a browser accepts it, WebP as the fallback. Requires AVIF encoding support in GD or Imagick; if your server can't encode it, the checkbox is disabled with an explanation rather than silently failing.
   </Accordion>
 </AccordionGroup>
@@ -38,23 +38,23 @@ Aero also actively checks for other image optimization plugins (around twenty co
 ## Processing Rules
 
 <AccordionGroup>
-  <Accordion title="Auto-optimize new uploads — Safe, recommended">
+  <Accordion title="Auto-optimize new uploads: Safe, recommended">
     Every image added to the media library gets converted immediately after WordPress finishes generating its thumbnails. Without this, new uploads sit unconverted until the next bulk run.
   </Accordion>
 
-  <Accordion title="Auto-remove larger conversions — Safe, recommended">
+  <Accordion title="Auto-remove larger conversions: Safe, recommended">
     If a converted file ends up bigger than the original, common with tiny PNGs and simple graphics, Aero deletes the conversion so the smaller original keeps serving. This is a pure safety net with no downside.
   </Accordion>
 
-  <Accordion title="Strip EXIF metadata — Safe, recommended">
+  <Accordion title="Strip EXIF metadata: Safe, recommended">
     Removes camera metadata (GPS coordinates, device model, timestamps) from converted files. Smaller files and better privacy, since GPS EXIF data has genuinely leaked people's home addresses from photos before.
   </Accordion>
 
-  <Accordion title="Resize oversized originals — Situational">
+  <Accordion title="Resize oversized originals: Situational">
     Downscales huge camera uploads before conversion, and this resizes the original file itself, not just a derivative. Turn this on if your team routinely uploads unedited camera or phone photos (often 4000px\+ wide) that never need to display anywhere near that size. Leave it off if you deliberately keep full-resolution originals for other uses like print.
   </Accordion>
 
-  <Accordion title="Flush Aero caches after optimization — Safe, recommended">
+  <Accordion title="Flush Aero caches after optimization: Safe, recommended">
     Runs the sequential purge (object cache, then Batcache, then Edge) once a bulk optimization run finishes, so pages start serving the new formats immediately instead of showing cached markup that still points at the old files.
   </Accordion>
 </AccordionGroup>
@@ -86,11 +86,11 @@ How converted files actually reach the browser. Aero detects your server automat
 Two additional delivery toggles matter specifically for sites using page builders:
 
 <AccordionGroup>
-  <Accordion title="Rewrite backgrounds in stylesheet files — Safe, recommended in picture mode">
+  <Accordion title="Rewrite backgrounds in stylesheet files: Safe, recommended in picture mode">
     Page builders (Elementor, Divi, and others) write their section CSS to real files on disk that never pass through normal page output, which is why background images inside them historically got missed by rewriters. Aero processes each local stylesheet once into a cached copy with backgrounds wrapped in `image-set()`, keyed to the source file's modification time so a rebuild by your page builder produces a fresh copy automatically.
   </Accordion>
 
-  <Accordion title="Handle lazy-loaded background attributes — Safe, recommended in picture mode">
+  <Accordion title="Handle lazy-loaded background attributes: Safe, recommended in picture mode">
     Lazy-loading libraries keep background URLs in `data-*` attributes and apply them with their own JavaScript, out of reach of any server-side rewrite. Aero tags those elements with the derivatives that exist on disk, and a small injected script swaps in the right format once it knows what the browser can decode.
   </Accordion>
 </AccordionGroup>

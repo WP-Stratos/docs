@@ -9,23 +9,23 @@ A cold cache is a trap. You purge (correctly) after a content change, and the ve
 ## Warmer settings
 
 <AccordionGroup>
-  <Accordion title="Enable Cache Warmer — Safe, recommended">
+  <Accordion title="Enable Cache Warmer: Safe, recommended">
     Master switch. With this off, nothing warms, manually or automatically, regardless of what else is configured below.
   </Accordion>
 
-  <Accordion title="Warm automatically after every flush — Safe, recommended">
+  <Accordion title="Warm automatically after every flush: Safe, recommended">
     The moment any full flush completes (manual, admin bar, automated trigger, or scheduled), the warmer rebuilds cache before real visitors arrive. This is the setting that actually delivers on the promise above; without it, warming only happens when you remember to trigger it by hand.
   </Accordion>
 
-  <Accordion title="Also warm the Guest (bot) cache bucket — Situational, only relevant with Guest Mode">
+  <Accordion title="Also warm the Guest (bot) cache bucket: Situational, only relevant with Guest Mode">
     When Guest Mode cache isolation is active (see the [Experimental](/plugins/aero/experimental) page), each URL gets warmed twice: once as a regular visitor, once as a PageSpeed-style bot, so both buckets stay hot. This doubles request volume during warming. It's inert and grayed out if Guest Mode isolation is off.
   </Accordion>
 
-  <Accordion title="Include URLs from llms.txt — Safe if you maintain an llms.txt file">
-    If a file exists at `/llms.txt`, the warmer treats it as a curated list of your most important pages and warms those ahead of the general sitemap crawl. Read the callout below before treating this as an SEO feature; it isn't one, at least not for Google.
+  <Accordion title="Include URLs from llms.txt: Safe if you maintain an llms.txt file">
+    If a file exists at `/llms.txt`, the warmer treats it as a curated list of your most important pages and warms those ahead of the general sitemap crawl. Read the callout below before you file this under "SEO," because Google specifically says it doesn't count as one.
   </Accordion>
 
-  <Accordion title="Priority Edge — keep top URLs admitted at the Edge — Safe, recommended">
+  <Accordion title="Priority Edge, keeping top URLs admitted at the Edge: Safe, recommended">
     Runs a lightweight pass every 10 minutes against the URLs in your Priority Edge list (below), keeping them continuously admitted at the fastest cache tier. With just a homepage in the list, that's three tiny requests every ten minutes, negligible load for guaranteed fast serving on the pages that matter most.
   </Accordion>
 </AccordionGroup>
@@ -46,9 +46,9 @@ A cold cache is a trap. You purge (correctly) after a content change, and the ve
 
 ## Priority Edge
 
-A short list (up to 10 URLs) that gets kept continuously admitted at Pressable's Edge Cache tier, the fastest possible serve, regardless of normal traffic patterns. Edge admission normally requires two visits within two minutes; Priority Edge sidesteps that by generating the qualifying hits itself on a 10-minute cycle, then verifies admission actually took by checking the response's `x-ac` header.
+A short list (up to 10 URLs) that gets kept continuously admitted at WP Stratos's Edge Cache tier, the fastest possible serve, regardless of normal traffic patterns. Edge admission normally requires two visits within two minutes; Priority Edge sidesteps that by generating the qualifying hits itself on a 10-minute cycle, then verifies admission actually took by checking the response's `x-ac` header.
 
-Use this for your handful of highest-value pages: homepage, primary conversion page, anything you'd be embarrassed to have serve slowly during a spike in interest. It isn't meant to hold your whole site, that's what general warming and the URL limit setting are for.
+Use this for your handful of highest-value pages: homepage, primary conversion page, anything you'd be embarrassed to have serve slowly during a spike in interest. General warming and the URL limit setting handle the rest of the site.
 
 ## Scheduled warming
 
