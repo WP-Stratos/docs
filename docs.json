@@ -129,12 +129,14 @@
       "view",
       "chatgpt",
       "claude",
-      "perplexity"
+      "perplexity",
+      "aistudio",
+      "cursor"
     ],
     "display": "toc"
   },
   "markdown": {
-    "schema": false
+    "schema": true
   },
   "api": {
     "params": {
