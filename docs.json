@@ -117,5 +117,26 @@
   },
   "appearance": {
     "strict": false
+  },
+  "contextual": {
+    "options": [
+      "copy",
+      "view",
+      "chatgpt",
+      "claude",
+      "perplexity"
+    ],
+    "display": "toc"
+  },
+  "markdown": {
+    "schema": false
+  },
+  "api": {
+    "params": {
+      "expanded": "closed"
+    },
+    "playground": {
+      "display": "interactive"
+    }
   }
 }
