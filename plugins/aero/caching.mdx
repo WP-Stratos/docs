@@ -77,7 +77,7 @@ These change how Batcache itself decides what to store, not what triggers a purg
 A comma-separated list of relative paths (`/checkout/, /my-account/`) that should never be cached, served with `no-store` via an mu-plugin so the rule holds even if Batcache's own logic would otherwise cache them.
 
 <Warning>
-  Cart, checkout, and account pages must never be served from cache, full stop. Caching them means one visitor can see another visitor's cart or session state. Aero auto-excludes standard WooCommerce URLs when WooCommerce is active, but if you've customized those URLs or added extensions with their own transactional pages, add them here explicitly. See [Cache Issues](/troubleshooting/cache-issues) for the WooCommerce-specific walkthrough.
+  Cart, checkout, and account pages must **never** be served from cache. Caching them means one visitor can see another visitor's cart or session state. Aero auto-excludes standard WooCommerce URLs when WooCommerce is active, but if you've customized those URLs or added extensions with their own transactional pages, add them here explicitly. See [Cache Issues](/troubleshooting/cache-issues) for the WooCommerce-specific walkthrough.
 </Warning>
 
 ## Page cache configuration (WP Stratos hosting)
@@ -88,8 +88,8 @@ If your site runs on WP Stratos infrastructure, an additional panel lets you tun
 | --- | --- | --- | --- |
 | **Cache Duration (max\_age)** | 86400s | How long a cached page is stored before Batcache re-renders it | 86400 to 604800 (1 to 7 days) covers nearly every site. Push it higher only on sites that update rarely and purge reliably on every change. |
 | **Wait Time (seconds)** | 0 | Delay before Batcache starts caching a URL after its first request | Recommended: 0. There's rarely a reason to delay caching. |
-| **Visitor Threshold (times)** | 1 | Number of visits required before a page gets cached | Recommended: 1. Waiting for multiple visits mostly just means more uncached, slower first loads for no real benefit on typical traffic patterns. |
-| **No-Skip Cookies** | empty | Cookies that should _not_ cause Batcache to bypass caching | Add cookies here only after confirming they don't carry per-visitor personalization. Guess wrong and you'll leak one visitor's state to another. |
+| **Visitor Threshold (times)** | 1 | Number of visits required before a page gets cached | Recommended: 1. Waiting for multiple visits mostly just means more uncached, slower first loads for no real benefit on typical traffic patterns. Also, the [Cache Warmer](/plugins/aero/cache-warmer) is already setup with this in mind. |
+| **No-Skip Cookies** | wordpress\_test\_cookie, wp-wpml\_current\_language, wpml\_browser\_redirect\_test | Cookies that should _not_ cause Batcache to bypass caching | Add cookies here only after confirming they don't carry per-visitor personalization. Wrong cookies might leak one visitor's state to another so be careful. |
 
 <Note>
   This panel only appears when Aero detects it's running on WP Stratos hosting and `wp-config.php` is writable. If `wp-config.php` isn't writable, values are shown read-only, since Aero can't safely persist a change it can't verify was written.

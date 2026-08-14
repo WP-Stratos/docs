@@ -125,11 +125,11 @@ WordPress core loads a surprising amount of markup and JavaScript on every page 
     Frontend only. Safe on modern, actively maintained themes. Only plugins written for pre-2016 jQuery patterns actually need Migrate. Test your interactive elements after enabling; if something breaks, that plugin or theme is the reason, and you may need to leave this off until it's updated.
   </Accordion>
 
-  <Accordion title="Remove Dashicons for Visitors: Review before enabling">
+  <Accordion title="Remove Dashicons for Visitors: Decent impact, review before enabling">
     Dequeues the ~46KB admin icon font for logged-out visitors. Keep this **off** if your theme displays Dashicons on the public-facing site (some themes do, for social icons or UI elements); it's safe if Dashicons only ever show up in wp-admin.
   </Accordion>
 
-  <Accordion title="Disable XML-RPC: Review before enabling">
+  <Accordion title="Disable XML-RPC: Recommended, review before enabling">
     Blocks a common brute-force attack target and removes the X-Pingback header, a genuine security improvement for most sites. Keep this **off** if you use Jetpack or post to your site through the WordPress mobile apps, both of which rely on XML-RPC.
   </Accordion>
 </AccordionGroup>
@@ -147,7 +147,7 @@ WordPress core loads a surprising amount of markup and JavaScript on every page 
 A site-wide custom CSS field, injected on the frontend for all regular visitors. This is a plain styling tool, not an optimization setting, useful for quick fixes (hiding a broken element, patching a layout issue) without editing your theme directly.
 
 <Note>
-  Guest-Mode-only custom CSS is a separate field, covered on the [Experimental](/plugins/aero/experimental) page. Don't confuse the two: this field's CSS is seen by everyone, that one's is seen only by PageSpeed-style testing tools.
+  Guest-Mode-only custom CSS is a separate field, covered on the [Experimental](/plugins/aero/experimental) page. Don't confuse the two: this field's CSS is seen by everyone, that one's is seen only by PageSpeed-style testing tools (Lighthouse, GTmetrix, Pingdom, and more).
 </Note>
 
 ## How this maps to real metrics

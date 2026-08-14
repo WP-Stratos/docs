@@ -13,7 +13,7 @@ keywords: ["guest mode pagespeed score", "core web vitals crux field data", "cac
 
 Guest Mode shows PageSpeed-style testing tools (PageSpeed Insights, GTmetrix, and similar synthetic testing bots) a more aggressively optimized version of your page, while real human visitors continue to see your full site. It exists for one specific, narrow situation: you've applied every real optimization available (everything on the [Optimization](/plugins/aero/optimization) and [Images](/plugins/aero/images) pages, a solid cache setup), and you're still short of a target score for a reason that's cosmetic to the _test_ rather than a real problem for _visitors_.
 
-<Warning title="Try everything else first">
+<Warning>
   Real optimizations benefit actual users. Guest Mode benefits a score. Those aren't the same thing, and the order you reach for them matters: exhaust the real levers first. If you find yourself reaching for Guest Mode as your first move instead of your last, that's worth reconsidering.
 </Warning>
 
@@ -22,8 +22,8 @@ Guest Mode shows PageSpeed-style testing tools (PageSpeed Insights, GTmetrix, an
 | Level | What it does | Recommendation |
 | --- | --- | --- |
 | **Disabled** | Guest Mode is off. All visitors see the identical, fully optimized site. | Default, and the right choice for most sites. |
-| **Basic** | Combines all CSS into one minified file, inlines all fonts, and removes all JavaScript specifically for testing tools. Eliminates render-blocking requests entirely for that test. Target: 90\+ mobile score. | Recommended if you enable Guest Mode at all. |
-| **Extreme** | Aggressive stripping for maximum scores: keeps only the first two CSS files. The site can visibly look broken in a testing tool's screenshot. | Not recommended. The gap between what a tool sees and what a visitor sees gets wide enough that it stops reflecting anything real. |
+| **Basic** | Combines all CSS into one minified file, inlines all fonts, and removes all JavaScript specifically for testing tools. Eliminates render-blocking requests entirely for that test. Target: 90\+ mobile score, 90\+ desktop score. | Recommended if you enable Guest Mode at all. |
+| **Extreme** | Aggressive stripping for maximum scores: keeps only the first two CSS files. The site can visibly look broken in a testing tool's screenshot. | Not recommended. The gap between what a tool sees and what a visitor sees gets wide enough that it stops reflecting anything real. This is only really useful if your website is already bare-bones. |
 
 ### Guest Mode custom CSS
 
