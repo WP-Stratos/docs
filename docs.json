@@ -24,8 +24,8 @@
     ],
     "primary": {
       "type": "button",
-      "label": "Cloud Panel",
-      "href": "https://my.wpstratos.com"
+      "label": "Cloud Login",
+      "href": "https://cloud.wpstratos.com"
     }
   },
   "navigation": {
