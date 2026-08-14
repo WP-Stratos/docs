@@ -10,7 +10,7 @@ If you've deactivated WP Postman, Aero, or WP Stratos Environment and found them
 
 The following plugins are pre-installed on every WP Stratos site and are considered part of the managed hosting layer:
 
-- **WP Postman** — Handles all outgoing WordPress email via SMTP. Ensures your site can reliably send transactional emails such as order confirmations, password resets, and contact form notifications.
+- **WP Postman** — Handles all outgoing WordPress email. Ensures your site can reliably send transactional emails such as order confirmations, password resets, and contact form notifications.
 - **Aero** — Provides full-stack caching and performance optimisation, including page caching, minification, image optimisation, and lazy loading.
 - **WP Stratos Environment** — Manages PHP version selection, server-level configuration, and exposes server diagnostic information within the WordPress admin.
 
@@ -31,7 +31,7 @@ Rather than deactivating a managed plugin, disable the specific feature you don'
 </Accordion>
 
 <Accordion title="Stop email sending (WP Postman)">
-  WP Postman only sends email when it has valid SMTP credentials configured. To prevent all outgoing email from your site, go to **WP Postman → SMTP Settings** and remove or clear the SMTP host, username, and password fields, then save. Without credentials, WP Postman will not attempt to deliver any mail.
+  WP Postman only sends email when it has valid SMTP credentials configured. To prevent all outgoing email from your site, go to **Settings → WP Postman** and remove or clear the SMTP host, username, and password fields, then save. Without credentials, WP Postman will not attempt to deliver any mail. Or, change the delivery method to PHP mail.
 
   This approach is preferable to deactivation because it keeps the plugin active and ready to resume sending the moment you add credentials back.
 </Accordion>

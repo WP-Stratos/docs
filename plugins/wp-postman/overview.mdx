@@ -1,7 +1,7 @@
 ---
-title: "WP Postman: Reliable SMTP Email for Your WordPress Site"
+title: "WP Postman: Reliable Email Delivery for Your WordPress Site"
 sidebarTitle: "Overview"
-description: "WP Postman replaces WordPress's default mail system with SMTP delivery, ensuring your transactional emails reach the inbox every time."
+description: "WP Postman replaces WordPress's default mail system with a custom API relay for WP Stratos websites with optional SMTP delivery, ensuring your transactional emails reach the inbox every time."
 ---
 
 WordPress ships with one method for sending mail: PHP's `mail()` function, called through the `wp_mail()` wrapper every plugin and theme relies on. It works fine in a demo. It falls apart the moment a real inbox provider gets involved, because a message sent through local `mail()` carries no authentication, no reputation, and no way for Gmail or Outlook to confirm your server is who it says it is. Password resets, order receipts, and quote requests routed this way are guesswork, not delivery.
@@ -29,7 +29,7 @@ That split is worth understanding before you touch any settings, because it chan
 | --- | --- | --- |
 | **WP Postman** | Managed HTTPS relay | Default choice. Works with one API key, no SMTP port dependency, gives you delivery status tracking. |
 | **PHP Mail** | Local `mail()` | Testing only. No authentication headers, weakest deliverability of any option here. |
-| **SMTP.com** | SMTP, port 2525 | Sites already running a WP Stratos SMTP.com relay account. |
+| **SMTP.com** | SMTP, port 2525 | Sites already running a SMTP.com relay account. |
 | **Brevo** | SMTP, port 587 | Sites already sending marketing or transactional mail through Brevo (formerly Sendinblue). |
 | **Mailgun** | SMTP, port 587 | Developer-heavy stacks already using Mailgun for other services. |
 | **SendGrid** | SMTP, port 587 | Existing SendGrid accounts, high-volume senders who want SendGrid's analytics. |
@@ -44,7 +44,7 @@ Every send attempt, regardless of which method handled it, writes a row to a ded
 
 ## Finding your way around
 
-WP Postman adds one top-level admin menu item with five tabs:
+WP Postman adds one sub-level admin menu item with five tabs **(Settings → WP Postman)**:
 
 | Tab | What lives there |
 | --- | --- |
