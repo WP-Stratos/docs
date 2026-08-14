@@ -4,110 +4,146 @@ sidebarTitle: "SMTP Configuration"
 description: "Step-by-step instructions for connecting WP Postman to your SMTP provider, with setup guides for Gmail, SendGrid, Mailgun, and Amazon SES."
 ---
 
-Use this guide to connect WP Postman to your SMTP provider so that every email your WordPress site sends — password resets, order notifications, contact-form submissions — is delivered through an authenticated connection rather than the server's local mail agent. The sections below explain each configuration field and provide step-by-step settings for Gmail, SendGrid, Mailgun, and Amazon SES.
+Everything on this page lives under **WP Postman → General**. Pick a delivery method from the tile grid at the top, and the panel below it swaps to show only the fields that method needs. This guide covers all eight, field by field, plus the DKIM signing accordion that applies across most of them.
 
-## Configuration Fields
+<Tip>
+  Not sure which method to pick? Use **WP Postman**, the default. It requires the least setup, doesn't depend on an SMTP port your host might restrict, and is the only method that reports back a real **Delivered** status in your [logs](/plugins/wp-postman/email-logs) instead of just Sent or Failed.
+</Tip>
 
-| Field | Description |
-|---|---|
-| **SMTP Host** | The hostname of your SMTP server, supplied by your email provider (e.g. `smtp.sendgrid.net`). |
-| **SMTP Port** | The port number your provider requires. Common values: **587** for TLS (recommended), **465** for SSL, **25** for unencrypted connections. |
-| **Encryption** | The security layer for the connection. Choose **TLS** (STARTTLS), **SSL**, or **None**. TLS on port 587 is the most widely supported option. |
-| **Authentication** | Toggle this **on** if your SMTP server requires a username and password, which is true for virtually every modern provider. |
-| **Username** | Your SMTP login name. This is often your email address, but some providers (like SendGrid) use a fixed string. |
-| **Password** | Your SMTP password or API key. |
-| **From Email** | The email address that appears in the **From** field of every outgoing message. Use an address on a domain you own and have authorized to send mail. |
-| **From Name** | The display name recipients see alongside the From address (e.g. your site name or company name). |
+## WP Postman (the native relay)
 
-## Provider Setup Guides
+This is what's selected by default whenever a `WP_POSTMAN_API_KEY` constant is present in `wp-config.php`. If that constant is missing, the plugin falls back to PHP Mail on activation so your site still attempts to send something, but nothing will actually be delivered reliably until you add the key.
 
-<Tabs>
-  <Tab title="Gmail">
-    Use these settings to send through a Google account or Google Workspace account.
+| Field | What it does | Guidance |
+| --- | --- | --- |
+| **From Email Address** | The local part of your sending address. The domain half is fixed to your site's own hostname and can't be changed here, so a site at `example.com` will always send from `something@example.com`. | Safe to change anytime. `wppostman@yourdomain.com` is a reasonable default; some teams prefer `noreply@` or `hello@` depending on whether they want replies. |
+| **From Name** | The display name recipients see next to the address. | Safe to change anytime. Use your site or business name, not a person's name, unless the mail is genuinely from one person. |
+| **API key status banner** | Read-only. Shows whether `WP_POSTMAN_API_KEY` is currently defined in `wp-config.php`. | Not editable from the dashboard by design. Add the constant yourself: `define('WP_POSTMAN_API_KEY', 'your-key-here');`, placed above the line that reads `/* That's all, stop editing! */`. |
+| **Auto DKIM Signing** | A live DNS check, not a setting. Queries a public DNS resolver for a TXT record at `_mb.yourdomain.com` and reports whether it's present. | Nothing to configure. If the badge reads **Not Configured**, your domain either isn't using WP Stratos DNS yet or the record hasn't propagated. See [DNS Configuration](/domains/dns-configuration) or contact support if it's been more than a few hours. |
 
-    | Setting | Value |
-    |---|---|
-    | SMTP Host | `smtp.gmail.com` |
-    | SMTP Port | `587` |
-    | Encryption | TLS |
-    | Authentication | Enabled |
-    | Username | Your full Gmail address (e.g. `you@gmail.com`) |
-    | Password | Your Google App Password (see below) |
+<Info>
+  The API key is deliberately kept out of the database and out of the settings form. Storing send credentials as a `wp-config.php` constant instead of a WordPress option means the key survives a database import or a site clone without landing somewhere it shouldn't, and it can't be read back out through the REST API or an exported options table.
+</Info>
 
-    <Warning>
-      You cannot use your regular Gmail password here. Google requires an **App Password** for third-party SMTP access. To generate one, you must first enable two-factor authentication (2FA) on your Google account. Then go to **Google Account → Security → App Passwords**, create a new app password for "Mail", and paste that 16-character code into the Password field in WP Postman.
-    </Warning>
-  </Tab>
-  <Tab title="SendGrid">
-    SendGrid is a dedicated transactional email service well suited to high-volume sending.
+## PHP Mail
 
-    | Setting | Value |
-    |---|---|
-    | SMTP Host | `smtp.sendgrid.net` |
-    | SMTP Port | `587` |
-    | Encryption | TLS |
-    | Authentication | Enabled |
-    | Username | `apikey` (the literal string, not your account name) |
-    | Password | Your SendGrid API key |
+No fields. Selecting this tells WordPress to fall back to its original behavior and hand mail directly to the server's local `mail()` binary.
 
-    Create your API key in the SendGrid dashboard under **Settings → API Keys**. Grant it at least **Mail Send** permissions. Paste the full key string into the Password field — the Username must be the exact word `apikey` regardless of your account details.
-  </Tab>
-  <Tab title="Mailgun">
-    Mailgun offers reliable deliverability and detailed analytics for transactional email.
+<Warning>
+  Treat this as a diagnostic fallback, not a real delivery option. It carries no SPF, DKIM, or DMARC authentication of any kind, and most consumer inbox providers either bulk-file or silently drop mail sent this way. Its only legitimate use is confirming that WordPress itself is calling `wp_mail()` correctly while you troubleshoot something unrelated to delivery.
+</Warning>
 
-    | Setting | Value |
-    |---|---|
-    | SMTP Host | `smtp.mailgun.org` (US region) or `smtp.eu.mailgun.org` (EU region) |
-    | SMTP Port | `587` |
-    | Encryption | TLS |
-    | Authentication | Enabled |
-    | Username | `postmaster@yourdomain.com` (the postmaster address shown in your Mailgun domain settings) |
-    | Password | Your Mailgun SMTP password (found in the domain settings panel) |
+## SMTP.com
 
-    <Note>
-      Mailgun operates separate infrastructure for US and EU customers. If your Mailgun account is on the EU region, use `smtp.eu.mailgun.org` as the host. Check your Mailgun dashboard under **Sending → Domains** to confirm which region your domain is on.
-    </Note>
-  </Tab>
-  <Tab title="Amazon SES">
-    Amazon Simple Email Service (SES) is a cost-effective choice for high-volume or AWS-integrated workloads.
+Routes mail through a dedicated SMTP.com relay connection on port 2525, useful if your organization already runs mail through SMTP.com for other properties.
 
-    | Setting | Value |
-    |---|---|
-    | SMTP Host | Region-specific, e.g. `email-smtp.us-east-1.amazonaws.com` |
-    | SMTP Port | `587` |
-    | Encryption | TLS |
-    | Authentication | Enabled |
-    | Username | Your SES SMTP username |
-    | Password | Your SES SMTP password |
+| Field | What it does | Guidance |
+| --- | --- | --- |
+| **From Email** | Sender address shown to recipients. | Safe to change anytime. |
+| **From Name** | Sender display name. | Safe to change anytime. |
+| **Sender Name (SMTP.com username)** | Your SMTP.com account's sender identity, used as the SMTP username. | Comes from your SMTP.com dashboard under sender management, not something to invent. |
+| **API Key** | Your SMTP.com API key, used as the SMTP password. | Rotate immediately if it's ever exposed. Test a send right after changing it, since a stale or revoked key fails silently until the next send attempt. |
 
-    <Warning>
-      SES SMTP credentials are **not** the same as your AWS IAM access keys. You must generate dedicated SMTP credentials inside the SES console: go to **Amazon SES → SMTP Settings → Create SMTP Credentials**. Replace `us-east-1` in the host with the AWS region where you have verified your sending domain or address.
-    </Warning>
-  </Tab>
-</Tabs>
+## Brevo
 
-## Testing Your Configuration
+Connects over SMTP to `smtp-relay.brevo.com`. Brevo was formerly known as Sendinblue, and some older documentation and dashboard screens may still use that name.
 
-After entering your SMTP details, verify everything works before your site sends a real message to a real user.
+| Field | What it does | Guidance |
+| --- | --- | --- |
+| **From Email (also used as SMTP username)** | This single field does double duty: it's both the sender address recipients see and the SMTP login. | Must be a sender address you've verified inside Brevo, not just any address on your domain. Unverified senders get rejected at the SMTP layer. |
+| **API Key / SMTP Password** | Brevo's **SMTP key**, specifically. | This is not the same string as Brevo's general-purpose API key. Brevo issues both from separate screens under **SMTP & API** in their dashboard, grab the one labeled for SMTP or the connection will authenticate-fail even with an otherwise correct key. |
+
+## Mailgun
+
+Connects over SMTP, with the host chosen automatically based on your account's region.
+
+| Field | What it does | Guidance |
+| --- | --- | --- |
+| **From Email** | Sender address. | Safe to change anytime, but must be on a domain verified in Mailgun. |
+| **From Name** | Sender display name. | Safe to change anytime. |
+| **Domain** | The sending domain configured in your Mailgun account, used as the SMTP username. | Copy exactly from Mailgun's domain list, subdomains matter here. |
+| **API Key** | Your Mailgun SMTP password (not your Mailgun API key, despite the label). Find it under the domain's SMTP credentials panel in Mailgun. | Test a send after entering it. A mismatched region setting (below) will fail authentication even with a correct key. |
+| **Region** | Switches the SMTP host between `smtp.mailgun.org` (US) and `smtp.eu.mailgun.org` (EU). | Requires testing after any change. Mailgun's US and EU infrastructure are fully separate; picking the wrong region against a domain provisioned in the other one fails every send until corrected. |
+
+## SendGrid
+
+Connects over SMTP to `smtp.sendgrid.net`. SendGrid's SMTP username is always the literal string `apikey`, which WP Postman sets automatically, so there's no username field here.
+
+| Field | What it does | Guidance |
+| --- | --- | --- |
+| **From Email** | Sender address. | Must be a verified sender or verified domain in SendGrid, otherwise every message is rejected regardless of how correct the API key is. |
+| **From Name** | Sender display name. | Safe to change anytime. |
+| **API Key** | A SendGrid API key with at least **Mail Send** permission. | Scope it narrowly. A key with only Mail Send access limits the blast radius if it's ever leaked, compared to a full-access key. |
+
+## Gmail
+
+Connects over SMTP to `smtp.gmail.com`. The field names reference OAuth, but the actual authentication is standard SMTP AUTH using a Google **App Password**, not a full OAuth consent flow. Don't go looking for a "Sign in with Google" button, there isn't one.
+
+| Field | What it does | Guidance |
+| --- | --- | --- |
+| **Gmail Address** | The Gmail or Google Workspace address recipients see as the sender. | Must match the account the app password below was generated on. |
+| **From Name** | Sender display name. | Safe to change anytime. |
+| **OAuth User Email** | The SMTP username, functionally identical to the Gmail Address field above. | Keep it in sync with Gmail Address to avoid a confusing authentication mismatch. |
+| **Client Secret / App Password** | A 16-character Google App Password, generated after enabling 2-Step Verification on the account. | Requires testing after every regeneration. Google App Passwords can be revoked from the account's security settings at any time without notice to this plugin. |
+| **Encryption** | TLS or SSL. | Leave on TLS unless you have a specific reason to change it. |
+| **SMTP Port** | Defaults to 587. | 587 with TLS is standard. Only change this if Google's documentation for your account type says otherwise. |
+
+<Warning>
+  Google enforces a rolling daily send cap on personal and Workspace accounts, commonly cited around 500 messages per 24 hours for personal Gmail and higher but still capped limits for Workspace. That ceiling makes this method unsuitable for any site sending real transactional volume, order confirmations, password resets, form notifications, all counted together. Reserve it for staging sites, internal tools, or genuinely low-traffic personal projects.
+</Warning>
+
+## Other SMTP
+
+The generic connector. Use this for any provider without a dedicated panel above, including Amazon SES, Postmark, or a private mail server.
+
+| Field | What it does | Guidance |
+| --- | --- | --- |
+| **From Email** | Sender address. | Must match a domain or address your chosen provider allows you to send as. |
+| **From Name** | Sender display name. | Safe to change anytime. |
+| **SMTP Host** | Your provider's SMTP hostname. | Copy exactly from provider documentation. Amazon SES hosts are region-specific, for example `email-smtp.us-east-1.amazonaws.com`, and won't work if the region doesn't match where you verified your sending identity. |
+| **SMTP Port** | Common values: 587 (TLS), 465 (SSL), 25 (rarely usable, frequently blocked by hosts). | Requires testing after any change. Start with 587 unless your provider specifically directs otherwise. |
+| **Encryption** | TLS, SSL, or None. | Requires testing after any change. Must match what the host and port combination actually expects, a mismatch here produces a handshake failure that looks identical to a wrong password in the logs. |
+| **SMTP Authentication** | Whether the connection requires a username and password. | Leave enabled. Virtually no production SMTP provider accepts unauthenticated connections anymore. |
+| **Username** | Your SMTP login. | Provider-specific. For Amazon SES this is a generated SMTP username, not your AWS access key ID. |
+| **Password** | Your SMTP password. | Same note as above, this is a dedicated SMTP credential for most providers, not your account's main password or API key. |
+| **Auto TLS** | Lets PHPMailer opportunistically upgrade to TLS if the server offers it, even when Encryption is set to None. | Safe to leave enabled. It only upgrades the connection, it never downgrades a connection you've explicitly set to TLS or SSL. |
+
+## Manual DKIM signing
+
+This accordion sits below the delivery method panels and applies regardless of which method you've selected, with one exception: it has no effect on PHP Mail, since that path bypasses PHPMailer's signing capability entirely. Everything else, including the native WP Postman relay, gets signed if you fill this in and enable it.
+
+This is a separate mechanism from the Auto DKIM check described in the WP Postman relay section above. That one verifies a record WP Stratos manages for you automatically. This one signs outgoing mail with a key you generate and control yourself, useful if you need DKIM under your own domain's DNS rather than WP Stratos's.
+
+| Field | What it does | Guidance |
+| --- | --- | --- |
+| **Enable DKIM Signing** | Master switch for this section. | Requires testing after enabling. A misconfigured key doesn't block sending, it just signs with a broken signature, which some receiving servers treat as worse than no signature at all. |
+| **Domain** | The domain your DKIM key is published for. | Must exactly match the `d=` domain your DNS TXT record uses. |
+| **Selector** | The DKIM selector, the string that appears before `._domainkey` in your DNS record name. | Must exactly match what's published in DNS. A mismatched selector fails silently at the receiving end, your mail sends fine but the signature never validates. |
+| **Private Key (PEM)** | Your DKIM private key, pasted in full including the `-----BEGIN` and `-----END` lines. | Generate this alongside your DNS TXT record, most DNS or email providers walk you through both together. Never share this value outside your own infrastructure. |
+
+<Warning>
+  Publish the matching public key as a DNS TXT record before enabling this. Signing mail with a key that has no published counterpart doesn't just fail to help, it can actively hurt: some spam filters flag a DKIM signature that doesn't validate more harshly than a message with no DKIM signature at all.
+</Warning>
+
+## Testing a change
+
+Every field change is saved with the **Save Changes** button at the bottom of the General tab. After saving, confirm it actually works before moving on:
 
 <Steps>
-  <Step title="Save your SMTP settings">
-    Click **Save Changes** at the bottom of the SMTP settings screen to store your configuration.
+  <Step title="Open the Test Email tab">
+    Go to **WP Postman → Test Email**.
   </Step>
-  <Step title="Click Send Test Email">
-    On the same settings page, locate the **Send Test Email** section below the configuration fields.
+  <Step title="Send to an inbox you can check immediately">
+    Fill in a recipient you have access to right now, not an address you'll check later. The subject and message fields come pre-filled, you can send them as-is.
   </Step>
-  <Step title="Enter a recipient address">
-    Type an email address you have immediate access to — your own inbox is ideal — into the recipient field.
+  <Step title="Read the result banner">
+    A success or failure notice appears at the top of the page immediately. Failures for the native relay method point you to the **Debug Log** tab for the full API response. Failures for SMTP-based methods show the SMTP error directly in the banner.
   </Step>
-  <Step title="Send and check your inbox">
-    Click the **Send** button. Switch to your email client and confirm the test message has arrived. Delivery is usually near-instant for a correctly configured provider.
-  </Step>
-  <Step title="Review the logs if the test fails">
-    If the message does not arrive, open [Email Logs](/plugins/wp-postman/email-logs) to find the failed entry. The error message recorded there will tell you exactly what the SMTP server rejected and why.
+  <Step title="Check the Mail Log entry">
+    Open **Mail Log** and confirm the attempt shows the status and delivery method you expected. This is also where you'll catch a message that reports Sent but never actually arrives, worth a look even on a successful test.
   </Step>
 </Steps>
 
 <Tip>
-  Always use port **587 with TLS** when your provider supports it. This combination (STARTTLS on port 587) is the modern standard: it's widely supported, passes through most firewalls, and encrypts the connection before credentials are transmitted. Port 465 (SSL) is an older standard that still works but is less universally accepted.
+  Do this after every field change, not just after switching delivery methods entirely. A single wrong character in an API key produces a save that looks completely normal until the next real send fails.
 </Tip>

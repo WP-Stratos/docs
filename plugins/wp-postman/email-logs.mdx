@@ -4,72 +4,88 @@ sidebarTitle: "Email Logs"
 description: "Learn how to read WP Postman's email logs to verify delivery, diagnose failed messages, and troubleshoot your SMTP configuration quickly."
 ---
 
-WP Postman records every email your WordPress site attempts to send, whether it succeeds or fails. The Email Logs screen gives you a timestamped, searchable history of all outbound messages — complete with the recipient address, subject line, delivery status, and the full message body. When something goes wrong with email delivery, the logs are the fastest way to identify whether the problem is with your SMTP credentials, your server connection, or the recipient's mail server.
+Every message WordPress attempts to send through WP Postman, on any of the eight delivery methods, writes an entry to the Mail Log. It's the fastest way to answer the question "did that email actually go out," and it's usually the first place to look before changing any configuration.
 
-## Accessing Email Logs
+## Reading the log
+
+Open **WP Postman → Mail Log**. Four numbers sit at the top:
+
+| Stat | What it counts |
+| --- | --- |
+| **Total** | Every logged send attempt, across all statuses and all delivery methods. |
+| **Accepted** | Messages the delivery method's server or API accepted for sending. This does not mean the message reached an inbox, only that the handoff succeeded. |
+| **Delivered** | A confirmed subset of Accepted, verified against the sending platform's own delivery data. Only available for messages sent through the native WP Postman relay, explained below. |
+| **Failed** | Messages rejected at send time, whether by authentication failure, connection failure, or an outright rejection from the receiving server. |
+
+Below the stats, each row shows a status dot, the subject line, recipient, sender, which delivery method handled it, and a timestamp. Click any row to expand full detail: exact recipients, sender with display name, sent timestamp in UTC, delivery method, an HTTP status code where one applies, and for failures, the specific error message returned.
+
+## Sent versus Delivered, and why it matters
+
+This is the one distinction worth understanding before you draw any conclusion from the log.
+
+<AccordionGroup>
+  <Accordion title="Sent: the message left your site successfully">
+    For SMTP-based methods (SMTP.com, Brevo, Mailgun, SendGrid, Gmail, Other SMTP), this is the only positive status you'll ever see. Standard SMTP confirms that the receiving mail server accepted the message for further processing. It does not, and structurally cannot, confirm that the message landed in an inbox rather than a spam folder, or that it wasn't silently dropped somewhere downstream. A row reading Sent for one of these methods is good news, but it isn't proof of inbox placement.
+  </Accordion>
+
+  <Accordion title="Delivered: confirmed by the platform, relay method only">
+    Messages sent through the native WP Postman relay carry a transaction ID. Expanding one of these log rows shows a **Fetch Live Status** button that queries the delivery platform directly and can flip the row's status from Sent to Delivered once the platform confirms the message reached its destination. This check also runs automatically in the background for recent messages. If you never see a row move to Delivered, that's worth investigating (a bounce, a spam-folder placement your recipient hasn't checked, or a genuinely stuck message), rather than assuming Sent was good enough.
+  </Accordion>
+</AccordionGroup>
+
+<Note>
+  A missing HTTP status code (shown as a dash) is normal for SMTP-based methods. Response codes are only populated for API-based sends, since standard SMTP reports success or failure through the protocol handshake itself rather than an HTTP status.
+</Note>
+
+## Message body preview
+
+Each expanded row shows the message body as it was actually sent, rendered as HTML in a sandboxed frame if the message was HTML, or as plain text otherwise. This is frequently more useful than the subject and recipient alone, since a broken email template (a missing variable, an unrendered shortcode, a stray line of raw HTML) is usually invisible until you see the body exactly as WordPress generated it.
+
+Whether this preview is available depends on the **Store Body** setting, described below.
+
+## Retention and storage settings
+
+Two independent controls sit at the top of the Mail Log screen, both saved instantly with no separate Save button.
+
+<AccordionGroup>
+  <Accordion title="Log Retention: situational, pick based on how you use the log">
+    Six options: Off, 1 Day, 7 Days, 1 Month, 6 Months, Forever. The default is 7 Days, which the plugin enforces by deleting expired rows every time the Mail Log screen loads.
+
+    For most sites, 7 to 30 days is enough to catch and diagnose a delivery problem without the table growing indefinitely. Set it to **Off** only if you have a specific reason not to log at all, doing so means you lose your only record when a customer reports a missing password reset email. Reserve **Forever** for sites under a specific compliance or audit requirement, since an unbounded table on a high-volume sending site will eventually become large enough to slow down the Mail Log screen itself.
+  </Accordion>
+
+  <Accordion title="Store Body: situational, weigh debugging value against database size and content sensitivity">
+    Defaults to on. When enabled, the full message body (HTML or plain text) is saved alongside every log entry, up to roughly 64KB per message, with anything longer truncated. When disabled, the log still records everything else (recipient, subject, status, error), just not the content of the message itself.
+
+    Turn this off if your emails routinely contain sensitive content you'd rather not have sitting in a second location in your database, or if you're on a storage-constrained hosting plan and sending genuinely high volume. Keep it on for most sites: being able to see the exact rendered body of a failed or malformed email is usually the fastest way to find a broken template, and it's a much smaller cost than the time spent debugging blind.
+  </Accordion>
+</AccordionGroup>
+
+## Clearing the log
+
+A **Clear All** button appears whenever the log has at least one entry. It truncates the entire table immediately.
+
+<Warning>
+  This is irreversible and not scoped to a date range or delivery method, it empties the entire log in one action. There's no confirmation beyond the button click itself, so don't reach for it as a way to tidy up a handful of test entries. If you only want old test sends gone, let retention handle it, or just leave them, they'll age out.
+</Warning>
+
+## Using the log to troubleshoot
 
 <Steps>
-  <Step title="Open the WordPress admin dashboard">
-    Log in to your site's WordPress admin area at `/wp-admin`.
+  <Step title="Filter by eye, not by field">
+    The log doesn't have a built-in filter or search box. For a small number of entries this doesn't matter, for a busy site, narrow your search visually by scanning the status dots first, since Failed rows are the ones that need attention.
   </Step>
-  <Step title="Navigate to WP Postman">
-    Click **WP Postman** in the left-hand sidebar menu.
+  <Step title="Open the failed row and read the exact error">
+    The error message field is the literal response from the delivery method's server or API, not a WP Postman-generated summary. An authentication failure, a rejected sender domain, and a connection timeout all produce distinctly different text here, and that text is the fastest path to the right fix in [Delivery Method Configuration](/plugins/wp-postman/smtp-configuration).
   </Step>
-  <Step title="Click Email Logs">
-    Select **Email Logs** from the WP Postman submenu. The full log table loads immediately, sorted by most recent first.
+  <Step title="Cross-check against Debug Log for API-based failures">
+    If the failed message was sent through the native WP Postman relay, the **Debug Log** tab holds the full raw request and response for the most recent attempt, useful when you need more detail than the summarized error message in the Mail Log row.
   </Step>
-</Steps>
-
-## Understanding the Log Table
-
-Each row in the log table represents a single outbound email attempt. The columns are:
-
-| Column | Description |
-|---|---|
-| **Date / Time** | The exact timestamp when WP Postman attempted to send the message, displayed in your site's configured timezone. |
-| **Recipient** | The `To:` address the email was addressed to. For messages sent to multiple recipients, each address appears on its own line within the cell. |
-| **Subject** | The subject line of the email exactly as it was passed to `wp_mail()`. |
-| **Status** | **Sent** (shown in green) if the SMTP server accepted the message, or **Failed** (shown in red) if the send attempt was rejected or timed out. |
-| **Action** | A **View** button that opens the full details for that log entry, including headers, body, and any error message returned by the SMTP server. |
-
-## Viewing a Log Entry
-
-<Steps>
-  <Step title="Locate the entry you want to inspect">
-    Find the message in the log table by scanning the Recipient or Subject columns, or use your browser's find-in-page to search for a specific address.
-  </Step>
-  <Step title="Click the View button">
-    Click the **View** button in the Action column for that row. A detail panel opens.
-  </Step>
-  <Step title="Review the message details">
-    The detail panel shows the complete email headers (From, To, CC, Reply-To), the full HTML or plain-text message body, and — for failed messages — the error response returned by the SMTP server. Copy this error text when contacting your SMTP provider's support team.
+  <Step title="Send a fresh test after any fix">
+    Once you've changed a setting based on what the log told you, send another test email and confirm the new attempt logs as Sent (or Delivered) before considering the issue closed.
   </Step>
 </Steps>
-
-## Diagnosing Failed Emails
-
-When a log entry shows a **Failed** status, the error message in the detail panel points to the root cause. Use the accordion below to match the error to a fix.
-
-<Accordion title="Authentication failed">
-  The SMTP server rejected your username or password. Double-check both fields in **WP Postman → SMTP Settings**. If you are using Gmail, remember that your regular Google account password does not work here — you must generate and use a dedicated **App Password** with 2FA enabled on your Google account. For other providers, verify that the credential you are using has not been rotated or revoked in your provider's dashboard.
-</Accordion>
-
-<Accordion title="Connection refused">
-  WP Postman could not establish a TCP connection to the SMTP host. Confirm the hostname is spelled correctly and that the port number matches the encryption setting you have chosen (587 for TLS, 465 for SSL). On some network configurations a firewall rule on the server blocks outbound SMTP connections — if you suspect this, contact WP Stratos support to confirm whether outbound connections on your chosen port are permitted.
-</Accordion>
-
-<Accordion title="TLS handshake error">
-  The server connected but failed to negotiate a secure channel. This usually means there is a mismatch between the encryption setting in WP Postman and what the remote server expects. Try switching the Encryption setting between **TLS** and **SSL**, or temporarily set it to **None** to isolate whether the issue is with the encryption negotiation itself. Re-enable encryption once the connection is confirmed working.
-</Accordion>
-
-<Accordion title="Recipient rejected">
-  Your SMTP server accepted the message and attempted delivery, but the recipient's mail server refused it. This is outside WP Postman's control and is typically caused by the recipient's domain having strict spam filters, a full mailbox, or a policy that blocks messages from your sending domain. Check that your From Email address is on a domain with valid SPF, DKIM, and DMARC records published in DNS. Your SMTP provider's dashboard may show additional bounce details.
-</Accordion>
-
-<Info>
-  Email logs are retained for **30 days** and then automatically deleted. If you need to keep a longer-term record of email activity, export or copy relevant log entries before they age out.
-</Info>
 
 <Tip>
-  Any time you update your SMTP settings, send a test email immediately and then open the Email Logs to confirm the new settings produced a **Sent** status. This habit catches misconfigured credentials before your users run into a broken password-reset or order-confirmation flow.
+  A pattern of Sent-but-never-Delivered rows for the native relay method, especially all addressed to the same domain, usually points to a receiving-side spam filter rather than anything wrong with your WP Postman configuration. Check your domain's SPF, DKIM, and DMARC records next, not your SMTP credentials.
 </Tip>
