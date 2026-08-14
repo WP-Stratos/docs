@@ -1,0 +1,41 @@
+---
+title: "Aero Purge Order & Schedule: Sequencing Your Cache Layers"
+sidebarTitle: "Purge & Schedule"
+description: "Control the exact order Aero, Batcache, and Edge Cache purge in, and automate full flushes on a schedule with WP-Cron."
+keywords: ["cache purge order", "wp-cron scheduled cache flush", "sequential cache purge", "automate cache flush wordpress"]
+---
+
+With three cache layers (Aero's minified files, [Batcache](/plugins/aero/caching), [Edge Cache](/plugins/aero/edge-cache)), the _order_ they purge in changes what actually ends up cached. Purge them in the wrong sequence and an upstream layer can re-cache stale content from a layer you haven't cleared yet. This screen (**Aero → Purge & Schedule**) is where you control that sequence and, separately, automate it.
+
+## Sequential purge order
+
+Whenever "Flush All Caches" runs (manually, from the admin bar, or on a schedule), each layer purges strictly in the order shown, drag-and-drop to reorder. The default is innermost-out:
+
+1. **Aero** (minified CSS/JS)
+2. **Batcache** (object cache \+ full pages)
+3. **Edge** (CDN edge nodes)
+
+This ordering matters because it prevents a race: if Edge purged first while Batcache still held a stale full-page render, the very next Edge-layer request could re-populate the edge with that stale Batcache copy before Batcache itself gets cleared. Purging innermost-out means each layer is guaranteed clean by the time the layer downstream of it gets touched.
+
+<Tip>
+  Leave the default order alone unless you have a specific, tested reason to change it. If you do reorder, purge everything once by hand afterward and spot-check a page to confirm nothing served stale.
+</Tip>
+
+## Scheduled cache clearing
+
+A separate, optional safety net: run the full sequential flush automatically via WP-Cron at a set interval, independent of whether any of the automated triggers on the [Cache screen](/plugins/aero/caching) fired.
+
+| Field | What it does | Guidance |
+| --- | --- | --- |
+| **Run the full sequential flush automatically** | Master switch for scheduled flushing | Situational. Most sites don't need this if the automated triggers on the Cache screen already cover their update patterns. It's a good fit for sites with content that changes outside WordPress hooks Aero can see, like a database updated directly by an external system. |
+| **Interval** | Hourly through weekly | If you enable scheduling, match the interval to how often your content actually goes stale in ways Aero's triggers wouldn't catch. Daily is a reasonable default; don't go tighter than your actual update cadence, since every scheduled flush is a cold-cache event that the [Cache Warmer](/plugins/aero/cache-warmer) then has to work to recover from. |
+
+The screen shows both the next scheduled run (in UTC) and the last completed run, which is worth checking if you suspect WP-Cron itself isn't firing reliably, a common issue on low-traffic sites since WP-Cron is triggered by page visits by default.
+
+<Note>
+  If `DISABLE_WP_CRON` is set in `wp-config.php`, scheduled flushing depends on your server's real cron hitting `wp-cron.php` directly. Check the [Debug](/plugins/aero/debug) report if scheduled flushes aren't running when expected.
+</Note>
+
+## Practical guidance
+
+Think of this screen as configuration you touch rarely, not a daily control panel. Set the purge order once (the default is correct for the overwhelming majority of setups), decide whether you need scheduled flushing on top of your automated triggers, and move on. The real day-to-day value comes from getting [Cache](/plugins/aero/caching) and [Cache Warmer](/plugins/aero/cache-warmer) right; this page just makes sure the mechanics behind "Flush All Caches" behave correctly when they run.

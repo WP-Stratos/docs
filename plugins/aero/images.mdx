@@ -1,0 +1,132 @@
+---
+title: "Aero Image Optimizer: WebP, AVIF, and Delivery Settings"
+sidebarTitle: "Images"
+description: "Every field on Aero's Images screen: WebP/AVIF conversion, quality presets, delivery modes, media replacement, custom folders, and the image URL replace tool."
+keywords: ["webp avif conversion wordpress", "image optimization plugin wordpress", "lcp image optimization", "next-gen image formats", "convert images webp wordpress"]
+---
+
+The Images screen (**Aero → Images**) converts your media library to WebP and AVIF locally, on your own server, no external API, no per-image quota. It also handles delivery (getting browsers to actually receive the converted files), custom folders outside the media library, and swapping an image everywhere it's referenced without breaking its URL.
+
+<Warning title="This starts off, by design">
+  On a fresh install, the Image Optimizer's master switch defaults to **off**. Converting a whole media library and rewriting delivery is a large behavioral change, and Aero deliberately doesn't flip that on without you choosing it, especially if another image plugin is already active on the site. If you're upgrading from an older Aero version that already had this running, your existing state is preserved and nothing changes underneath you.
+</Warning>
+
+## Master switch and conflicts
+
+One toggle at the top of the screen controls everything: conversion, background processing, and delivery rewriting. Turning it off doesn't delete anything already generated, files stay on disk, so switching back on later resumes exactly where you left off rather than starting over.
+
+Aero also actively checks for other image optimization plugins (around twenty common ones are recognized by name) and warns you in wp-admin if one is active alongside Aero's own optimizer. Two plugins hooking the same upload pipeline and rewriting the same delivery layer will fight each other, and the symptoms usually look like "Aero is broken" rather than an obvious conflict. If you see this warning, pick one optimizer and deactivate the other rather than troubleshooting the symptoms.
+
+## Formats & Quality
+
+<AccordionGroup>
+  <Accordion title="Convert to WebP: Safe, recommended">
+    Generates a `.webp` derivative for every JPG/PNG, and compresses originals already in WebP. Universally supported across every modern browser, this is the safe default format.
+  </Accordion>
+
+  <Accordion title="Convert to AVIF: Safe, recommended where supported">
+    Smaller than WebP at equivalent visual quality. AVIF is served first when a browser accepts it, WebP as the fallback. Requires AVIF encoding support in GD or Imagick; if your server can't encode it, the checkbox is disabled with an explanation rather than silently failing.
+  </Accordion>
+</AccordionGroup>
+
+| Field | Options | Guidance |
+| --- | --- | --- |
+| **Quality Preset** | Lossless / Gentle / Balanced (recommended) / Strong / Maximum / Custom | Balanced is visually indistinguishable from the original for photos while cutting 60 to 80% of the bytes. Only move off Balanced if you have a specific reason: Lossless for graphics where every pixel matters, Maximum if file size trumps quality on a bandwidth-constrained audience. |
+| **WebP / AVIF Quality (custom)** | 1 to 100 each | Only exposed when Quality Preset is set to Custom. Lower numbers mean smaller files and more visible compression artifacts; test a representative sample of your actual images before committing to an aggressive custom value sitewide. |
+| **Converter** | GD / Imagick | Aero auto-detects which is available and picks a sensible default. Imagick generally produces better AVIF compression when both are available; the screen shows exactly which formats each converter supports on your server. |
+| **Scan Batch Size** | 50 to 2000 | Attachments examined per scan request. Lower it on resource-constrained hosting if scans are timing out or slowing the admin down. |
+
+## Processing Rules
+
+<AccordionGroup>
+  <Accordion title="Auto-optimize new uploads: Safe, recommended">
+    Every image added to the media library gets converted immediately after WordPress finishes generating its thumbnails. Without this, new uploads sit unconverted until the next bulk run.
+  </Accordion>
+
+  <Accordion title="Auto-remove larger conversions: Safe, recommended">
+    If a converted file ends up bigger than the original, common with tiny PNGs and simple graphics, Aero deletes the conversion so the smaller original keeps serving. This is a pure safety net with no downside.
+  </Accordion>
+
+  <Accordion title="Strip EXIF metadata: Safe, recommended">
+    Removes camera metadata (GPS coordinates, device model, timestamps) from converted files. Smaller files and better privacy, since GPS EXIF data has genuinely leaked people's home addresses from photos before.
+  </Accordion>
+
+  <Accordion title="Resize oversized originals: Situational">
+    Downscales huge camera uploads before conversion, and this resizes the original file itself, not just a derivative. Turn this on if your team routinely uploads unedited camera or phone photos (often 4000px\+ wide) that never need to display anywhere near that size. Leave it off if you deliberately keep full-resolution originals for other uses like print.
+  </Accordion>
+
+  <Accordion title="Flush Aero caches after optimization: Safe, recommended">
+    Runs the [sequential purge](/plugins/aero/purge-schedule) (object cache, then [Batcache](/plugins/aero/caching), then [Edge](/plugins/aero/edge-cache)) once a bulk optimization run finishes, so pages start serving the new formats immediately instead of showing cached markup that still points at the old files.
+  </Accordion>
+</AccordionGroup>
+
+### Format exceptions and skipping
+
+| Field | What it does |
+| --- | --- |
+| **Max Width / Max Height (px)** | Bounds for the resize-oversized-originals rule above. Defaults are 2560×2560, generous enough for nearly any web display context. |
+| **Skip PNG entirely** | Never converts PNG files. Worth enabling for logos and screenshots with sharp text or fine lines, which sometimes render better untouched than as a lossy derivative. |
+| **PNG → skip WebP only / JPG → skip WebP only / JPG → skip AVIF only** | Fine-grained per-format exceptions. Situational: reach for these only if you've found a specific format combination that looks worse than the original for your image types. |
+| **Skip Thumbnail Sizes** | Checkbox grid of every registered image size. Checked sizes are excluded from conversion; the full-size original is always processed regardless. Useful for tiny thumbnail sizes where WebP/AVIF overhead isn't worth it. |
+| **Excluded Media Folders** | One relative path per line, relative to your uploads directory. Images inside these folders are never touched, by bulk runs or on upload. Good for a folder of client-supplied assets you don't want Aero touching. |
+
+## Delivery
+
+How converted files actually reach the browser. Aero detects your server automatically and picks a working default, but you can override it.
+
+| Mode | How it works | Works on |
+| --- | --- | --- |
+| **Picture tags (PHP)** | Rewrites image markup into `<picture>` elements with AVIF/WebP sources at render time, in PHP, no server config needed | Every server, the universal fallback |
+| **.htaccess rewrite** | Same URLs; the server content-negotiates the format via `Accept` header | Apache, LiteSpeed |
+| **.htaccess rewrite (compat)** | A variant tuned for CDNs and unusual document roots | Apache, LiteSpeed |
+
+<Note>
+  Nginx ignores `.htaccess` files entirely, so Aero switches to picture-tag delivery automatically on Nginx and disables the `.htaccess` options in the interface with an explanation. If you control your own Nginx config and want content-negotiated rewrites instead of picture tags, an advanced section on this screen provides a ready-made snippet (a `map` block plus a `location` block) to paste in yourself.
+</Note>
+
+Two additional delivery toggles matter specifically for sites using page builders:
+
+<AccordionGroup>
+  <Accordion title="Rewrite backgrounds in stylesheet files: Safe, recommended in picture mode">
+    Page builders (Elementor, Divi, and others) write their section CSS to real files on disk that never pass through normal page output, which is why background images inside them historically got missed by rewriters. Aero processes each local stylesheet once into a cached copy with backgrounds wrapped in `image-set()`, keyed to the source file's modification time so a rebuild by your page builder produces a fresh copy automatically.
+  </Accordion>
+
+  <Accordion title="Handle lazy-loaded background attributes: Safe, recommended in picture mode">
+    Lazy-loading libraries keep background URLs in `data-*` attributes and apply them with their own JavaScript, out of reach of any server-side rewrite. Aero tags those elements with the derivatives that exist on disk, and a small injected script swaps in the right format once it knows what the browser can decode.
+  </Accordion>
+</AccordionGroup>
+
+Use **Test Delivery** after changing modes to confirm the browser is actually receiving converted files rather than assuming it from the settings alone.
+
+## Media Replacement
+
+Swaps the file behind an existing attachment without changing its URL or attachment ID, useful for correcting a wrong image without breaking every place it's already linked or embedded. Available as a panel on the attachment edit screen.
+
+| Field | What it does |
+| --- | --- |
+| **Enable "Replace Media" on attachment pages** | Turns the panel on. Safe to leave enabled; it's a manual, deliberate action per image, not something that runs automatically. |
+| **Re-optimize after replacement** | The replacement image is resized, converted, and compressed under your current rules, and Aero's caches flush so the new image appears everywhere immediately. Recommended on, since a replaced image with none of your optimization rules applied defeats the purpose. |
+
+## Image URL Replace
+
+A separate, heavier tool: point every reference to one image URL at a different image URL, across post content, custom fields, term meta, and options, including Elementor's JSON layout data with its escaped-slash format. Serialized values are unpacked and rebuilt rather than string-replaced, which is what keeps them from corrupting when the new URL is a different length than the old one.
+
+<Warning>
+  This rewrites data across your database. Run **Check Usage** first, it reports exactly how many rows would change before anything is written. Take a database backup before running **Replace Everywhere** on a production site if you're at all unsure, this isn't reversible from inside the plugin.
+</Warning>
+
+## Custom Folders
+
+Point Aero at directories inside `wp-content` but outside the media library, theme assets, page-builder output folders, and optimize those too. Paths are validated server-side so the scanner can never wander outside `wp-content` or into cache and plugin directories, so this is safe to use even with a typed-in path.
+
+## Logs and Restore
+
+The Logs section shows per-run optimization logs you can inspect or clear. **Restore** deletes every generated WebP/AVIF file and all optimization data in one click.
+
+<Note>
+  Originals are never modified by conversion, only new derivative files are created alongside them. Restoring returns your site to its exact prior state, and uninstalling the plugin performs the same cleanup automatically, including removing any rewrite rules it added.
+</Note>
+
+## Why this matters for Core Web Vitals and image SEO
+
+Image weight is very often the single largest contributor to a slow LCP, and WebP/AVIF conversion routinely cuts image payload by 60 to 80% with no visible quality loss at the Balanced preset. That's a direct, durable improvement to both PageSpeed Insights and real-world Core Web Vitals field data (the CrUX numbers Google actually uses for page experience signals, as opposed to synthetic Lighthouse scores). Pair this with Aero's [LCP image preloading](/plugins/aero/optimization#delivery-optimization) for the biggest combined win available in this plugin. For the SEO side of images specifically (alt text, file naming, structured data), see Google's [image SEO best practices](https://developers.google.com/search/docs/appearance/google-images), since format and compression are only half the picture.

@@ -1,0 +1,56 @@
+---
+title: "Aero Experimental Features: Guest Mode and Cache Isolation"
+sidebarTitle: "Experimental"
+description: "Aero's Experimental screen covers Guest Mode, which serves a more optimized page to PageSpeed-style testing bots, and the cache isolation layers that keep those renders separate from real visitors."
+keywords: ["guest mode pagespeed score", "core web vitals crux field data", "cache isolation bots", "pagespeed insights score wordpress"]
+---
+
+<Warning title="Read this whole page before touching anything here">
+  Experimental features are functional but still being validated on production infrastructure. Test on staging first, and understand what you're turning on before you turn it on. Guest Mode in particular changes what certain visitors see, and that's not a decision to make casually.
+</Warning>
+
+## Guest Mode
+
+Guest Mode shows PageSpeed-style testing tools (PageSpeed Insights, GTmetrix, and similar synthetic testing bots) a more aggressively optimized version of your page, while real human visitors continue to see your full site. It exists for one specific, narrow situation: you've applied every real optimization available (everything on the [Optimization](/plugins/aero/optimization) and [Images](/plugins/aero/images) pages, a solid cache setup), and you're still short of a target score for a reason that's cosmetic to the _test_ rather than a real problem for _visitors_.
+
+<Warning>
+  Real optimizations benefit actual users. Guest Mode benefits a score. Those aren't the same thing, and the order you reach for them matters: exhaust the real levers first. If you find yourself reaching for Guest Mode as your first move instead of your last, that's worth reconsidering.
+</Warning>
+
+### Levels
+
+| Level | What it does | Recommendation |
+| --- | --- | --- |
+| **Disabled** | Guest Mode is off. All visitors see the identical, fully optimized site. | Default, and the right choice for most sites. |
+| **Basic** | Combines all CSS into one minified file, inlines all fonts, and removes all JavaScript specifically for testing tools. Eliminates render-blocking requests entirely for that test. Target: 90\+ mobile score, 90\+ desktop score. | Recommended if you enable Guest Mode at all. |
+| **Extreme** | Aggressive stripping for maximum scores: keeps only the first two CSS files. The site can visibly look broken in a testing tool's screenshot. | Not recommended. The gap between what a tool sees and what a visitor sees gets wide enough that it stops reflecting anything real. This is only really useful if your website is already bare-bones. |
+
+### Guest Mode custom CSS
+
+A separate CSS field, appended to the combined stylesheet only when Guest Mode is active, meaning only PageSpeed-style tools ever see it. Its practical use is patching layout breakage caused by stripping JavaScript for the test: animation libraries like GSAP often leave elements stuck at `opacity: 0` waiting for JS that Guest Mode just removed. Use browser DevTools against a Guest Mode render to find elements stuck invisible, then fix them here with something like `opacity: 1 !important` or `visibility: visible !important`.
+
+## Guest Mode Cache Isolation
+
+A real, separate problem this section solves: without isolation, if a testing bot happens to be the _first_ visitor after a cache flush, [Batcache or Edge Cache](/plugins/aero/caching) can store that stripped-down bot render and then serve it to actual human visitors. Isolation keeps guest (bot) responses out of the shared cache pool entirely, so this never happens. If isolation is on, turn on [warming the Guest bucket](/plugins/aero/cache-warmer) too, otherwise the bot-facing cache stays cold and the first real bot visit after a flush pays the full render cost anyway.
+
+<Note>
+  Isolation only does anything while Guest Mode itself is enabled above. With Guest Mode off, there's no divergent render to isolate, so the isolation toggle has no effect and the screen tells you so directly.
+</Note>
+
+### Layer 1: plugin-level isolation
+
+A single checkbox. Sends `no-store` headers and sets `DONOTCACHEPAGE` for guest (bot) visitors, which prevents guest renders from being _stored_ in Batcache or Edge Cache in the first place.
+
+### Layer 2: wp-config.php bucket separation
+
+Batcache serves cached pages from `advanced-cache.php` **before any plugin loads**, which means Layer 1 alone can't fully separate bot and human traffic at serve time, only at store time. This layer adds a snippet to `wp-config.php` (above the "That's all, stop editing!" line) that keys the Batcache bucket itself on visitor class, so bot and human requests never share a cache entry at all, not even briefly.
+
+The screen shows whether the snippet is currently detected in `wp-config.php` and provides the exact snippet to paste in, click the code box to select it all. After adding it, run **Flush All Caches** once so any existing mixed cache entries (from before the snippet existed) get cleared out.
+
+<Warning>
+  If `wp-config.php` isn't writable and you change your guest-mode level or isolation setting, Aero can't remove the wp-config snippet automatically. It flushes all caches regardless and tells you plainly that the snippet needs manual removal, and that until then bots remain keyed into a separate bucket even if you've turned isolation off elsewhere. Don't assume a setting change fully took effect without checking this notice.
+</Warning>
+
+## A candid take on when to use this
+
+Guest Mode optimizes for a synthetic lab test. That's the honest framing, and it matters because a passing score there doesn't touch what a real visitor experiences or how Google actually ranks you. Google's page-experience signals in Search come substantially from CrUX (Chrome User Experience Report) field data, collected from real Chrome users out in the world, not from Lighthouse or PageSpeed Insights lab scores. A Guest Mode setup that impresses a PSI test can leave your real CrUX numbers, and your real visitors' experience, completely unchanged. If your goal is genuinely better Core Web Vitals and better rankings, the [Optimization](/plugins/aero/optimization) and [Images](/plugins/aero/images) pages are where that work actually happens. Guest Mode is for the narrower, legitimate case of a client, stakeholder, or agency contract that specifically checks a PageSpeed number as a deliverable, and even then, Basic over Extreme, and only after the real work is done.
