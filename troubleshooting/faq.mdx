@@ -24,13 +24,14 @@ This page collects the most common questions WP Stratos customers ask about thei
 <Accordion title="What PHP versions are supported?">
   WP Stratos supports the following PHP versions:
 
-  - PHP 7.4
-  - PHP 8.0
-  - PHP 8.1
+  - ~~PHP 7.4~~ Deprecated. No longer supported.
+  - ~~PHP 8.0~~
+  - ~~PHP 8.1~~
   - PHP 8.2
   - PHP 8.3
+  - PHP 8.4
 
-  You can switch your site's PHP version at any time through the **WP Stratos Environment** plugin in your WordPress admin, or from **Cloud Panel → your site → PHP Version**. We recommend running the highest version your theme and plugins support for best performance and security.
+  You can switch your site's PHP version at any time  from **Cloud Panel → your site → Developer Settings → PHP Version → Manage**. We recommend running the highest version your theme and plugins support for best performance and security.
 </Accordion>
 
 <Accordion title="Does WP Stratos support WooCommerce?">
@@ -38,7 +39,7 @@ This page collects the most common questions WP Stratos customers ask about thei
 </Accordion>
 
 <Accordion title="Are WordPress core updates automatic?">
-  Minor WordPress core updates — primarily security releases — are applied automatically to keep your site protected. Major version updates (for example, moving from WordPress 6.4 to 6.5) are not applied automatically. You can review and apply major updates at your own pace via **Cloud Panel → your site → WordPress**, or directly from the WordPress admin dashboard. We recommend testing major updates on your staging environment first.
+  Minor WordPress core updates — primarily security releases — are applied automatically to keep your site protected. Major version updates (for example, moving from WordPress 6.4 to 7.0) are not applied automatically. You can review and apply major updates at your own pace via **Cloud Panel → your site → WP-Admin SSO** from the WordPress admin dashboard. We recommend testing major updates on your staging environment first.
 </Accordion>
 
 ---
@@ -59,7 +60,7 @@ This page collects the most common questions WP Stratos customers ask about thei
 </Accordion>
 
 <Accordion title="Can I use a wildcard SSL certificate?">
-  Wildcard SSL certificates are not currently available on WP Stratos. Each automatically provisioned certificate covers the **root domain** (e.g., `yourdomain.com`) and the **www subdomain** (`www.yourdomain.com`). If you need coverage for additional subdomains, add each subdomain as a separate domain in **Cloud Panel → Domains** and a certificate will be issued for each one.
+  Wildcard SSL certificates are not currently available on WP Stratos. Each automatically provisioned certificate covers the **root domain** (e.g., `yourdomain.com`) and the **www subdomain** (`www.yourdomain.com`). If you need coverage for additional subdomains, add each subdomain as a separate domain in **Cloud Panel → My Hosting → Domains** and a certificate will be issued for each one.
 </Accordion>
 
 ---
@@ -67,15 +68,15 @@ This page collects the most common questions WP Stratos customers ask about thei
 ## Backups
 
 <Accordion title="How often are backups taken?">
-  Backups run **automatically every day**. The daily backup captures your WordPress files, database, and configuration. You can also trigger a **manual backup** at any time from **Cloud Panel → your site → Backups → Create Backup** — for example, before making significant changes to your theme or installing a major plugin update.
+  Backups run **automatically every hour**. The hourly backup captures your WordPress database, and the nightly backup captures your files \+ database. You can also trigger a **manual backup** at any time from **Cloud Panel → your site → Backups → Add New **— for example, before making significant changes to your theme or installing a major plugin update.
 </Accordion>
 
 <Accordion title="How long are backups retained?">
-  WP Stratos retains daily backups for **30 days**. After 30 days, older backups are removed automatically. If you need to preserve a snapshot beyond this window — for example, before a major site redesign — download a copy of the backup to your own storage.
+  WP Stratos retains all backups for **3-6 months**. After 3-6 months, older backups are removed automatically. If you need to preserve a snapshot beyond this window — for example, before a major site redesign — download a copy of the backup to your own storage.
 </Accordion>
 
 <Accordion title="Can I download my backup files?">
-  Yes. Go to **Cloud Panel → your site → Backups**, locate the backup you want, and click **Download**. The backup is packaged as a compressed archive containing your site files and a database export. You can use this archive to restore your site on any compatible WordPress host.
+  Yes. Go to **Cloud Panel → your site → Backups**, locate the backup you want, and click **Download**. The backup is packaged as a compressed archive containing your site files and a database export (depending on which backup you choose to download, you may only download the database, and not the files). You can use this archive to restore your site on any compatible WordPress host.
 </Accordion>
 
 ---
@@ -107,7 +108,7 @@ This page collects the most common questions WP Stratos customers ask about thei
 <Accordion title="How do I contact WP Stratos support?">
   You can reach the support team through either of the following channels:
 
-  - **Email**: send a message to [support@wpstratos.com](mailto:support@wpstratos.com)
+  - **Email**: send a message to [missioncontrol@wpstratos.com](mailto:missioncontrol@wpstratos.com)
   - **Support ticket**: log in to **Cloud Panel**, click your account menu in the top-right corner, and select **Open Support Ticket**
 
   Both channels reach the same team. Response times vary by plan tier; urgent issues related to site downtime are prioritised.
