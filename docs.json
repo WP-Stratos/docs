@@ -75,7 +75,8 @@
               "plugins/wp-postman/overview",
               "plugins/wp-postman/smtp-configuration",
               "plugins/wp-postman/email-logs"
-            ]
+            ],
+            "icon": "send"
           },
           {
             "group": "Aero",
@@ -140,7 +141,7 @@
       "cursor",
       "vscode"
     ],
-    "display": "toc"
+    "display": "header"
   },
   "markdown": {
     "schema": true
