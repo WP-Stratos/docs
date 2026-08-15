@@ -3,13 +3,13 @@ title: "Back Up and Restore Your WordPress Site"
 sidebarTitle: "Backups"
 description: "WP Stratos backs up your WordPress database hourly and your full site daily, automatically, with retention of at least 30 days and typically 3 to 6 months. Learn how to create manual backups, restore to any point, and download backup archives."
 keywords: ["automatic wordpress backups", "hourly database backup wordpress", "wordpress backup and restore", "managed wordpress hosting backups", "wordpress site backup schedule"]
-icon: "save"
+icon: "arrow-rotate-back"
 ---
 
 Every WP Stratos site is covered by automated backups at no extra cost, and no configuration on your part. Backups capture both your files and your database, so you can recover from accidental deletions, failed updates, or any other issue by rolling back to a known-good state in a few clicks.
 
 <Info>
-  A backup is automatically created before any WordPress core or plugin update, giving you an instant recovery point without any manual effort on your part.
+  Database backups are created hourly, so updating your website is safe because you can go back in time hour-by-hour. For large changes, we still recommend taking a manual directory and database backup.
 </Info>
 
 ## Automatic Backups
@@ -75,6 +75,6 @@ Keep an offline copy of any backup by downloading it as a zip archive.
     Find the backup by its timestamp in the list.
   </Step>
   <Step title="Click Download">
-    Click the **Download** icon next to the backup. WP Stratos packages the files and database into a single zip archive and starts the download in your browser.
+    Click the **Download** icon next to the backup. WP Stratos packages the files and/or database into a single zip archive and starts the download in your browser. If you want a backup of your whole installation, either download a daily full backup or create a manual full backup of  directories and database.
   </Step>
 </Steps>
