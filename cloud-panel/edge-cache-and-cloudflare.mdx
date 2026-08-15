@@ -1,0 +1,44 @@
+---
+title: "Edge Cache and Cloudflare Settings in the WP Stratos Cloud Panel"
+sidebarTitle: "Edge Cache & Cloudflare"
+description: "Configure WP Stratos Edge Cache (enable, purge, Defensive Mode) and Cloudflare-level settings (DNS status, cache purge, Development Mode, Security Level) for your domain."
+icon: "shield-halved"
+keywords: ["edge cache wordpress hosting", "defensive mode traffic spike", "cloudflare security level wordpress", "cloudflare development mode wordpress hosting"]
+---
+
+Every WP Stratos site sits behind an Edge Cache layer by default, and if you've connected your domain through WP Stratos-managed nameservers, you also get direct access to Cloudflare-level controls for that domain. Both live in the Cloud Panel, and it helps to understand what each one actually does before you start flipping switches.
+
+## Edge Cache
+
+Edge Cache is WP Stratos's own caching and traffic-protection layer, sitting in front of your site regardless of how your DNS is configured. From a site's Edge Cache settings you can:
+
+- **Enable or disable** Edge Cache for the site.
+- **Purge** the edge cache on demand, useful right after a design change or content update you need visitors to see immediately.
+- **Turn on Defensive Mode** during a traffic spike or suspected attack, and choose how long it stays active: 30 minutes, 1 hour, 8 hours, 24 hours, or 7 days.
+
+For deeper Edge Cache configuration, purge scheduling, and how it interacts with Batcache and the rest of the caching stack, see the [Aero Edge Cache documentation](/plugins/aero/edge-cache), where the full set of options lives.
+
+## Cloudflare Settings
+
+If your domain uses WP Stratos-managed nameservers, you also get a Cloudflare settings panel scoped to that domain, separate from Edge Cache. From here you can:
+
+- Check your domain's **Cloudflare connection status**.
+- Open **Manage Records** to jump into DNS record management (the same DNS Zone Editor covered in [DNS Configuration](/domains/dns-configuration)).
+- **Purge Cloudflare's cache** for the domain.
+- Turn on **Development Mode**, which temporarily bypasses caching so you can see changes reflected immediately while you're actively working on the site.
+- Toggle **Browser Integrity Check** (on by default), which screens out requests with headers commonly associated with spam bots and threats.
+- Set a **Security Level**: Off (Enterprise), Essentially Off, Low, Medium, High, or I'm Under Attack. Higher levels challenge more visitors before letting them through, which cuts down on bad traffic but can occasionally challenge a legitimate visitor too.
+
+<Note>
+  These Cloudflare-specific controls are only available once the Cloudflare proxy is enabled on your domain's root A and CNAME records. If you haven't turned the proxy on, this panel won't show these options, since the proxy is what actually routes your traffic through Cloudflare's network in the first place.
+</Note>
+
+<Warning>
+  We generally recommend leaving the Cloudflare proxy off for the reasons covered in [DNS Configuration](/domains/dns-configuration): running Cloudflare's proxy and WP Stratos Edge Cache at the same time creates two independent caching layers that don't coordinate with each other. If you do have a specific need for Cloudflare-level controls like Security Level or Development Mode, that's a legitimate reason to enable the proxy, just go in aware that you're adding a second cache layer and may need to purge both when you make changes.
+</Warning>
+
+---
+
+## Which One Do I Need?
+
+For the vast majority of sites, Edge Cache alone covers what you need: it's on by default, it's tuned for WordPress, and Defensive Mode handles traffic spikes without any extra configuration. Reach for the Cloudflare panel specifically when you need something Edge Cache doesn't offer, like a stricter Security Level during an active attack, or Development Mode while you're making rapid visual changes and don't want to purge cache after every tweak.

@@ -2,15 +2,16 @@
 title: "Free Automatic SSL Certificates on WP Stratos Sites"
 sidebarTitle: "SSL Certificates"
 description: "WP Stratos automatically provisions and renews free Let's Encrypt SSL certificates for every connected domain — no setup or configuration required."
+keywords: ["free ssl certificate wordpress hosting", "automatic https wordpress", "lets encrypt wordpress hosting", "custom ssl certificate wordpress", "wordpress ssl not working fix"]
 ---
 
-Every domain you connect to a WP Stratos site receives a free SSL certificate automatically. There is nothing to configure, no certificate files to upload, and no renewal reminders to track. As soon as your domain resolves to WP Stratos, the platform takes care of the rest.
+Every domain you connect to a WP Stratos site gets a free SSL certificate automatically. There's nothing to configure, no certificate files to upload, no renewal reminder to set on your calendar. As soon as your domain resolves to WP Stratos, the platform handles the rest.
 
 ---
 
 ## How SSL Works on WP Stratos
 
-WP Stratos issues SSL certificates through [Let's Encrypt](https://letsencrypt.org), a free and widely trusted certificate authority. When you connect a domain and DNS propagation completes, the platform automatically requests a certificate for your domain and installs it — typically within a few minutes of your DNS resolving correctly.
+WP Stratos issues SSL certificates through [Let's Encrypt](https://letsencrypt.org), a free and widely trusted certificate authority. When you connect a domain and DNS propagation completes, the platform automatically requests a certificate for your domain and installs it, typically within a few minutes of your DNS resolving correctly.
 
 Certificates issued by Let's Encrypt are valid for 90 days. WP Stratos handles renewal automatically in the background, well before each certificate expires. You never need to manually renew a certificate or worry about your site serving a security warning to visitors. HTTPS redirect is enabled by default on all WP Stratos sites, so any visitor who arrives on `http://` is immediately sent to the secure `https://` version.
 
@@ -20,16 +21,13 @@ Certificates issued by Let's Encrypt are valid for 90 days. WP Stratos handles r
 
 <Steps>
   <Step title="Log in to the Cloud Panel">
-    Go to [my.wpstratos.com](https://my.wpstratos.com) and sign in to your account.
+    Go to [cloud.wpstratos.com](https://cloud.wpstratos.com) and sign in to your account.
   </Step>
   <Step title="Open your site">
     From the main dashboard, click the site whose SSL status you want to check.
   </Step>
-  <Step title="Navigate to Domains">
-    In the left-hand sidebar, click **Domains**. Your connected domains are listed here.
-  </Step>
-  <Step title="Check the SSL column">
-    Look at the **SSL** column in the domain list. A **green padlock** icon means the certificate is active and your site is serving HTTPS correctly. A **yellow clock** icon means the certificate is still being provisioned — check back in a few minutes. A **red warning** icon means there is a problem that needs attention.
+  <Step title="Check the domain's SSL status">
+    Open the domain in question and look at its SSL status. A green indicator means the certificate is active and your site is serving HTTPS correctly. A pending or in-progress indicator means the certificate is still being issued, check back in a few minutes. A warning indicator means something needs attention.
   </Step>
 </Steps>
 
@@ -43,14 +41,14 @@ If your domain shows a warning icon or HTTPS is not working after connecting you
   <Accordion title="Domain hasn't propagated yet">
     Let's Encrypt must be able to reach your domain over the public internet to verify ownership and issue a certificate. If DNS changes are still propagating, certificate provisioning will not complete.
 
-    Wait up to **48 hours** after updating your DNS records or nameservers before investigating further. You can check whether your domain is resolving to WP Stratos using a tool like [whatsmydns.net](https://www.whatsmydns.net).
+    Wait a few hours after updating your DNS records or nameservers before investigating further. You can check whether your domain is resolving to WP Stratos using a tool like [whatsmydns.net](https://www.whatsmydns.net).
   </Accordion>
 
   <Accordion title="Domain doesn't point to WP Stratos">
     The certificate can only be issued once your domain is actively pointing to your WP Stratos site. Verify the following:
 
-    - If you're using **WP Stratos nameservers**: confirm that `ns1.wpstratos.com` and `ns2.wpstratos.com` are listed as your domain's nameservers at your registrar.
-    - If you're using **external DNS**: confirm that your domain has an A record pointing to your site's IP address (visible in the Cloud Panel under **Domains → Connection Details**).
+    - If you used **Set Nameservers**: confirm the exact nameserver pair shown in your Cloud Panel is what's listed at your registrar. That pair is generated per domain, so double check you copied the current values rather than an old pair.
+    - If you used **Set DNS Records**: confirm your domain has the two A records and the `www` CNAME shown in the Cloud Panel's **Set Your Domain** window.
 
     See [Connect a Custom Domain](/domains/connect-domain) for the correct DNS values.
   </Accordion>
@@ -61,15 +59,15 @@ If your domain shows a warning icon or HTTPS is not working after connecting you
     To allow Let's Encrypt, add the following CAA record in your DNS settings:
 
     | Type | Host | Value |
-    |------|------|-------|
-    | CAA  | `@`  | `0 issue "letsencrypt.org"` |
+    | --- | --- | --- |
+    | CAA | `@` | `0 issue "letsencrypt.org"` |
 
     If you manage DNS in the WP Stratos Cloud Panel, see [DNS Configuration](/domains/dns-configuration) for instructions on adding records.
   </Accordion>
 </AccordionGroup>
 
 <Note>
-  Custom SSL certificates (bring your own certificate) are not currently supported on WP Stratos. All sites use automatically provisioned Let's Encrypt certificates. If you require a specific certificate type — such as an Extended Validation (EV) or wildcard certificate from a different authority — contact WP Stratos support to discuss your options.
+  If you need to bring your own certificate, whether that's an Extended Validation (EV) certificate or one issued by a specific authority your compliance team requires, WP Stratos supports it. Open **Edit SSL** for the domain in question and paste in your certificate (CRT), private key, and optional CA bundle. Most sites never need this. Let's Encrypt covers the vast majority of use cases at no cost, and it's what runs automatically unless you install something custom.
 </Note>
 
 <Tip>
@@ -84,10 +82,12 @@ If your domain shows a warning icon or HTTPS is not working after connecting you
   <Card title="Connect a Domain" icon="globe" href="/domains/connect-domain">
     Add a custom domain to your site and confirm SSL is active once DNS propagation completes.
   </Card>
+
   <Card title="DNS Configuration" icon="sliders" href="/domains/dns-configuration">
-    Add and manage DNS records — including CAA records — directly in the Cloud Panel.
+    Add and manage DNS records, including CAA records, directly in the Cloud Panel.
   </Card>
+
   <Card title="Nameserver Setup" icon="server" href="/domains/nameserver-setup">
-    Point your domain's nameservers to WP Stratos to enable Cloud Panel DNS management.
+    Switch to WP Stratos-managed nameservers to enable Cloud Panel DNS management.
   </Card>
 </CardGroup>

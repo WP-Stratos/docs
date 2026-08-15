@@ -2,9 +2,10 @@
 title: "Fix Domain Propagation Issues on WP Stratos Hosting"
 sidebarTitle: "Domain Propagation"
 description: "Learn how to check DNS propagation status, flush stale caches, and fix common domain connectivity issues after pointing your domain to WP Stratos."
+keywords: ["dns propagation time wordpress", "domain not resolving after nameserver change", "check dns propagation status", "flush dns cache", "wordpress hosting domain troubleshooting"]
 ---
 
-When you connect a domain to WP Stratos — whether by updating nameservers or adding an A record at your registrar — the change doesn't take effect instantly across the internet. DNS propagation is the process by which your updated DNS records spread to resolvers worldwide. During this window, some visitors may reach your old host while others reach WP Stratos, which is completely normal and expected.
+When you connect a domain to WP Stratos, whether by updating nameservers or adding an A record at your registrar, the change doesn't take effect instantly across the internet. DNS propagation is the process of your updated records spreading out to resolvers worldwide. During that window, some visitors may reach your old host while others reach WP Stratos. That's normal, and it resolves on its own.
 
 ## How Long Does Propagation Take?
 
@@ -32,19 +33,23 @@ Propagation typically completes within **30 minutes to 48 hours**. Most users se
   <Steps>
     <Step title="Flush DNS on Windows">
       Open **Command Prompt** as Administrator and run:
+
       ```bash
       ipconfig /flushdns
       ```
     </Step>
     <Step title="Flush DNS on macOS">
       Open **Terminal** and run:
+
       ```bash
       sudo dscacheutil -flushcache && sudo killall -HUP mDNSResponder
       ```
+
       Enter your password when prompted.
     </Step>
     <Step title="Flush DNS on Linux">
       Open a terminal and run:
+
       ```bash
       sudo systemctl restart systemd-resolved
       ```

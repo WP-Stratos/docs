@@ -1,0 +1,43 @@
+---
+title: "Manage WordPress Plugins and Themes from the WP Stratos Cloud Panel"
+sidebarTitle: "Plugins & Themes"
+description: "Install, activate, deactivate, update, and bulk-manage WordPress plugins and themes directly from the WP Stratos Cloud Panel."
+icon: "puzzle-piece"
+keywords: ["manage wordpress plugins hosting panel", "bulk update wordpress plugins", "wordpress theme manager hosting", "install wordpress plugin without wp-admin"]
+---
+
+Every plugin and theme on a WordPress instance can be managed from inside the Cloud Panel, without needing to log into wp-admin for routine work. This covers both the plugins that came pre-installed and anything you've added yourself.
+
+## Managing Plugins
+
+Open a site's **Plugins** section to see everything currently installed, in either a tile or list view. Each entry shows the plugin's name and a short description (click **Read More** for the full text), plus a status indicator showing whether it's up to date.
+
+From each plugin's tile or row, you can:
+
+- **Activate or deactivate** it.
+- **Remove** it entirely.
+- **Update** it, if a newer version is available.
+
+### Bulk Actions
+
+Select multiple plugins at once using the checkboxes (visible on hover in tile view, always visible in list view), and a bulk action bar appears at the bottom of the screen. This is the fastest way to update or deactivate a batch of plugins across a site instead of clicking through them one at a time. In list view, you can also sort by Name or Status to group what you're looking at.
+
+### Installing a New Plugin
+
+Click **Add New** next to the search bar to browse and install a new plugin. Search by name or browse popular tags, and sort results by popularity, rating, or recency. Once you find what you want, install it directly from here, same as you would from wp-admin, just without leaving the Cloud Panel.
+
+## Managing Themes
+
+Themes work the same way, mirroring the plugin interface almost exactly. Installed themes show in tile or list view, each with a name, description, and an up-to-date indicator. Activate, deactivate (for inactive themes), or remove any installed theme, and use the same bulk-select pattern to act on several at once.
+
+To install a new theme, click **Add New** next to the search bar, then search or browse popular tags. Results sort by rating or recency.
+
+<Note>
+  If you can't find a specific theme in search, it may have been blacklisted at the administrator level. Blacklisted themes are filtered out of search results automatically and can't be installed, even by uploading a ZIP file directly.
+</Note>
+
+---
+
+## When to Use This vs. wp-admin
+
+For most single-plugin work, activating something new, checking for an update, this is faster than logging into wp-admin separately. For anything involving a plugin's own settings screen, you'll still end up in wp-admin, the Cloud Panel handles installation and lifecycle, not plugin configuration.

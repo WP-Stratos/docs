@@ -2,17 +2,18 @@
 title: "How to Manage DNS Records in the WP Stratos Cloud Panel"
 sidebarTitle: "DNS Configuration"
 description: "Add, edit, and delete A, CNAME, MX, TXT, and other DNS records for your domain directly inside the WP Stratos Cloud Panel dashboard."
+keywords: ["manage dns records wordpress hosting", "cloudflare proxy wordpress caching conflict", "add mx record wordpress hosting", "dns zone editor wordpress", "spf dkim txt record wordpress hosting"]
 ---
 
-WP Stratos includes a full-featured DNS manager built into the Cloud Panel, giving you complete control over your domain's DNS records without leaving your hosting dashboard. You can add records for email routing, subdomain configuration, third-party service verification, and more — all in one place.
+WP Stratos includes a full-featured DNS manager built into the Cloud Panel, giving you complete control over your domain's DNS records without leaving your hosting dashboard. Records are served on an enterprise DNS network under the hood, so changes propagate quickly once you make them. You can add records for email routing, subdomain configuration, third-party service verification, and more, all in one place.
 
 <Note>
-  DNS management in the Cloud Panel is only available for domains that use **WP Stratos nameservers** (`ns1.wpstratos.com` and `ns2.wpstratos.com`). If your domain points to an external DNS provider, you must manage records there. See [Nameserver Setup](/domains/nameserver-setup) to switch.
+  DNS management in the Cloud Panel is only available for domains where you've chosen **Set Nameservers** when connecting the domain (WP Stratos-managed Cloudflare DNS). If you connected your domain using **Set DNS Records** instead, your DNS stays managed at your existing provider. See [Connect a Domain](/domains/connect-domain) for the difference between the two.
 </Note>
 
 ## Accessing DNS Settings
 
-To open the DNS manager, log in to the Cloud Panel at [my.wpstratos.com](https://my.wpstratos.com), select your site, click **Domains** in the sidebar, and then click **Manage DNS** next to the domain you want to configure.
+To open the DNS manager, log in to the Cloud Panel at [cloud.wpstratos.com](https://cloud.wpstratos.com), select your site, and open its DNS records. Before making changes, double check that you've selected the correct domain, especially if you manage several domains on one account.
 
 ---
 
@@ -21,7 +22,7 @@ To open the DNS manager, log in to the Cloud Panel at [my.wpstratos.com](https:/
 The Cloud Panel supports the most common DNS record types. Use the table below as a quick reference.
 
 | Record Type | Purpose | Example Value |
-|-------------|---------|---------------|
+| --- | --- | --- |
 | **A** | Maps a hostname to an IPv4 address | `203.0.113.10` |
 | **AAAA** | Maps a hostname to an IPv6 address | `2001:db8::1` |
 | **CNAME** | Aliases one hostname to another | `yourdomain.com` |
@@ -38,28 +39,34 @@ The Cloud Panel supports the most common DNS record types. Use the table below a
   <Step title="Open the DNS manager">
     In the Cloud Panel, navigate to **Domains** and click **Manage DNS** next to the relevant domain.
   </Step>
-
   <Step title="Click Add Record">
     Click the **Add Record** button in the top-right corner of the DNS records list.
   </Step>
-
   <Step title="Select the record type">
     Use the **Type** dropdown to choose the record type you want to create (for example, **A**, **CNAME**, or **MX**).
   </Step>
-
   <Step title="Fill in the record fields">
     Complete the fields for your chosen record type:
 
-    - **Host** — The subdomain or `@` for the root domain.
-    - **Value** — The target IP address, hostname, or text string.
-    - **TTL** — Time to live in seconds. The default of `3600` (1 hour) is suitable for most use cases. Lower values allow faster propagation of future changes.
-    - **Priority** — Required for MX and SRV records; lower values indicate higher priority.
+    - **Host.** The subdomain or `@` for the root domain.
+    - **Value.** The target IP address, hostname, or text string.
+    - **TTL.** Time to live in seconds. The default of `3600` (1 hour) is suitable for most use cases. Lower values allow faster propagation of future changes. Setting TTL to `1` means "automatic," and the network picks a sensible value on its own.
+    - **Priority.** Required for MX and SRV records; lower values indicate higher priority.
   </Step>
-
   <Step title="Save the record">
     Click **Save**. The record appears in the DNS list immediately and begins propagating across the internet.
   </Step>
 </Steps>
+
+---
+
+## The Proxy Toggle (and Why We Recommend Leaving It Off)
+
+Because WP Stratos DNS runs on a Cloudflare-backed network, individual DNS records in the Cloud Panel include an optional proxy toggle. Turning it on routes traffic for that record through an additional proxy layer before it reaches your site.
+
+We recommend leaving it **off**. WP Stratos already runs its own Edge Cache and DDoS mitigation in front of every site, and that layer is tuned specifically for how WordPress serves pages. Stacking a second, independently-configured proxy on top of it doesn't add protection so much as it adds a second cache that doesn't know about the first one. The two layers can disagree about what's cached and for how long, and the most common symptom is a page that looks stale on some requests and fresh on others, which is a miserable thing to debug at 4pm on a Friday.
+
+If you toggle the proxy on for a record and a WordPress instance on that domain has Edge Cache active, the Cloud Panel will show you a warning before the change takes effect. Read it. It's not being overly cautious. If you have a specific reason to need the proxy (an unusual DNS-level rule that Edge Cache can't replicate), talk to WP Stratos support first so we can help you avoid the caching conflict rather than debug it after the fact.
 
 ---
 
@@ -70,7 +77,7 @@ The Cloud Panel supports the most common DNS record types. Use the table below a
 To ensure visitors reach your site whether they type `www.yourdomain.com` or `yourdomain.com`, add a CNAME record:
 
 | Type | Host | Value |
-|------|------|-------|
+| --- | --- | --- |
 | CNAME | `www` | `yourdomain.com` |
 
 If you already have an A record for `@` pointing to your site's IP, this CNAME ensures the `www` version resolves to the same destination.
@@ -82,12 +89,12 @@ If you already have an A record for `@` pointing to your site's IP, this CNAME e
 To route email through a third-party provider like Google Workspace or Microsoft 365, add MX records supplied by your email provider. For example, for Google Workspace:
 
 | Type | Host | Value | Priority |
-|------|------|-------|----------|
+| --- | --- | --- | --- |
 | MX | `@` | `aspmx.l.google.com` | `1` |
 | MX | `@` | `alt1.aspmx.l.google.com` | `5` |
 | MX | `@` | `alt2.aspmx.l.google.com` | `10` |
 
-Always use the exact values and priorities provided by your email service — these examples are for illustration only.
+Always use the exact values and priorities provided by your email service. These examples are for illustration only.
 
 ---
 
@@ -96,7 +103,7 @@ Always use the exact values and priorities provided by your email service — th
 Many services (such as Google Search Console, email senders, and security tools) require you to verify domain ownership by adding a TXT record. To add one:
 
 | Type | Host | Value |
-|------|------|-------|
+| --- | --- | --- |
 | TXT | `@` | `google-site-verification=xxxxxxxxxxxxxxxxxxxx` |
 
 Replace the value with the exact string given to you by the service requesting verification.
@@ -113,9 +120,11 @@ Replace the value with the exact string given to you by the service requesting v
   <Card title="Connect a Domain" icon="globe" href="/domains/connect-domain">
     Add a custom domain to your site and choose how to connect it using WP Stratos or external DNS.
   </Card>
+
   <Card title="Nameserver Setup" icon="server" href="/domains/nameserver-setup">
-    Point your domain's nameservers to WP Stratos so you can manage DNS from the Cloud Panel.
+    Switch to WP Stratos-managed nameservers so you can manage DNS from the Cloud Panel.
   </Card>
+
   <Card title="SSL Certificates" icon="lock" href="/domains/ssl-certificates">
     Learn how automatic SSL provisioning works and how to troubleshoot certificate issues.
   </Card>

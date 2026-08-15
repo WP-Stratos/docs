@@ -1,139 +1,28 @@
 ---
-title: "Adjust PHP Settings for Your WP Stratos WordPress Site"
-sidebarTitle: "PHP Settings"
-description: "Configure PHP version, memory limit, execution time, upload size, and debug mode for your WP Stratos site — changes apply instantly, no support needed."
+title: "The WP Stratos Environment Welcome Banner"
+sidebarTitle: "Welcome Banner"
+description: "The WP Stratos Environment welcome banner gives you a quick overview of your managed plugins and a handful of at-a-glance settings, right in wp-admin."
+keywords: ["wp stratos environment plugin", "wordpress managed plugins overview", "wordpress admin dashboard banner"]
 ---
 
-PHP settings control how WordPress and its plugins execute on the server — how much memory they can use, how long a request can run, how large a file you can upload, and whether errors are logged or displayed. You may need to adjust these values when installing resource-intensive plugins, running large product imports, processing bulk operations, or troubleshooting unexpected errors. WP Stratos Environment lets you change all of these settings directly from WordPress, and every change takes effect immediately.
+The **welcome banner** is what you'll actually see when you open WP Stratos Environment from your WordPress admin sidebar. It's a dashboard-style overview, not a settings panel, built to answer "what's WP Stratos actually doing on this site" at a glance rather than to expose configuration you're meant to change here.
 
-## Available Settings
+## What's on the Banner
 
 <AccordionGroup>
-  <Accordion title="PHP Version">
-    **What it is:** The version of PHP your site runs on.
-
-    **Default:** The version active at the time your site was provisioned.
-
-    **Available options:** 7.4, 8.0, 8.1, 8.2, 8.3
-
-    **When to change it:** Upgrade to a newer PHP version for better performance and security, or switch to an older version temporarily if a plugin or theme is not yet compatible with a newer release. Always test on a staging environment before changing the PHP version on a live site.
+  <Accordion title="Managed Plugins Overview">
+    A summary card for each of the three managed plugins, WP Postman, Aero, and WP Stratos Environment itself, showing whether it's active and giving you a one-click link into that plugin's own settings screen. If you're trying to remember which plugin handles email versus caching versus platform identification, this is the fastest place to check.
   </Accordion>
 
-  <Accordion title="Memory Limit (memory_limit)">
-    **What it is:** The maximum amount of memory a single PHP process can allocate.
-
-    **Default:** 256MB
-
-    **Available options:** 256MB, 512MB, 1GB
-
-    **When to change it:** Increase this value if you see "Allowed memory size exhausted" errors, or when running page builders, WooCommerce, or other memory-hungry plugins.
-  </Accordion>
-
-  <Accordion title="Max Execution Time (max_execution_time)">
-    **What it is:** The maximum number of seconds a PHP script is allowed to run before the server terminates it.
-
-    **Default:** 60 seconds
-
-    **Available options:** 30, 60, 120, 300 seconds
-
-    **When to change it:** Increase this value when running long-running operations such as large WooCommerce imports, bulk media processing, or plugin/theme installations that time out.
-  </Accordion>
-
-  <Accordion title="Max Upload File Size (upload_max_filesize / post_max_size)">
-    **What it is:** The largest file size that can be uploaded through WordPress. WP Stratos Environment sets both `upload_max_filesize` and `post_max_size` together to keep them consistent.
-
-    **Default:** 64MB
-
-    **Available options:** 64MB, 128MB, 256MB
-
-    **When to change it:** Increase this value when you need to upload large images, videos, WooCommerce product CSVs, or theme/plugin ZIP files that exceed the current limit.
-  </Accordion>
-
-  <Accordion title="Max Input Variables (max_input_vars)">
-    **What it is:** The maximum number of input variables (form fields, query parameters, etc.) that PHP will accept in a single request.
-
-    **Default:** 3000
-
-    **When to change it:** Increase this value if you manage large menus, complex product attribute sets in WooCommerce, or any form-heavy plugin that submits many fields at once and silently drops data.
-  </Accordion>
-
-  <Accordion title="PHP Error Display">
-    **What it is:** A toggle that controls whether PHP errors are printed directly on the front end of your site.
-
-    **Default:** Disabled
-
-    **When to change it:** Enable this temporarily in a development or staging environment to see PHP errors inline. Keep it disabled on any live production site — exposed error output can reveal sensitive server paths and application logic.
-  </Accordion>
-
-  <Accordion title="WP_DEBUG">
-    **What it is:** The WordPress debug mode constant. When enabled, WordPress surfaces PHP notices, warnings, and deprecated function calls that are suppressed by default.
-
-    **Default:** Disabled
-
-    **When to change it:** Enable WP_DEBUG only while actively troubleshooting a problem on a staging or development site. See [Enabling Debug Mode](#enabling-debug-mode) below for safe usage guidance.
-  </Accordion>
-
-  <Accordion title="WP_DEBUG_LOG">
-    **What it is:** When enabled alongside WP_DEBUG, WordPress writes all debug output to `/wp-content/debug.log` instead of (or in addition to) displaying it on screen.
-
-    **Default:** Disabled
-
-    **When to change it:** Enable WP_DEBUG_LOG when you want to capture errors silently in a log file without displaying them to visitors. This is the safest way to collect debug information on a staging site that mirrors production traffic.
+  <Accordion title="At-a-Glance Settings">
+    A handful of read-only or lightly configurable settings relevant to how the managed plugins behave together. This isn't a general-purpose settings screen, and it doesn't cover PHP version or server configuration, those live in the Cloud Panel, not here.
   </Accordion>
 </AccordionGroup>
 
-## Changing a PHP Setting
+<Note>
+  If you're looking to change your PHP version, that's done from the Cloud Panel's [Developer Settings](/cloud-panel/developer-settings), not from this plugin. Other PHP configuration values (memory limits, upload sizes, execution time) aren't self-service anywhere, plugin or Cloud Panel. Reach out to WP Stratos support at [missioncontrol@wpstratos.com](mailto:missioncontrol@wpstratos.com) if you need one of those adjusted for a specific domain.
+</Note>
 
-<Steps>
-  <Step title="Open PHP Settings">
-    In your WordPress admin, click **WP Stratos Environment** in the left sidebar, then select **PHP Settings**.
-  </Step>
-  <Step title="Locate the setting">
-    Find the setting you want to change. Each option is labelled with its name, current value, and a short description.
-  </Step>
-  <Step title="Select the new value">
-    Choose the new value from the dropdown menu or toggle the switch for boolean settings.
-  </Step>
-  <Step title="Save your changes">
-    Click **Save Changes**. WP Stratos Environment applies the new configuration immediately — no server restart or additional action is required.
-  </Step>
-  <Step title="Verify the change">
-    Reload the **Server Info** page to confirm the updated value appears under **PHP Configuration**.
-  </Step>
-</Steps>
+## Accessing the Welcome Banner
 
-<Warning>
-  Increasing memory limit or execution time gives PHP processes more of your server's resources. Some plugins (such as WooCommerce during large imports, or complex page builders) legitimately require higher values — but always set the minimum that gets the job done. Unnecessarily high limits can mask inefficient plugin code and reduce available resources for concurrent requests.
-</Warning>
-
-<Tip>
-  If a plugin installation or data import fails with a timeout error, increase **Max Execution Time** to 120 or 300 seconds, complete the operation, then set it back to 60 seconds. Leaving it permanently elevated is rarely necessary.
-</Tip>
-
-## Enabling Debug Mode
-
-WordPress debug mode is a powerful troubleshooting tool, but it must be used carefully. Enable it when you need to identify the source of an error, a blank screen, or unexpected behaviour — and disable it as soon as you're done.
-
-<Warning>
-  Never leave **WP_DEBUG** enabled on a live production site. Debug output can expose file paths, database query details, API keys passed through functions, and other sensitive information to anyone who visits your site.
-</Warning>
-
-To enable debug logging safely, follow these steps:
-
-<Steps>
-  <Step title="Enable WP_DEBUG">
-    In **PHP Settings**, toggle **WP_DEBUG** on. This activates WordPress's debug mode.
-  </Step>
-  <Step title="Enable WP_DEBUG_LOG">
-    Toggle **WP_DEBUG_LOG** on. This redirects all debug output to `/wp-content/debug.log` rather than printing it on screen, so visitors are not exposed to error messages.
-  </Step>
-  <Step title="Reproduce the issue">
-    Perform the action that triggers the error — for example, loading a specific page, saving a post, or running an import.
-  </Step>
-  <Step title="Review the log">
-    Access `/wp-content/debug.log` via SFTP or your WP Stratos file manager to read the captured errors and warnings.
-  </Step>
-  <Step title="Disable debug mode">
-    Once you have the information you need, toggle both **WP_DEBUG** and **WP_DEBUG_LOG** off and click **Save Changes**.
-  </Step>
-</Steps>
+In your WordPress admin, click **WP Stratos Environment** in the left sidebar. The banner loads immediately, there's nothing to configure or navigate to first.

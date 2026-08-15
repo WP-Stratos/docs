@@ -1,0 +1,61 @@
+---
+title: "Developer Settings: SSH, Git, PHP, and Advanced Site Configuration"
+sidebarTitle: "Developer Settings"
+description: "SSH/SFTP access, Git repository deployments, PHP version management, debug and maintenance mode, phpMyAdmin, and remote wp-config.php edits for your WP Stratos site."
+icon: "code"
+keywords: ["wordpress developer tools hosting", "ssh sftp wordpress hosting", "git deployment wordpress hosting", "wp-config.php remote edit", "php version manager wordpress"]
+---
+
+Everything that goes beyond day to day site management lives under a site's **Advanced** settings in the Cloud Panel. This is where developers, agencies, and anyone running more than a handful of sites end up spending time: PHP configuration, direct server access, Git deployments, and a remote editor for your `wp-config.php` file.
+
+## PHP Version
+
+Each domain has its own PHP version, checked and changeable from Advanced settings. Bumping the version applies to every instance running on that domain, so if you're not sure your theme and plugins are ready for a newer release, test it on staging first.
+
+<Note>
+  This is the only PHP configuration that's self-service. Other PHP values, memory limits, execution time, upload size, and similar, aren't adjustable from the Cloud Panel or from any plugin. If you need one of those changed for a specific domain, reach out to WP Stratos support at [missioncontrol@wpstratos.com](mailto:missioncontrol@wpstratos.com).
+</Note>
+
+## SSH and SFTP Access
+
+Direct file access is available through SSH and SFTP for anyone who wants to work outside the Cloud Panel's file manager, whether that's syncing files with a local development environment, running WP-CLI commands, or scripting a deployment.
+
+## Git Repository Deployments
+
+Connect a WordPress instance directly to a Git repository and manage code the way you'd manage any other software project:
+
+- Connect a repository and pick a deployment branch.
+- Pull changes from the branch into the instance, or push changes back.
+- Enable auto-deploy so new commits pushed to the connected branch update the site automatically through a webhook.
+- Review the last deployed commit and a deployment log right in the Cloud Panel, so you know exactly what's running and when it last changed.
+
+Repository access runs over HTTPS with a personal access token. SSH-based Git access isn't available yet.
+
+<Tip>
+  Git deployments are built for teams that already treat WordPress like a software project rather than a one-off site. If you're managing client work solo with occasional manual updates, the file manager and staging environment will probably cover what you need without adding a Git workflow on top.
+</Tip>
+
+## Debug Mode and Maintenance Mode
+
+Two toggles live here that you'll reach for constantly when troubleshooting:
+
+- **WordPress Debug Mode.** Turns on visible application errors while browsing the site, useful for tracking down what's actually breaking a page instead of guessing.
+- **Maintenance Mode.** Shows visitors a temporary maintenance notice instead of the live site, handy while you're mid-update and don't want half-finished changes on display.
+
+## phpMyAdmin Access
+
+A direct shortcut into phpMyAdmin for the instance's database, for anyone who needs to run a query, inspect a table, or fix something that's easier to handle in SQL than through the WordPress admin.
+
+## Remote wp-config.php Edits
+
+Introduce changes to your WordPress configuration file without opening an FTP client. Click **Create Config** to add a new value, and every config you've added shows up in a searchable, sortable table with its name, value, and type. Edit or remove any entry using the action buttons next to it. This is the same place you'd add a constant like `WP_POSTMAN_API_KEY` if you'd rather not edit `wp-config.php` by hand, see the [WP Postman overview](/plugins/wp-postman/overview) for why that constant matters.
+
+## WordPress User Management
+
+Manage the admins and users who have access to the instance from a single table, showing each user's key details. Edit a user's data, reset their password, or remove them entirely using the icons on the right.
+
+---
+
+## Where This Fits
+
+Most day-to-day site management (backups, staging, domains, plugins) doesn't touch any of this. Advanced settings exist for the moments you need more control than the standard dashboard gives you, without forcing you to open a support ticket or wait on someone else to make the change.

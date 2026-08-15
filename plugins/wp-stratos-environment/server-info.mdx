@@ -1,77 +1,24 @@
 ---
-title: "View Your Site's Server and Environment Information"
-sidebarTitle: "Server Info"
-description: "The Server Info panel shows your PHP version, web server, database, WordPress version, loaded extensions, and active configuration values in one place."
+title: "WP Postman Mail Log Widget on the WordPress Dashboard"
+sidebarTitle: "Mail Log Widget"
+description: "WP Stratos Environment adds a WP Postman mail log widget to your WordPress dashboard, showing recent outgoing email activity at a glance."
+keywords: ["wordpress email dashboard widget", "wp postman mail log", "check outgoing email wordpress dashboard"]
 ---
 
-The Server Info page gives you a complete, real-time snapshot of your site's hosting environment. You'll find it useful any time you need to check whether a required PHP extension is loaded, confirm which PHP version is currently active, or gather technical details before contacting support. Everything is displayed in a single screen and can be copied to your clipboard with one click — no SSH access or server-side inspection required.
+WP Stratos Environment adds a small widget to your main WordPress **Dashboard** screen, alongside the usual "At a Glance" and Activity widgets. It shows recent outgoing email activity from WP Postman, the pre-installed SMTP plugin, so you can spot a delivery problem without navigating away from the dashboard.
 
-## What's Displayed
+## What the Widget Shows
 
-<AccordionGroup>
-  <Accordion title="Platform Info">
-    This section covers the core software stack your site runs on:
-
-    - **PHP Version** — the PHP version currently active for your site
-    - **Web Server** — the server software handling your requests (LiteSpeed or Nginx, depending on your plan)
-    - **MySQL / MariaDB Version** — the database engine version
-    - **WordPress Version** — the version of WordPress installed on your site
-
-    Use this section to quickly confirm your environment meets a plugin's minimum requirements before installing it.
-  </Accordion>
-
-  <Accordion title="Site Settings">
-    This section displays the core WordPress address configuration:
-
-    - **Site URL** — the URL configured as `siteurl` in WordPress (used for loading core files)
-    - **WordPress Address** — the URL configured as `home` in WordPress (used for the front end)
-    - **Active Theme** — the name of the currently active theme, along with its parent theme if a child theme is in use
-
-    If your site URL and WordPress address differ, you'll be able to spot the discrepancy here immediately.
-  </Accordion>
-
-  <Accordion title="PHP Configuration">
-    This section lists the PHP configuration values currently active on your server — meaning the values actually in effect at runtime, which may differ from what you last saved if a plugin or `wp-config.php` override is present. Displayed values include:
-
-    - `memory_limit`
-    - `max_execution_time`
-    - `upload_max_filesize`
-    - `post_max_size`
-    - `max_input_vars`
-    - Additional `php.ini` directives relevant to WordPress performance
-
-    Use this section to verify that a change made in **PHP Settings** has taken effect as expected.
-  </Accordion>
-
-  <Accordion title="PHP Extensions">
-    This section lists every PHP extension currently loaded on your server. You can scan the list to check whether a specific extension your plugin or theme requires — such as `imagick`, `intl`, `zip`, `sodium`, or `redis` — is available before attempting to install or activate it.
-  </Accordion>
-
-  <Accordion title="Must-Use Plugins">
-    This section lists the plugins installed in `/wp-content/mu-plugins`. Must-use plugins load automatically on every request and cannot be deactivated from the standard Plugins screen. WP Stratos uses this location for platform-level plugins, including WP Stratos Environment itself. Reviewing this list helps you understand which functionality is always active on your site regardless of what appears in the regular plugin list.
-  </Accordion>
-</AccordionGroup>
-
-## Copying System Info for Support
-
-When you contact WP Stratos support, including a copy of your System Info dramatically reduces the time needed to diagnose your issue. Instead of asking you a series of follow-up questions about your environment, the support team can see your full stack details immediately.
-
-<Steps>
-  <Step title="Open Server Info">
-    In your WordPress admin, click **WP Stratos Environment** in the left sidebar, then select **Server Info**.
-  </Step>
-  <Step title="Copy your system information">
-    Click the **Copy System Info** button at the top of the page. All displayed environment details are instantly copied to your clipboard as plain text.
-  </Step>
-  <Step title="Paste into your support request">
-    Open a new support ticket or email and paste the copied text into the message body. The support team can then see your full environment at a glance.
-  </Step>
-</Steps>
+The widget surfaces a compact view of your most recent send attempts: recipient, subject, delivery method, and status. It's meant for a quick glance, not deep investigation, if you're actually troubleshooting a specific failed message, the full [Mail Log](/plugins/wp-postman/email-logs) inside WP Postman's own settings has the complete detail: exact error text, HTTP response codes, and the full message body.
 
 <Tip>
-  When contacting WP Stratos support, always include a copy of your System Info. It helps the team identify environment-specific issues — such as a missing PHP extension or a PHP version incompatibility — without needing to ask for details separately, getting your issue resolved faster.
+  Think of this widget as an early-warning signal. If you land on your dashboard and see a run of Failed rows, that's your cue to open WP Postman's Mail Log and dig into what's actually going wrong. See [Email Delivery](/troubleshooting/email-delivery) for common causes and fixes.
 </Tip>
 
-<Info>
-  Server Info is read-only. Nothing on this page can be edited directly. To change PHP configuration values such as memory limit, max execution time, or PHP version, navigate to the **PHP Settings** tab.
-</Info>
+## Where to Find It
+
+Log in to your WordPress admin and go to the main **Dashboard** (the screen you land on after logging in, or reachable from **Dashboard → Home** in the sidebar). The widget appears among your other dashboard widgets. If you don't see it, check that WP Stratos Environment hasn't been deactivated, see [Plugin Reactivation](/troubleshooting/plugin-reactivation) if it keeps disappearing.
+
+<Note>
+  This widget is display-only. You can't take action on a message from here, restore, resend, and detailed diagnostics all happen from WP Postman's own [Mail Log](/plugins/wp-postman/email-logs) screen.
+</Note>
