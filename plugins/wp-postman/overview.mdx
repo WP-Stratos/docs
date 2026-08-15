@@ -2,6 +2,7 @@
 title: "WP Postman: Reliable Email Delivery for Your WordPress Site"
 sidebarTitle: "Overview"
 description: "WP Postman replaces WordPress's default mail system with a custom API relay for WP Stratos websites with optional SMTP delivery, ensuring your transactional emails reach the inbox every time."
+keywords: ["wordpress smtp plugin", "reliable email delivery wordpress", "wp postman email plugin", "transactional email wordpress hosting", "fix wordpress not sending email"]
 ---
 
 WordPress ships with one method for sending mail: PHP's `mail()` function, called through the `wp_mail()` wrapper every plugin and theme relies on. It works fine in a demo. It falls apart the moment a real inbox provider gets involved, because a message sent through local `mail()` carries no authentication, no reputation, and no way for Gmail or Outlook to confirm your server is who it says it is. Password resets, order receipts, and quote requests routed this way are guesswork, not delivery.
@@ -14,7 +15,7 @@ WP Postman doesn't add one SMTP connection. It gives you eight, and they work in
 
 <Steps>
   <Step title="The native WP Postman relay">
-    When you select the default **WP Postman** delivery method, the plugin skips SMTP entirely. It hooks `pre_wp_mail`, builds a signed MIME message with PHPMailer locally, then hands that raw message to WP Stratos's managed delivery API over an outbound HTTPS request. No SMTP handshake, no SMTP port. This matters on hosts and networks that throttle or block outbound port 587/465/2525, since HTTPS on port 443 almost never is. It's also why this is the fastest path to get working: paste one API key into `wp-config.php` and mail starts flowing, no host or port lookup required.
+    When you select the default **WP Postman** delivery method, the plugin skips SMTP entirely. It hooks `pre_wp_mail`, builds a signed MIME message with PHPMailer locally, then hands that raw message to WP Stratos's managed delivery API over an outbound HTTPS request. No SMTP handshake, no SMTP port. This matters on hosts and networks that throttle or block outbound port 587/465/2525, since HTTPS on port 443 almost never is. It's also why this is the fastest path to get working: paste one API key into `wp-config.php` (or add it remotely through [Developer Settings](/cloud-panel/developer-settings) if you'd rather not touch files directly) and mail starts flowing, no host or port lookup required.
   </Step>
   <Step title="Every other delivery method">
     SMTP.com, Brevo, Mailgun, SendGrid, Gmail, and Other SMTP all configure PHPMailer's native SMTP client through the `phpmailer_init` hook, the same mechanism most SMTP plugins use. These are real SMTP connections to real SMTP hosts, authenticated with the credentials you provide.
@@ -67,5 +68,9 @@ WP Postman adds one sub-level admin menu item with five tabs **(Settings → WP 
 
   <Card title="Email Logs" icon="list" href="/plugins/wp-postman/email-logs">
     Read delivery status correctly, tell a bounce apart from a misconfiguration, and manage log retention.
+  </Card>
+
+  <Card title="Email Delivery Troubleshooting" icon="triangle-exclamation" href="/troubleshooting/email-delivery">
+    Diagnose authentication errors, spam filtering, connection timeouts, and SPF/DKIM problems.
   </Card>
 </CardGroup>

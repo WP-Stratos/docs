@@ -10,7 +10,7 @@ Everything that goes beyond day to day site management lives under a site's **Ad
 
 ## PHP Version and Settings
 
-Each domain has its own PHP version, checked and changeable from Advanced settings. Bumping the version applies to every instance running on that domain, so if you're not sure your theme and plugins are ready for a newer release, test it on staging first.
+Each domain has its own PHP version, checked and changeable from Advanced settings. Bumping the version applies to every instance running on that domain, so if you're not sure your theme and plugins are ready for a newer release, test it on staging first. The same PHP version and memory/upload settings are also manageable from inside WordPress itself through the [WP Stratos Environment plugin](/plugins/wp-stratos-environment/overview), pre-installed on every site, whichever place is more convenient for how you work.
 
 Alongside the version picker, **PHP Settings** lets you add, edit, or remove PHP configuration values specific to that domain (things like memory limits and upload sizes) without needing shell access to touch a php.ini file directly.
 
@@ -46,7 +46,7 @@ A direct shortcut into phpMyAdmin for the instance's database, for anyone who ne
 
 ## Remote wp-config.php Edits
 
-Introduce changes to your WordPress configuration file without opening an FTP client. Click **Create Config** to add a new value, and every config you've added shows up in a searchable, sortable table with its name, value, and type. Edit or remove any entry using the action buttons next to it.
+Introduce changes to your WordPress configuration file without opening an FTP client. Click **Create Config** to add a new value, and every config you've added shows up in a searchable, sortable table with its name, value, and type. Edit or remove any entry using the action buttons next to it. This is the same place you'd add a constant like `WP_POSTMAN_API_KEY` if you'd rather not edit `wp-config.php` by hand, see the [WP Postman overview](/plugins/wp-postman/overview) for why that constant matters.
 
 ## WordPress User Management
 

@@ -2,9 +2,10 @@
 title: "WP Stratos Environment: Manage Your PHP & Server Config"
 sidebarTitle: "Overview"
 description: "WP Stratos Environment lets you configure PHP settings and view server info directly from WordPress — no support ticket or manual php.ini edits required."
+keywords: ["wordpress php version manager plugin", "change php version wordpress no ssh", "wordpress server environment plugin", "wordpress hosting environment settings"]
 ---
 
-WP Stratos Environment is a plugin pre-installed and activated on every WP Stratos site. It gives you direct control over server-level PHP configuration and provides a full read-out of your hosting environment — all from within the WordPress admin. Instead of opening a support ticket every time you need to raise your memory limit or switch PHP versions, you can make those changes yourself in seconds.
+WP Stratos Environment is a plugin pre-installed and activated on every WP Stratos site. It gives you direct control over server-level PHP configuration and provides a full read-out of your hosting environment, all from within the WordPress admin. Instead of opening a support ticket every time you need to raise your memory limit or switch PHP versions, you can make those changes yourself in seconds.
 
 ## What You Can Configure
 
@@ -12,6 +13,7 @@ WP Stratos Environment is a plugin pre-installed and activated on every WP Strat
   <Card title="PHP Settings" icon="sliders" href="/plugins/wp-stratos-environment/php-settings">
     Change your PHP version, memory limit, max execution time, upload file size limits, input variable caps, and debug mode toggles.
   </Card>
+
   <Card title="Server Info" icon="server" href="/plugins/wp-stratos-environment/server-info">
     View a full snapshot of your environment: web server, database version, WordPress version, active theme, loaded PHP extensions, and more.
   </Card>
@@ -25,4 +27,8 @@ WP Stratos Environment is a plugin pre-installed and activated on every WP Strat
 
 To open the plugin, log in to your WordPress admin dashboard and select **WP Stratos Environment** from the left sidebar. From there you can navigate between the **PHP Settings** and **Server Info** tabs using the sub-menu items.
 
-The plugin also surfaces a **Copy System Info** button on the Server Info page. A single click copies a complete summary of your environment — PHP version, server software, database version, active plugins, and current PHP configuration values — directly to your clipboard. This is especially useful when submitting a support ticket, as it gives the support team everything they need to diagnose your issue without back-and-forth.
+The plugin also surfaces a **Copy System Info** button on the Server Info page. A single click copies a complete summary of your environment (PHP version, server software, database version, active plugins, and current PHP configuration values) directly to your clipboard. This is especially useful when submitting a support ticket, as it gives the support team everything they need to diagnose your issue without back-and-forth. See the [FAQ](/troubleshooting/faq) for the rest of what to include alongside it.
+
+<Tip>
+  PHP version and settings can also be managed at the domain level from the Cloud Panel's [Developer Settings](/cloud-panel/developer-settings), which is useful if you're managing several sites and would rather not log into wp-admin for each one individually. Changes made either way apply to the same underlying PHP configuration.
+</Tip>

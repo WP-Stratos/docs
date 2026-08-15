@@ -2,6 +2,7 @@
 title: "Why WP Stratos Managed Plugins Reactivate Automatically"
 sidebarTitle: "Plugin Reactivation"
 description: "Understand why WP Postman, Aero, and WP Stratos Environment auto-reactivate after updates and how to disable individual features without deactivating them."
+keywords: ["managed plugin keeps reactivating wordpress", "wordpress plugin auto reactivate fix", "wp stratos managed plugins explained"]
 ---
 
 If you've deactivated WP Postman, Aero, or WP Stratos Environment and found them active again shortly afterwards, this is expected behaviour. These three plugins are part of the WP Stratos managed hosting infrastructure. Unlike standard third-party plugins, they are tied directly to your hosting environment and are automatically reinstated as part of the platform's update process.
@@ -10,13 +11,13 @@ If you've deactivated WP Postman, Aero, or WP Stratos Environment and found them
 
 The following plugins are pre-installed on every WP Stratos site and are considered part of the managed hosting layer:
 
-- **WP Postman** — Handles all outgoing WordPress email. Ensures your site can reliably send transactional emails such as order confirmations, password resets, and contact form notifications.
-- **Aero** — Provides full-stack caching and performance optimisation, including page caching, object caching, minification, image optimisation, and Edge management.
-- **WP Stratos Environment** — Manages PHP version selection, server-level configuration, and exposes server diagnostic information within the WordPress admin.
+- **WP Postman**: handles all outgoing WordPress email. Ensures your site can reliably send transactional emails such as order confirmations, password resets, and contact form notifications.
+- **Aero**: provides full-stack caching and performance optimisation, including page caching, object caching, minification, image optimisation, and Edge management.
+- **WP Stratos Environment**: manages PHP version selection, server-level configuration, and exposes server diagnostic information within the WordPress admin.
 
 ## Why Does This Happen?
 
-These plugins are integral to how WP Stratos manages your hosting environment. They enable the platform to maintain correct PHP behaviour, deliver optimised page responses, and relay outgoing email through a properly configured mail relay. Disabling any of them can silently break features that you or your visitors depend on — without any obvious error message pointing back to the deactivated plugin.
+These plugins are integral to how WP Stratos manages your hosting environment. They enable the platform to maintain correct PHP behaviour, deliver optimised page responses, and relay outgoing email through a properly configured mail relay. Disabling any of them can silently break features that you or your visitors depend on, without any obvious error message pointing back to the deactivated plugin.
 
 WP Stratos automatically applies updates to managed plugins to deliver security patches, compatibility fixes, and new features without requiring manual action from you. As part of this update process, any deactivated managed plugin is reactivated to ensure it operates correctly under the new version. This safeguard exists because an update to a managed plugin may introduce changes that only take effect correctly when the plugin is active.
 
@@ -27,7 +28,7 @@ Rather than deactivating a managed plugin, disable the specific feature you don'
 <Accordion title="Disable caching (Aero)">
   You don't need to deactivate Aero to stop it from caching your pages. Navigate to **Aero → Cache** in your WordPress admin and toggle off **Page Cache**. The plugin remains active and continues to handle other tasks (such as image optimisation), but no pages will be cached.
 
-  You can also disable individual optimisation features — such as CSS/JS minification or lazy loading — independently under **Aero → Optimization**, without affecting caching or the plugin's active status.
+  You can also disable individual optimisation features, such as CSS/JS minification or lazy loading, independently under **Aero → Optimization**, without affecting caching or the plugin's active status.
 </Accordion>
 
 <Accordion title="Stop email sending (WP Postman)">
@@ -41,9 +42,13 @@ Rather than deactivating a managed plugin, disable the specific feature you don'
 </Accordion>
 
 <Info>
-  Deactivating a managed plugin does not cause immediate problems in most cases, but the next scheduled plugin update will reactivate it automatically. If you are troubleshooting a suspected conflict with a managed plugin, we strongly recommend disabling the specific feature within the plugin's settings rather than deactivating the plugin itself — this narrows down the cause without risking the stability of your hosting environment.
+  Deactivating a managed plugin does not cause immediate problems in most cases, but the next scheduled plugin update will reactivate it automatically. If you are troubleshooting a suspected conflict with a managed plugin, we strongly recommend disabling the specific feature within the plugin's settings rather than deactivating the plugin itself. This narrows down the cause without risking the stability of your hosting environment.
 </Info>
 
 <Note>
-  If you believe a managed plugin is directly causing a conflict with your theme or another plugin, contact **WP Stratos support**. Our team can help you diagnose the root cause and find a resolution that doesn't require deactivating a managed plugin.
+  If you believe a managed plugin is directly causing a conflict with your theme or another plugin, reach out through the Cloud Panel (see the [FAQ](/troubleshooting/faq) for what to include). Our team can help you diagnose the root cause and find a resolution that doesn't require deactivating a managed plugin.
 </Note>
+
+<Tip>
+  Deactivating, reactivating, and updating any plugin, managed or otherwise, can also be done in bulk from the Cloud Panel's [Plugins & Themes](/cloud-panel/plugins-and-themes) manager, without needing to log into wp-admin.
+</Tip>
