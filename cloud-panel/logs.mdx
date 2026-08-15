@@ -1,0 +1,29 @@
+---
+title: "View Error and Activity Logs for Your WP Stratos Site"
+sidebarTitle: "Logs"
+description: "Access PHP error logs and site activity logs for your WP Stratos instance directly from the Cloud Panel."
+icon: "list"
+keywords: ["wordpress error log hosting", "php error log wordpress", "wordpress hosting activity log", "debug wordpress site issue"]
+---
+
+Every instance keeps a set of logs you can pull up without needing FTP access or a support ticket. They live under a site's Advanced settings in the Cloud Panel, alongside the other developer-facing tools.
+
+## Error Logs
+
+The PHP error log for the instance, showing warnings, notices, and fatal errors as WordPress and its plugins generate them. This is usually the first place to look when something on a site is behaving strangely and there's no obvious cause in the WordPress admin itself, a white screen, a plugin silently failing, a fatal error after an update.
+
+## Access and Activity Logs
+
+Beyond PHP errors, the Cloud Panel surfaces logs covering requests hitting the site and account-level activity, so you can see what's actually happening on an instance without needing raw server access. This is useful for confirming whether a spike in resource usage traces back to real traffic, a bot, or something else entirely.
+
+## Reading Logs Effectively
+
+A few habits that make logs actually useful instead of just noise:
+
+- **Narrow the time window first.** If you know roughly when an issue started, focus there before scrolling through everything.
+- **Check the error log before opening a support ticket.** A fatal error message almost always names the plugin or theme file responsible, which saves a round trip.
+- **Cross-reference with recent changes.** A plugin update, a theme switch, or a manual `wp-config.php` edit right before an error started appearing is rarely a coincidence.
+
+<Tip>
+  If you do need to open a support ticket, copying the relevant error log lines into it (rather than just describing the symptom) tends to get a faster, more precise answer. See the [FAQ](/troubleshooting/faq) for what else to include in a ticket.
+</Tip>

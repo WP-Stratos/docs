@@ -38,6 +38,10 @@ This page collects the most common questions WP Stratos customers ask about thei
   Automatic update behavior for WordPress core, plugins, and themes is configurable under a site's Advanced settings in the Cloud Panel. If you'd rather review updates manually before they apply, especially for a client site where you don't want surprises, you can turn automatic updates off there and update on your own schedule.\*\*\*\* x
 </Accordion>
 
+<Accordion title="How do I secure my Cloud Panel account?">
+  Turn on two-factor authentication under **My Account** in the Cloud Panel. You can also enable notifications for logins from new devices, and review or revoke active sessions from the Active Devices tab if anything looks unfamiliar. See [Security & Account Settings](/cloud-panel/security-and-account) for the full walkthrough.
+</Accordion>
+
 ---
 
 ## Domains & SSL
@@ -79,7 +83,7 @@ This page collects the most common questions WP Stratos customers ask about thei
 ## Plugins
 
 <Accordion title="Can I install other plugins?">
-  Yes. Any standard WordPress plugin from the WordPress.org repository or a premium marketplace is compatible with WP Stratos. Install plugins as you normally would from **WordPress admin → Plugins → Add New**. The only consideration is avoiding multiple plugins that serve the same purpose as the managed plugins. Running a second caching plugin alongside Aero, for example, can create conflicts.
+  Yes. Any standard WordPress plugin from the WordPress.org repository or a premium marketplace is compatible with WP Stratos. Install plugins as you normally would from **WordPress admin → Plugins → Add New**, or use the built-in [Plugins & Themes](/cloud-panel/plugins-and-themes) manager in the Cloud Panel to install, update, and bulk-manage them without leaving your dashboard. The only consideration is avoiding multiple plugins that serve the same purpose as the managed plugins. Running a second caching plugin alongside Aero, for example, can create conflicts.
 </Accordion>
 
 <Accordion title="Why do WP Postman, Aero, and WP Stratos Environment keep reactivating?">
@@ -110,6 +114,7 @@ This page collects the most common questions WP Stratos customers ask about thei
   - **Your site's domain**, so the affected instance is easy to find.
   - **What's happening**, when it started, and anything you've already tried.
   - **A system info export**, available from the WP Stratos Environment plugin's Server Info page. See the [Server Info documentation](/plugins/wp-stratos-environment/server-info) for where to find it.
+  - **Relevant error log lines**, if the issue is a fatal error or unexpected behavior. See [Logs](/cloud-panel/logs) for where to find them.
 
   Screenshots or screen recordings are also helpful for visual or intermittent issues.
 </Accordion>

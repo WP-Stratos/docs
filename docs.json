@@ -56,6 +56,11 @@
               "cloud-panel/sites",
               "cloud-panel/migrate-a-site",
               "cloud-panel/backups",
+              "cloud-panel/developer-settings",
+              "cloud-panel/security-and-account",
+              "cloud-panel/plugins-and-themes",
+              "cloud-panel/edge-cache-and-cloudflare",
+              "cloud-panel/logs",
               "cloud-panel/staging"
             ]
           }

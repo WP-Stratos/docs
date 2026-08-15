@@ -1,0 +1,40 @@
+---
+title: "Security & Account Settings for Your WP Stratos Cloud Panel Login"
+sidebarTitle: "Security & Account"
+description: "Manage two-factor authentication, password changes, new device detection notifications, personal info, and active device sessions for your WP Stratos Cloud Panel account."
+icon: "shield-halved"
+keywords: ["wordpress hosting account security", "two factor authentication cloud panel", "active devices login sessions", "wordpress hosting 2fa setup"]
+---
+
+Your login to [cloud.wpstratos.com](https://cloud.wpstratos.com) has its own set of security and account controls, separate from anything you configure per site. These live under **My Account** in the Cloud Panel, reachable from your profile menu in the top right corner.
+
+## Personal Info and Password
+
+Update your name, email address, and other account details from the My Account page. Changing your password lives here too: enter your current password and a new one to update it, no need to go through an email reset link if you're already logged in.
+
+## Two-Factor Authentication
+
+Enable or disable two-factor authentication (2FA) for your account from My Account. Once turned on, logging in requires your password plus a second verification step, which meaningfully cuts down the odds of someone getting into your account off a leaked or guessed password alone.
+
+<Tip>
+  If you're managing sites for clients, turning on 2FA is one of the highest-value five minutes you'll spend. A compromised Cloud Panel login isn't just your account, it's every site and every domain you manage through it.
+</Tip>
+
+## New Device Detection Notifications
+
+WP Stratos can notify you when your account is logged into from a device it hasn't seen before. Turn this on under My Account if you want a heads-up any time a new browser or location logs in, useful for catching unauthorized access early rather than finding out after the fact.
+
+## Active Devices
+
+Under **My Account → Active Devices**, you'll find a list of every device currently logged into your account. From here you can:
+
+- **Forget a single device**, ending that specific session and requiring a fresh login from it.
+- **Bulk forget devices**, clearing every active session at once, useful if you're not sure which of several logged-in sessions might be the one you don't recognize.
+
+If you ever see a device on this list you don't recognize, forget it immediately and change your password.
+
+---
+
+## Account Security vs. Site Security
+
+It's worth keeping these two layers straight. Your Cloud Panel account login (covered here) controls access to the panel itself, everything you manage across every site. Individual WordPress site security (login attempts, firewall rules, and so on) is a separate layer handled at the instance level. Securing one doesn't automatically secure the other, so it's worth giving both some attention rather than assuming a strong Cloud Panel password covers everything downstream.
