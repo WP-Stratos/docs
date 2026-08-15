@@ -2,6 +2,7 @@
 title: "Use Staging Environments to Test Before Going Live"
 sidebarTitle: "Staging"
 description: "Create a staging clone of your live WordPress site, test themes, plugins, and updates safely, then push changes to production when you're confident."
+keywords: ["wordpress staging environment", "staging site wordpress hosting", "push staging to live wordpress", "test wordpress plugin updates safely", "one-click staging wordpress"]
 ---
 
 A staging environment is a private copy of your live site where you can make changes, test new plugins, or experiment with themes without any risk to your production site or visitors. WP Stratos gives every site a one-click staging environment that stays in sync with your live site — making it easy to work safely and ship changes with confidence.
@@ -17,15 +18,22 @@ A staging environment is a private copy of your live site where you can make cha
     In the Cloud Panel, click your site, then select the **Staging** tab.
   </Step>
   <Step title="Click Create Staging Site">
-    Click the **Create Staging Site** button. WP Stratos immediately begins cloning your live site.
+    Click the **Create Staging Site** button. Before cloning starts, WP Stratos runs a quick pre-check showing your current disk usage, your uploads folder size, and how much space you have available, so you're not surprised mid-clone.
+  </Step>
+  <Step title="Skip the uploads folder if you don't need it">
+    If your media library is large and you're only testing code or content changes, check **Skip uploads directory** to speed up cloning and cut disk usage. WP Stratos enforces this automatically if available space is too tight to clone everything.
   </Step>
   <Step title="Wait for the clone to complete">
-    WP Stratos copies all site files and the full database to an isolated staging environment. This typically takes one to three minutes. A status indicator shows progress.
+    WP Stratos copies your site files and full database to an isolated staging environment. This typically takes one to three minutes. A status indicator shows progress, and staging is created asynchronously so you can keep working elsewhere in the meantime.
   </Step>
   <Step title="Access your staging site">
     Once ready, your staging environment is accessible at the URL shown in the **Staging** tab. Click **Open Staging WP Admin** for direct one-click access to the staging WordPress dashboard.
   </Step>
 </Steps>
+
+<Note>
+  If staging creation fails for any reason, you can retry it from the same failed entry, or cancel it, which cleans up any partial files and database left behind. No need to open a support ticket for a failed attempt.
+</Note>
 
 ## Making Changes on Staging
 
@@ -58,10 +66,14 @@ When you're satisfied with your changes on staging, push them to your production
     Click the **Push to Live** button to begin the push workflow.
   </Step>
   <Step title="Choose what to push">
-    Select the scope of the push:
-    - **Full site** — Copies both files and the database to live.
-    - **Files only** — Pushes themes, plugins, and uploads without touching the database.
-    - **Database only** — Pushes content and settings changes without overwriting files.
+    Select the scope of the push. WP Stratos compares your staging and live databases first, then gives you control over exactly what moves:
+
+    - **Overwrite files** — copies themes, plugins, uploads, and core files to live.
+    - **Push full database** — replaces the entire live database with staging's.
+    - **Push structure changes** — moves table structure changes (new tables, new columns) without touching existing data.
+    - **Push changed data only** — moves just the tables where data actually changed, leaving everything else on live untouched.
+
+    This granularity matters if, say, you tested a plugin update on staging but a client also added new orders on the live site in the meantime. You can push the code changes without clobbering their new data.
   </Step>
   <Step title="Confirm the push">
     WP Stratos automatically takes a backup of your current live site, then applies the selected staging content. You'll receive a notification when the push is complete.

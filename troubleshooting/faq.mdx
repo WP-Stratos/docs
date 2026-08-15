@@ -2,6 +2,7 @@
 title: "Frequently Asked Questions About WP Stratos Hosting"
 sidebarTitle: "FAQ"
 description: "Answers to common questions about WP Stratos hosting plans, domains, SSL, backups, managed plugins, and how to get support when you need it."
+keywords: ["wordpress hosting faq", "managed wordpress hosting questions", "wordpress backup retention policy", "wordpress hosting support", "wordpress plugin conflicts hosting"]
 ---
 
 This page collects the most common questions WP Stratos customers ask about their hosting environment, managed plugins, domain setup, backups, and support. If you can't find what you need here, the linked guides go deeper on each topic — or you can reach the support team directly from your Cloud Panel.
@@ -63,16 +64,20 @@ This page collects the most common questions WP Stratos customers ask about thei
   Wildcard SSL certificates are not currently available on WP Stratos. Each automatically provisioned certificate covers the **root domain** (e.g., `yourdomain.com`) and the **www subdomain** (`www.yourdomain.com`). If you need coverage for additional subdomains, add each subdomain as a separate domain in **Cloud Panel → My Hosting → Domains** and a certificate will be issued for each one.
 </Accordion>
 
+<Accordion title="Should I enable the Cloudflare proxy toggle on my DNS records?">
+  We recommend leaving it off. WP Stratos DNS runs on a Cloudflare-backed network, so the proxy toggle is there if you need it, but WP Stratos already provides Edge Cache and DDoS protection at the platform level. Running both at once creates two caching layers that don't coordinate with each other, and the usual result is a page that looks stale to some visitors and fresh to others. If a WordPress instance on that domain has Edge Cache active, the Cloud Panel warns you before the toggle takes effect. See [DNS Configuration](/domains/dns-configuration) for the full explanation.
+</Accordion>
+
 ---
 
 ## Backups
 
 <Accordion title="How often are backups taken?">
-  Backups run **automatically every hour**. The hourly backup captures your WordPress database, and the nightly backup captures your files \+ database. You can also trigger a **manual backup** at any time from **Cloud Panel → your site → Backups → Add New **— for example, before making significant changes to your theme or installing a major plugin update.
+  Your database is backed up **every hour**, and your full site is backed up **once a day**, covering files and database together. You can also trigger a **manual backup** at any time from \*\*Cloud Panel → your site → Backups → Add New \*\*— for example, before making significant changes to your theme or installing a major plugin update.
 </Accordion>
 
 <Accordion title="How long are backups retained?">
-  WP Stratos retains all backups for **3-6 months**. After 3-6 months, older backups are removed automatically. If you need to preserve a snapshot beyond this window — for example, before a major site redesign — download a copy of the backup to your own storage.
+  WP Stratos retains the last **30 days** of backups. After that window, older backups are removed automatically. If you need to preserve a snapshot beyond 30 days — for example, before a major site redesign — download a copy of the backup to your own storage.
 </Accordion>
 
 <Accordion title="Can I download my backup files?">

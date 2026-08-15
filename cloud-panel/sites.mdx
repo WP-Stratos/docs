@@ -32,9 +32,23 @@ The Cloud Panel puts complete WordPress site management at your fingertips. From
 
 ## Accessing Your Site
 
-**One-click WordPress admin** — Every site card in the dashboard has an **Open WP Admin** button. Click it to log straight into your WordPress dashboard without entering credentials.
+**One-click WordPress admin** — Every site card in the dashboard has an **Open WP Admin** button. It uses single sign-on to log you straight into your WordPress dashboard, so there's no separate WordPress password to track down or reset.
 
 **Temporary URL** — While you're connecting a custom domain, your site is immediately accessible at `sitename.wpstratos.dev`. Share this URL for reviews or use it during initial setup.
+
+**Clear Cache** — A dedicated button on the site's action bar clears object cache and page cache in one click, useful when a client swears a change "isn't showing up" and you want to rule out stale cache before digging further.
+
+## Site Details and Analytics
+
+Open a site and you land on its **Site Details** page by default. This is where the day-to-day status of a site lives:
+
+- A **site preview** thumbnail, with a manual refresh option and a direct Visit Website link.
+- **WordPress and WooCommerce version** checks, done automatically, with a one-click update button when either falls behind.
+- **Backup status** and a shortcut to trigger a manual backup without leaving the page.
+- **SSL certificate** status for the site's domain.
+- A **loading speed** check for both desktop and mobile, so you have a number to point to before a client asks why their site "feels slow."
+
+Scroll down and you'll find **traffic analytics**: total visits, unique visitors, average session time, and bandwidth usage, each shown as a chart you can switch between the last week, month, or year. If you're managing sites for other people, this is often the fastest way to answer "how's my site doing" without opening a separate analytics tool.
 
 ## Site Settings
 
@@ -44,12 +58,15 @@ Open a site's settings by clicking the site name in the dashboard and navigating
   <Accordion title="PHP Version">
     View and change the PHP version running your WordPress site. For detailed instructions and available versions, see [PHP Settings](/plugins/wp-stratos-environment/php-settings).
   </Accordion>
+
   <Accordion title="Connected Domains">
     See all domains currently pointing to this site. Add a primary domain, set up redirects, or remove a domain you no longer need. For full instructions, visit [Connect a Domain](/domains/connect-domain).
   </Accordion>
+
   <Accordion title="SSL Certificate Status">
     Check whether your SSL certificate is active, pending, or due for renewal. WP Stratos provisions and auto-renews Let's Encrypt certificates — no manual action is normally required.
   </Accordion>
+
   <Accordion title="Resource Usage">
     Monitor your site's current disk usage and bandwidth consumption against your plan limits. Graphs update daily so you can spot growth trends and upgrade before you hit a limit.
   </Accordion>

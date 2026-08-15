@@ -2,17 +2,20 @@
 title: "Introduction to WP Stratos Managed WordPress Hosting"
 sidebarTitle: "Introduction"
 description: "Discover what WP Stratos is, how the platform works, and what's included in every managed WordPress hosting plan — from SSL to built-in plugins."
+keywords: ["managed wordpress hosting platform", "white label wordpress hosting", "start a wordpress hosting business", "wordpress hosting for agencies", "wordpress hosting reseller platform", "wordpress cloud infrastructure"]
 ---
 
-WP Stratos is a managed WordPress hosting platform designed to remove the operational burden of running WordPress at any scale. From automatic updates and security patches to built-in performance tooling and email delivery, WP Stratos handles the infrastructure so you can focus on your site.
+WP Stratos is a managed WordPress hosting platform built to remove the operational weight of running WordPress, whether that's one client site or fifty. Automatic updates, security patching, performance tooling, and email delivery are handled at the platform level, so the work left for you is running your business instead of babysitting a server.
 
 ## What is WP Stratos?
 
-WP Stratos is a fully managed hosting environment built exclusively for WordPress. Every site runs on infrastructure that WP Stratos maintains, monitors, and updates on your behalf — including WordPress core updates, security patches, and server-level configuration. You never need to log in to a server or manage a control panel for routine maintenance.
+WP Stratos is a hosting environment built exclusively for WordPress, on infrastructure designed for WordPress workloads specifically rather than general-purpose cloud compute stretched to fit. That distinction matters more than it sounds. A generic cloud server has to support anything you throw at it. WP Stratos infrastructure only has one job, which means caching, PHP execution, and database tuning are already set up correctly before your first site ever launches.
 
-At the center of the platform is the **WP Stratos Cloud Panel**, a web-based interface where you manage every aspect of your hosting. From the Cloud Panel you can create and delete sites, manage DNS records and custom domains, trigger on-demand backups, and spin up staging environments with a single click.
+Every site WP Stratos hosts runs with automatic failure detection and zero-downtime migration in the background, so hardware issues on our end get resolved before they ever reach your visitors. A web application firewall and automated DDoS mitigation sit in front of every site from the moment it's created, no add-on required. Core updates, security patches, and server-level configuration are handled without you needing to touch a terminal or manage a traditional control panel.
 
-SSL certificates are provisioned automatically for every domain you connect to WP Stratos. Certificates renew without any action on your part, so your site stays secure and your visitors never see a browser warning.
+At the center of the platform sits the **WP Stratos Cloud Panel**, the web interface where you manage everything: creating and deleting sites, DNS and custom domains, backups, and staging environments, all from one dashboard. If you're running this as your own hosting business, the Cloud Panel is also where your day-to-day actually happens. Client onboarding that used to take an afternoon of server setup takes minutes.
+
+SSL certificates are provisioned automatically for every domain you connect. They renew on their own. Nobody on your team has to remember an expiration date, and no visitor ever hits a broken padlock icon because someone forgot to renew a certificate three years running.
 
 ## Pre-installed plugins
 
@@ -22,9 +25,11 @@ Every WP Stratos site ships with three managed plugins installed and activated b
   <Card title="WP Postman" icon="envelope" href="/plugins/wp-postman/overview">
     SMTP email delivery for WordPress. Connect your email provider and ensure reliable delivery of all transactional messages sent from your site.
   </Card>
+
   <Card title="Aero" icon="gauge" href="/plugins/aero/overview">
     Caching and performance optimization tailored for WordPress. Aero comes pre-configured with sensible defaults and requires no manual setup to start improving page load times.
   </Card>
+
   <Card title="WP Stratos Environment" icon="code" href="/plugins/wp-stratos-environment/overview">
     PHP version management and server environment configuration, accessible directly from the WordPress admin without requiring SSH access or server credentials.
   </Card>
@@ -33,6 +38,14 @@ Every WP Stratos site ships with three managed plugins installed and activated b
 <Note>
   WP Postman, Aero, and WP Stratos Environment are **managed plugins** — they are required for the platform to function correctly. If you deactivate any of these plugins, they will be automatically reactivated the next time a plugin update runs. Do not rely on deactivating them to change platform behavior; use each plugin's settings screen instead.
 </Note>
+
+## The infrastructure underneath
+
+You don't need to know any of this to use WP Stratos, but it helps to know what you're actually paying for.
+
+Every site is backed by a global content delivery network with edge points of presence around the world, so a visitor in Sydney isn't waiting on a server response from Virginia. Traffic spikes are handled by burstable PHP resources that scale up automatically during a launch, a sale, or a post that unexpectedly goes viral, then scale back down once things settle. Backups run hourly for your database and daily for your full site files, and none of that counts against a storage quota or shows up as a line item you have to enable.
+
+DNS is powered by an enterprise-grade DNS network under the hood, which is why nameserver changes and record edits propagate as fast as they do. If you use **WP Stratos-managed DNS**, that same network also offers an optional proxy layer for individual DNS records. We recommend leaving it off. WP Stratos Edge Cache and the platform's built-in DDoS mitigation already sit in front of every site, and stacking a second proxy layer on top of that can create caching conflicts rather than solve anything. See [DNS Configuration](/domains/dns-configuration) for the details.
 
 ## Getting help
 

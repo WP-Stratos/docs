@@ -1,10 +1,11 @@
 ---
 title: "Back Up and Restore Your WordPress Site on WP Stratos"
 sidebarTitle: "Backups"
-description: "WP Stratos automatically backs up your WordPress site every day. Learn how to create manual backups, restore to any point, and download backup archives."
+description: "WP Stratos backs up your WordPress database hourly and your full site daily, automatically. Learn how to create manual backups, restore to any point, and download backup archives."
+keywords: ["automatic wordpress backups", "hourly database backup wordpress", "wordpress backup and restore", "managed wordpress hosting backups", "wordpress site backup schedule"]
 ---
 
-Every WP Stratos site is covered by automated daily backups at no extra cost. Backups capture both your files and your database, so you can recover from accidental deletions, failed updates, or any other issue by rolling back to a known-good state in just a few clicks.
+Every WP Stratos site is covered by automated backups at no extra cost, and no configuration on your part. Backups capture both your files and your database, so you can recover from accidental deletions, failed updates, or any other issue by rolling back to a known-good state in a few clicks.
 
 <Info>
   A backup is automatically created before any WordPress core or plugin update, giving you an instant recovery point without any manual effort on your part.
@@ -12,11 +13,13 @@ Every WP Stratos site is covered by automated daily backups at no extra cost. Ba
 
 ## Automatic Backups
 
-WP Stratos runs a full site backup every day in the background — no configuration needed on your end. Here's what you get:
+WP Stratos runs backups in the background on two schedules, so you always have a recent recovery point without lifting a finger:
 
-- **Daily schedule** — Backups run once every 24 hours, automatically.
-- **30-day retention** — The last 30 days of backups are always available. Older backups are removed on a rolling basis.
-- **Full snapshots** — Each backup includes all site files (themes, plugins, uploads, WordPress core) and a complete dump of your database.
+- **Hourly database backups** — Your WordPress database is backed up every hour, which matters more than it sounds like it should. Most site damage (a bad plugin update, a corrupted post, a hacked admin account) shows up in the database, not the files, so an hourly database snapshot means you're rarely more than 60 minutes from a clean state.
+- **Daily full-site backups** — A complete snapshot of files and database runs once a day, capturing themes, plugins, uploads, WordPress core, and a full database dump together.
+- **30-day retention** — The last 30 days of backups stay available. Anything older rolls off automatically.
+
+Each entry in your backup history shows its name, date and time, size, type (automatic or manual), the WordPress version at the time it was taken, and any notes you've added. You can search the list and select multiple backups to delete at once if you need to clean house.
 
 ## Creating a Manual Backup
 
@@ -33,7 +36,7 @@ Trigger an on-demand backup at any time — for example, right before making sig
     A progress indicator appears while WP Stratos captures your files and database. Backup time varies with site size — most sites complete in under two minutes.
   </Step>
   <Step title="Confirm the backup is listed">
-    Once finished, the new backup appears at the top of your backup list with a timestamp and the label **Manual**.
+    Once finished, the new backup appears at the top of your backup list with a timestamp and the label **Manual**. Add a note if you want a reminder of why you took it, like "before checkout redesign" or "pre-plugin-update" — future you will appreciate it when there are a dozen backups to choose from.
   </Step>
 </Steps>
 

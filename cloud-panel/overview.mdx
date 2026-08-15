@@ -2,9 +2,12 @@
 title: "WP Stratos Cloud Panel: Your Hosting Control Center"
 sidebarTitle: "Overview"
 description: "The Cloud Panel at my.wpstratos.com is your central hub for managing WordPress sites, domains, backups, and staging environments on WP Stratos."
+keywords: ["wordpress hosting control panel", "manage wordpress sites dashboard", "white label hosting control panel", "wordpress hosting client area", "wordpress site management dashboard"]
 ---
 
-The WP Stratos Cloud Panel is your all-in-one control interface for managing every aspect of your managed WordPress hosting. Accessible at [my.wpstratos.com](https://my.wpstratos.com), it gives you a clear view of all your sites and the tools to configure domains, protect your data with backups, and safely test changes using staging environments — no server expertise required.
+The WP Stratos Cloud Panel is the control interface for everything you do on the platform. It's accessible at [my.wpstratos.com](https://my.wpstratos.com), and it gives you a clear view of every site on your account along with the tools to configure domains, protect your data with backups, and safely test changes in staging. None of it requires server expertise, and none of it requires a support ticket for routine work.
+
+If you're running WP Stratos as the backbone of your own small hosting business, the Cloud Panel is worth understanding well beyond the basics. It's a single pane you can use to manage every client site you host, tag and organize them however makes sense for your workflow, and hand a client secure, scoped access to their own site without giving them the keys to your whole account.
 
 ## What You Can Do
 
@@ -12,16 +15,28 @@ The WP Stratos Cloud Panel is your all-in-one control interface for managing eve
   <Card title="Sites" icon="globe" href="/cloud-panel/sites">
     Create new WordPress sites, adjust settings, view resource usage, and jump straight into wp-admin with a single click.
   </Card>
+
   <Card title="Domains" icon="link" href="/domains/connect-domain">
     Connect custom domains to your sites, manage DNS settings, and monitor SSL certificate status.
   </Card>
+
   <Card title="Backups" icon="database" href="/cloud-panel/backups">
     Trigger manual backups, browse your 30-day backup history, restore to any point, or download a backup zip.
   </Card>
+
   <Card title="Staging" icon="flask" href="/cloud-panel/staging">
     Clone your live site to a safe staging environment, test changes freely, then push to live when you're ready.
   </Card>
 </CardGroup>
+
+## What Else Lives in the Panel
+
+Beyond the four core sections above, each site's detail page carries a few more tools worth knowing about:
+
+- **One-click WP Admin** — a Log In button that uses single sign-on to drop you straight into a site's wp-admin, no separate WordPress password to remember.
+- **Traffic analytics** — visits, unique visitors, average session time, and bandwidth, charted over the last week, month, or year, so you can see whether a site's traffic pattern actually matches what a client is telling you.
+- **Tags and sharing** — tag sites however fits your workflow (by client, by plan, by priority) and share individual sites with teammates or clients using scoped, role-based access, so nobody needs your master login to check on their own site.
+- **Hosting-level tools** — every account also has an underlying hosting area with FTP/SFTP accounts, MySQL database access and phpMyAdmin, cron job scheduling, a file manager, and the DNS zone editor covered in [DNS Configuration](/domains/dns-configuration). Most day-to-day work never touches this layer, but it's there when you need direct file or database access.
 
 ## Logging In
 

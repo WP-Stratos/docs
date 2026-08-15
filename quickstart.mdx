@@ -2,9 +2,10 @@
 title: "WP Stratos: Get Your WordPress Site Live in Minutes"
 sidebarTitle: "Quickstart"
 description: "Follow this step-by-step guide to create your WP Stratos account, launch a WordPress site, connect your domain, and configure email and caching."
+keywords: ["how to launch a wordpress site", "managed wordpress hosting setup", "connect domain wordpress hosting", "wordpress hosting onboarding", "wordpress staging environment setup"]
 ---
 
-This guide walks you through everything you need to go from a brand-new WP Stratos account to a fully configured, live WordPress site. By the end you'll have your domain connected, SSL active, outbound email working, and performance caching running.
+This guide walks you from a brand-new WP Stratos account to a live, fully configured WordPress site. By the end you'll have a domain connected, SSL active, outbound email working, and caching running, without having touched a server.
 
 <Steps>
   <Step title="Create your account">
@@ -15,6 +16,8 @@ This guide walks you through everything you need to go from a brand-new WP Strat
   </Step>
   <Step title="Connect your domain">
     Open your site in the Cloud Panel and navigate to the **Domains** tab. Add your custom domain and follow the on-screen instructions to update your nameservers or add the required DNS records at your registrar. WP Stratos provisions an SSL certificate automatically once your domain resolves correctly.
+
+    If you point your domain to WP Stratos-managed DNS, leave the optional proxy toggle on individual records switched off. WP Stratos already handles edge caching and DDoS protection at the platform level, and running a second proxy layer on top of that tends to cause more caching headaches than it solves.
 
     For a detailed walkthrough of every DNS configuration option, see the [Connect a Domain](/domains/connect-domain) guide.
   </Step>
@@ -33,6 +36,8 @@ This guide walks you through everything you need to go from a brand-new WP Strat
 <Tip>
   Before pushing changes to your live site, use the **one-click staging environment** in the Cloud Panel. Create a staging clone, test your updates safely, then push the changes to production when you're happy with the results — all without touching your live site.
 </Tip>
+
+If you're setting this site up on behalf of a client, or as one of several sites you manage under your own hosting brand, the same five steps apply every time. That repeatability is the point. A new WordPress install with email, caching, and SSL already sorted out takes the same handful of minutes whether it's your first site or your fiftieth.
 
 ## Next steps
 
