@@ -8,59 +8,60 @@ keywords: ["connect custom domain wordpress hosting", "point domain to wordpress
 Connecting a custom domain gives your WordPress site a real, branded web address instead of a placeholder URL. Whether you use WP Stratos's built-in DNS management or keep DNS with your existing registrar, this page walks through every step, from adding the domain in the Cloud Panel to confirming SSL is live.
 
 <Note>
-  Before you begin, make sure you have a domain name registered with any domain registrar (such as GoDaddy, Namecheap, or Google Domains) and at least one WP Stratos site already created in your Cloud Panel.
+  Before you begin, make sure you have a domain name registered with any domain registrar (such as GoDaddy, Namecheap, or Cloudflare Registrar) and at least one WP Stratos site already created in your Cloud Panel.
 </Note>
 
 <Steps>
   <Step title="Log in to the Cloud Panel">
-    Go to [my.wpstratos.com](https://my.wpstratos.com) and sign in with your WP Stratos credentials.
+    Go to [cloud.wpstratos.com](https://cloud.wpstratos.com) and sign in with your WP Stratos credentials.
   </Step>
-  <Step title="Navigate to your site's domain settings">
-    From the dashboard, select the site you want to connect your domain to. In the left-hand navigation, click **Domains**, then click **Add Domain**.
+  <Step title="Open Change Domain">
+    From your dashboard, open the site you want to connect a domain to, then click **Change Domain** under your instance's name. This opens the **Set Your Domain** window.
   </Step>
-  <Step title="Enter your domain name">
-    Type your full domain name (for example, `yourdomain.com`) into the field and pick its type: **Main Domain**, **Addon Domain**, or **Subdomain**. Click **Add**. If you're adding an addon domain, the Cloud Panel immediately shows you the exact A record and `www` CNAME you'll need at your DNS provider, using your actual server IP, so you can start the DNS side of the setup before the domain even finishes saving. The domain will appear in your domain list with a pending status while configuration is completed.
-  </Step>
-  <Step title="Choose your connection method">
-    Select how you want to connect your domain. There are two options depending on where you manage your DNS.
+  <Step title="Enter your domain and choose how to map it">
+    Type in your domain (for example, `yourdomain.com`) and click **Change** if you need to correct it. Below that, you'll see two  sections: **Set DNS Records** and **Set Nameservers**. Pick whichever matches how you want to manage this domain going forward.
 
     <Tabs>
-      <Tab title="Use WP Stratos DNS (Recommended)">
-        Point your domain's nameservers to WP Stratos. This gives you full DNS management directly inside the Cloud Panel and is the simplest long-term setup.
+      <Tab title="Set DNS Records">
+        Keep DNS management wherever it already lives (your registrar, Cloudflare, anywhere) and just point this one domain at WP Stratos. No nameserver change required.
 
-        Log in to your domain registrar and update the nameservers to:
+        1. Log in to your domain provider's panel.
+        2. Set these DNS records exactly as shown in your Cloud Panel modal, using your domain in place of `yourdomain.com`:
 
-        ```text
-        ns1.wpstratos.com
-        ns2.wpstratos.com
-        ```
-
-        Replace any existing nameservers entirely — do not add these alongside old ones. For step-by-step instructions for specific registrars, see the [Nameserver Setup](/domains/nameserver-setup) guide.
-      </Tab>
-      <Tab title="Use External DNS">
-        Keep DNS management at your current registrar or DNS provider, and add the required records manually.
-
-        Log in to your DNS provider and add the following records:
-
-        | Type | Host | Value |
+        | Name | Type | Address |
         | --- | --- | --- |
-        | A | `@` | `203.0.113.10` _(your site's IP is shown in the Cloud Panel)_ |
-        | CNAME | `www` | `yourdomain.com` |
+        | `yourdomain.com` (or `@`) | A | _(shown in the Cloud Panel)_ |
+        | `yourdomain.com` (or `@`) | A | _(shown in the Cloud Panel)_ |
+        | `www.yourdomain.com` | CNAME | `yourdomain.com` |
 
-        Use the exact IP address displayed in your WP Stratos Cloud Panel under **Domains → Connection Details**, as your IP may differ from the example above.
+        That's two A records on the root domain and one CNAME for `www` pointing back at the root. The exact IP addresses are generated for your specific domain and shown right there in the modal, so copy them directly rather than reusing values from an old setup or another site.
+
+        3. Wait anywhere from 2 minutes to a few hours for the records to propagate.
+      </Tab>
+      <Tab title="Set Nameservers">
+        Hand DNS authority for this domain over to WP Stratos's managed Cloudflare DNS. You'll get a DNS zone editor inside the Cloud Panel, plus the option to enable the Cloudflare proxy on individual records later if you ever need it.
+
+        1. Log in to your domain provider's panel.
+        2. Remove your domain's current nameservers (whatever they happen to be, your registrar's default, a previous host, and so on).
+        3. Set the nameservers to the pair shown in your Cloud Panel modal. These are generated per domain, something like `norm.ns.cloudflare.com` and `thea.ns.cloudflare.com`, and will be different for every domain you connect. Always copy the exact values shown to you rather than reusing a pair from a different site.
+        4. Wait anywhere from 2 minutes up to a few hours for the nameservers to propagate.
+
+        <Warning>
+          Switching nameservers does **not** migrate your existing DNS records over automatically. Anything you have set up at your old provider (MX records for email, TXT records for SPF/DKIM, CNAME records for third-party services) needs to be recreated inside the WP Stratos Cloud Panel once the switch takes effect. Write these down before you make the change. See [DNS Configuration](/domains/dns-configuration) for how to add them back.
+        </Warning>
       </Tab>
     </Tabs>
   </Step>
   <Step title="Wait for DNS propagation">
-    After updating nameservers or DNS records, allow time for the changes to propagate across the internet. This typically takes between 15 minutes and a few hours, but can take up to 48 hours in some cases.
+    After updating records or nameservers, allow time for the change to spread across the internet. Most of the time this takes somewhere between 2 minutes and a few hours, though it can occasionally stretch to 48 hours depending on your previous TTL settings.
   </Step>
   <Step title="Confirm SSL is active">
-    Once your domain resolves correctly, WP Stratos automatically provisions a free Let's Encrypt SSL certificate for your site. In the Cloud Panel, navigate to **Domains** and check the **SSL** column — a green padlock icon confirms your certificate is active and HTTPS is enabled.
+    Once your domain resolves correctly, WP Stratos automatically provisions a free Let's Encrypt SSL certificate for your site. In the Cloud Panel, check the domain's SSL status, a green indicator confirms your certificate is active and HTTPS is enabled.
   </Step>
 </Steps>
 
 <Info>
-  DNS propagation time varies depending on your previous TTL (Time to Live) settings and your visitors' DNS resolvers. Most users will see changes take effect within 1–2 hours. You can use a tool like [whatsmydns.net](https://www.whatsmydns.net) to check propagation status from multiple locations worldwide.
+  DNS propagation time varies depending on your previous TTL settings and your visitors' DNS resolvers. You can use a tool like [whatsmydns.net](https://www.whatsmydns.net) to check propagation status from multiple locations worldwide.
 </Info>
 
 ## Setting or Changing Your Main Domain

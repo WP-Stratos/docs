@@ -1,7 +1,7 @@
 ---
 title: "Back Up and Restore Your WordPress Site on WP Stratos"
 sidebarTitle: "Backups"
-description: "WP Stratos backs up your WordPress database hourly and your full site daily, automatically. Learn how to create manual backups, restore to any point, and download backup archives."
+description: "WP Stratos backs up your WordPress database hourly and your full site daily, automatically, with retention of at least 30 days and typically 3 to 6 months. Learn how to create manual backups, restore to any point, and download backup archives."
 keywords: ["automatic wordpress backups", "hourly database backup wordpress", "wordpress backup and restore", "managed wordpress hosting backups", "wordpress site backup schedule"]
 ---
 
@@ -15,28 +15,29 @@ Every WP Stratos site is covered by automated backups at no extra cost, and no c
 
 WP Stratos runs backups in the background on two schedules, so you always have a recent recovery point without lifting a finger:
 
-- **Hourly database backups** — Your WordPress database is backed up every hour, which matters more than it sounds like it should. Most site damage (a bad plugin update, a corrupted post, a hacked admin account) shows up in the database, not the files, so an hourly database snapshot means you're rarely more than 60 minutes from a clean state.
-- **Daily full-site backups** — A complete snapshot of files and database runs once a day, capturing themes, plugins, uploads, WordPress core, and a full database dump together.
-- **30-day retention** — The last 30 days of backups stay available. Anything older rolls off automatically.
+- **Hourly database backups.** Your WordPress database is backed up every hour, which matters more than it sounds like it should. Most site damage (a bad plugin update, a corrupted post, a hacked admin account) shows up in the database, not the files, so an hourly database snapshot means you're rarely more than 60 minutes from a clean state.
+- **Daily full-site backups.** A complete snapshot of files and database runs once a day, capturing themes, plugins, uploads, WordPress core, and a full database dump together.
+
+Retention is **at least 30 days**, with most plans keeping backups around for **3 to 6 months** before they roll off. Exact retention depends on your plan, so check your Cloud Panel if you need to know precisely how far back you can go.
 
 Each entry in your backup history shows its name, date and time, size, type (automatic or manual), the WordPress version at the time it was taken, and any notes you've added. You can search the list and select multiple backups to delete at once if you need to clean house.
 
 ## Creating a Manual Backup
 
-Trigger an on-demand backup at any time — for example, right before making significant changes to your site.
+Trigger an on-demand backup at any time, for example right before making significant changes to your site. Each plan allows a **maximum of two manual backups at a time**: one manual database backup and one manual directory (files) backup. You choose which type to take from the Cloud Panel.
 
 <Steps>
   <Step title="Navigate to your site's Backups">
     In the Cloud Panel, click your site, then select the **Backups** tab.
   </Step>
   <Step title="Click Create Backup">
-    Click the **Create Backup** button at the top of the Backups page.
+    Click the **Create Backup** button at the top of the Backups page and choose whether you want a **database backup** or a **directory (files) backup**. You can have one manual backup of each type at a time. If you already have one and need a fresh one, delete the old manual backup first.
   </Step>
   <Step title="Wait for the backup to complete">
-    A progress indicator appears while WP Stratos captures your files and database. Backup time varies with site size — most sites complete in under two minutes.
+    A progress indicator appears while WP Stratos captures your files or database. Backup time varies with site size, most sites complete in under two minutes.
   </Step>
   <Step title="Confirm the backup is listed">
-    Once finished, the new backup appears at the top of your backup list with a timestamp and the label **Manual**. Add a note if you want a reminder of why you took it, like "before checkout redesign" or "pre-plugin-update" — future you will appreciate it when there are a dozen backups to choose from.
+    Once finished, the new backup appears at the top of your backup list with a timestamp and the label **Manual**. Add a note if you want a reminder of why you took it, like "before checkout redesign" or "pre-plugin-update", future you will appreciate it when there are a dozen backups to choose from.
   </Step>
 </Steps>
 
@@ -51,7 +52,7 @@ Trigger an on-demand backup at any time — for example, right before making sig
     In the Cloud Panel, click your site, then select the **Backups** tab.
   </Step>
   <Step title="Find the backup to restore">
-    Browse the backup list by date. Automatic backups are labeled **Daily**; backups you triggered manually are labeled **Manual**.
+    Browse the backup list by date. Automatic backups are labeled **Hourly** or **Daily** depending on type; backups you triggered manually are labeled **Manual**.
   </Step>
   <Step title="Click Restore">
     Click the **Restore** button next to the backup you want. A confirmation dialog appears summarizing what will be overwritten.

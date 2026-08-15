@@ -5,24 +5,26 @@ description: "Follow this step-by-step guide to create your WP Stratos account, 
 keywords: ["how to launch a wordpress site", "managed wordpress hosting setup", "connect domain wordpress hosting", "wordpress hosting onboarding", "wordpress staging environment setup"]
 ---
 
-This guide walks you from a brand-new WP Stratos account to a live, fully configured WordPress site. By the end you'll have a domain connected, SSL active, outbound email working, and caching running, without having touched a server.
+This guide walks you from a brand new WP Stratos account to a live, fully configured WordPress site. By the end you'll have a domain connected, SSL active, outbound email working, and caching running, without having touched a server.
 
 <Steps>
   <Step title="Create your account">
     Go to the WP Stratos website and click **Sign Up**. Enter your name, email address, and a password, then check your inbox for a verification email. Click the link in that email to activate your account and gain access to the Cloud Panel.
   </Step>
   <Step title="Launch your WordPress site">
-    Once you're inside the Cloud Panel, click **New Site**. Give your site a name, choose the hosting plan that matches your needs, and select the server region closest to your audience. WP Stratos provisions your WordPress installation automatically, and the site is ready within a few minutes, with WP Postman, Aero, and WP Stratos Environment pre-installed and activated.
+    Once you're inside the Cloud Panel, click **Add New** in the top right corner of the header, next to your account menu, then select **Create New WordPress Instance** and hit **Continue**. Pick a theme from the list (use **Preview** to see it before committing, you can always change it later), choose which hosting service to build on if you have more than one, then set a name for your site. Hit **Continue** to finish and WP Stratos provisions your WordPress installation in the background. It usually takes a few minutes. You can navigate away and check on progress from your instance list at any time. WP Postman, Aero, and WP Stratos Environment come pre-installed and activated on every new site.
+
+    Already have a WordPress site somewhere else? See [Migrate an Existing Site](/cloud-panel/migrate-a-site) instead.
   </Step>
   <Step title="Connect your domain">
-    Open your site in the Cloud Panel and navigate to the **Domains** tab. Add your custom domain and follow the on-screen instructions to update your nameservers or add the required DNS records at your registrar. WP Stratos provisions an SSL certificate automatically once your domain resolves correctly.
+    Open your site in the Cloud Panel and click **Change Domain** under your instance's name. You'll be asked to choose how to map your domain: either **Set DNS Records** (add two A records and a CNAME at your current DNS provider, no nameserver change required) or **Set Nameservers** (point your domain to a pair of WP Stratos-managed Cloudflare nameservers, generated specifically for that domain, and manage DNS from the Cloud Panel going forward). WP Stratos provisions an SSL certificate automatically once your domain resolves correctly.
 
-    If you point your domain to WP Stratos-managed DNS (Cloudflare), leave the optional proxy toggle on individual records switched off. WP Stratos already handles edge caching and DDoS protection at the platform level, and running a second proxy layer on top of that tends to cause more caching headaches than it solves.
+    If you go the nameserver route, know that your existing DNS records don't come along for the ride. You'll need to recreate anything you rely on (MX records, TXT records for SPF/DKIM, etc.) inside the Cloud Panel once the switch takes effect.
 
-    For a detailed walkthrough of every DNS configuration option, see the [Connect a Domain](/domains/connect-domain) guide.
+    For a detailed walkthrough of both options, see the [Connect a Domain](/domains/connect-domain) guide.
   </Step>
   <Step title="Configure your email">
-    Transactional email (password resets, order confirmations, contact form replies) is handled by **WP Postman**. In your WordPress admin, go to **Settings → WP Postman **and ensure you're on the WP Postman delivery method. Add a From Name and Save Changes. On the same page, you should see a green light next to API Key and **Auto DKIM Signing** should have a green **Enabled** tag next to it. If one or both of these aren't working, contact WP Stratos support.
+    Transactional email (password resets, order confirmations, contact form replies) is handled by **WP Postman**. In your WordPress admin, go to \*\*Settings → WP Postman \*\*and ensure you're on the WP Postman delivery method. Add a From Name and Save Changes. On the same page, you should see a green light next to API Key and **Auto DKIM Signing** should have a green **Enabled** tag next to it. If one or both of these aren't working, contact WP Stratos support.
 
     For a full list of supported providers and recommended settings, see the [SMTP Configuration](/plugins/wp-postman/smtp-configuration) guide.
   </Step>

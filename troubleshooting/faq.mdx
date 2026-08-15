@@ -5,7 +5,7 @@ description: "Answers to common questions about WP Stratos hosting plans, domain
 keywords: ["wordpress hosting faq", "managed wordpress hosting questions", "wordpress backup retention policy", "wordpress hosting support", "wordpress plugin conflicts hosting"]
 ---
 
-This page collects the most common questions WP Stratos customers ask about their hosting environment, managed plugins, domain setup, backups, and support. If you can't find what you need here, the linked guides go deeper on each topic — or you can reach the support team directly from your Cloud Panel.
+This page collects the most common questions WP Stratos customers ask about their hosting environment, managed plugins, domain setup, backups, and support. If you can't find what you need here, the linked guides go deeper on each topic, or you can reach out through the Cloud Panel.
 
 ## Hosting & Sites
 
@@ -14,25 +14,20 @@ This page collects the most common questions WP Stratos customers ask about thei
 </Accordion>
 
 <Accordion title="Can I import an existing WordPress site?">
-  Yes. WP Stratos provides two paths for migrating an existing site:
-
-  - **Migration Wizard**: available inside the Cloud Panel when you create a new site. It guides you through connecting to your old host and transferring files and database automatically.
-  - **Backup restore**: if you have an export or backup from your previous host, you can upload it via **Cloud Panel → your site → Backups → Upload & Restore**.
-
-  For large or complex migrations, the support team can assist.
+  Yes. From the Cloud Panel, click **Add New**, choose **Import Existing WordPress Instance**, and enter your current site's URL. WP Stratos checks that WordPress is actually running there, then walks you through picking a server location and a migration method: the built-in migration plugin (recommended for most sites) or an FTP/SFTP-based transfer if the plugin route isn't an option for your current host. See [Migrate an Existing Site](/cloud-panel/migrate-a-site) for the full walkthrough.
 </Accordion>
 
-<Accordion title="What PHP versions are supported?">
-  WP Stratos supports the following PHP versions:
+<Accordion title="Can I change my site's PHP version?">
+  Yes. PHP version and PHP settings are managed per domain under a site's Advanced settings in the Cloud Panel. Changing the PHP version applies to every instance running on that domain, so test a version bump on staging first if you're not sure your theme and plugins are compatible. See [Developer Settings](/cloud-panel/developer-settings) for details.
 
-  - ~~PHP 7.4~~ Deprecated. No longer supported.
-  - ~~PHP 8.0~~
-  - ~~PHP 8.1~~
-  - PHP 8.2
-  - PHP 8.3
-  - PHP 8.4
+  - ~~SSH and SFTP access for direct file management~~ a
+  - ~~Git repository deployments with branch selection and auto-deploy~~
+  - ~~WordPress debug mode and maintenance mode toggles~~
+  - phpMyAdmin access
+  - Remote wp-config.php edits
+  - WordPress user management
 
-  You can switch your site's PHP version at any time  from **Cloud Panel → your site → Developer Settings → PHP Version → Manage**. We recommend running the highest version your theme and plugins support for best performance and security.
+  All of this lives under a site's Advanced settings in the Cloud Panel. See [Developer Settings](/cloud-panel/developer-settings) for the full breakdown of each one.
 </Accordion>
 
 <Accordion title="Does WP Stratos support WooCommerce?">
@@ -40,7 +35,7 @@ This page collects the most common questions WP Stratos customers ask about thei
 </Accordion>
 
 <Accordion title="Are WordPress core updates automatic?">
-  Minor WordPress core updates — primarily security releases — are applied automatically to keep your site protected. Major version updates (for example, moving from WordPress 6.4 to 7.0) are not applied automatically. You can review and apply major updates at your own pace via **Cloud Panel → your site → WP-Admin SSO** from the WordPress admin dashboard. We recommend testing major updates on your staging environment first.
+  Automatic update behavior for WordPress core, plugins, and themes is configurable under a site's Advanced settings in the Cloud Panel. If you'd rather review updates manually before they apply, especially for a client site where you don't want surprises, you can turn automatic updates off there and update on your own schedule.\*\*\*\* x
 </Accordion>
 
 ---
@@ -48,20 +43,15 @@ This page collects the most common questions WP Stratos customers ask about thei
 ## Domains & SSL
 
 <Accordion title="Do I need to transfer my domain to WP Stratos?">
-  No. You can keep your domain registered at any registrar you prefer. To point your domain to WP Stratos, choose one of two methods:
-
-  - **Nameservers (recommended)**: update your domain's nameservers at your registrar to `ns1.wpstratos.com` and `ns2.wpstratos.com`. This lets WP Stratos manage all your DNS records.
-  - **A record**: add an A record at your registrar pointing to the IP address shown in **Cloud Panel → Domains** for your site.
-
-  See the [Domain Propagation guide](/troubleshooting/domain-propagation) for help checking that your changes have taken effect.
+  No. You can keep your domain registered at any registrar you prefer. Open **Change Domain** for your site in the Cloud Panel and choose either **Set DNS Records** (two A records and a CNAME, no nameserver change needed) or **Set Nameservers** (a WP Stratos-managed Cloudflare nameserver pair, generated for your specific domain). See [Connect a Domain](/domains/connect-domain) for the full walkthrough of both.
 </Accordion>
 
 <Accordion title="How long does SSL take after connecting a domain?">
-  WP Stratos provisions SSL certificates automatically via Let's Encrypt once DNS propagation is confirmed. In most cases, your SSL certificate is issued within **a few minutes** of your domain resolving to WP Stratos. In cases where DNS propagation is slow, provisioning can take up to **24 hours**. You don't need to take any manual action — the process runs in the background.
+  WP Stratos provisions SSL certificates automatically via Let's Encrypt once DNS propagation is confirmed. In most cases, your SSL certificate is issued within **a few minutes** of your domain resolving to WP Stratos. In cases where DNS propagation is slow, provisioning can take up to **24 hours**. You don't need to take any manual action, the process runs in the background.
 </Accordion>
 
-<Accordion title="Can I use a wildcard SSL certificate?">
-  Wildcard SSL certificates are not currently available on WP Stratos. Each automatically provisioned certificate covers the **root domain** (e.g., `yourdomain.com`) and the **www subdomain** (`www.yourdomain.com`). If you need coverage for additional subdomains, add each subdomain as a separate domain in **Cloud Panel → My Hosting → Domains** and a certificate will be issued for each one.
+<Accordion title="Do I get a wildcard SSL certificate?">
+  Each automatically provisioned Let's Encrypt certificate covers your root domain and the `www` subdomain. If you need coverage for additional subdomains, add each one as its own domain in the Cloud Panel and a certificate will be issued for it.
 </Accordion>
 
 <Accordion title="Should I enable the Cloudflare proxy toggle on my DNS records?">
@@ -73,11 +63,11 @@ This page collects the most common questions WP Stratos customers ask about thei
 ## Backups
 
 <Accordion title="How often are backups taken?">
-  Your database is backed up **every hour**, and your full site is backed up **once a day**, covering files and database together. You can also trigger a **manual backup** at any time from \*\*Cloud Panel → your site → Backups → Add New \*\*— for example, before making significant changes to your theme or installing a major plugin update.
+  Your database is backed up **every hour**, and your full site is backed up **once a day**, covering files and database together. You can also trigger a **manual backup** at any time from your site's Backups tab in the Cloud Panel, for example before making significant changes to your theme or installing a major plugin update.
 </Accordion>
 
 <Accordion title="How long are backups retained?">
-  WP Stratos retains the last **30 days** of backups. After that window, older backups are removed automatically. If you need to preserve a snapshot beyond 30 days — for example, before a major site redesign — download a copy of the backup to your own storage.
+  WP Stratos retains the last **30 days** of backups. After that window, older backups are removed automatically. If you need to preserve a snapshot beyond 30 days, for example before a major site redesign, download a copy of the backup to your own storage.
 </Accordion>
 
 <Accordion title="Can I download my backup files?">
@@ -89,21 +79,21 @@ This page collects the most common questions WP Stratos customers ask about thei
 ## Plugins
 
 <Accordion title="Can I install other plugins?">
-  Yes. Any standard WordPress plugin from the WordPress.org repository or a premium marketplace is compatible with WP Stratos. Install plugins as you normally would from **WordPress admin → Plugins → Add New**. The only consideration is avoiding multiple plugins that serve the same purpose as the managed plugins — for example, running a second caching plugin alongside Aero can create conflicts.
+  Yes. Any standard WordPress plugin from the WordPress.org repository or a premium marketplace is compatible with WP Stratos. Install plugins as you normally would from **WordPress admin → Plugins → Add New**. The only consideration is avoiding multiple plugins that serve the same purpose as the managed plugins. Running a second caching plugin alongside Aero, for example, can create conflicts.
 </Accordion>
 
 <Accordion title="Why do WP Postman, Aero, and WP Stratos Environment keep reactivating?">
-  These are **managed plugins** — core components of the WP Stratos hosting infrastructure. They are automatically reactivated as part of the platform's plugin update process to ensure your site remains stable and correctly configured after each update.
+  These are managed plugins, core components of the WP Stratos hosting infrastructure. They are automatically reactivated as part of the platform's plugin update process to ensure your site remains stable and correctly configured after each update.
 
   If you need to disable a specific feature (such as page caching or outgoing email), do so from within the plugin's own settings rather than by deactivating the plugin. See the full explanation and workarounds in the [Plugin Reactivation guide](/troubleshooting/plugin-reactivation).
 </Accordion>
 
 <Accordion title="Can I use a different caching plugin?">
-  You can install other caching plugins, but we strongly recommend using **Aero** as your sole caching solution. Running multiple caching plugins simultaneously — for example, Aero alongside WP Super Cache or W3 Total Cache — frequently causes conflicts that result in stale pages, broken CSS, or performance regressions. Aero is optimised for the WP Stratos server environment and is fully supported by our team.
+  You can install other caching plugins, but we strongly recommend using **Aero** as your sole caching solution. Running multiple caching plugins at once, Aero alongside WP Super Cache or W3 Total Cache, for example, frequently causes conflicts that result in stale pages, broken CSS, or performance regressions. Aero is optimised for the WP Stratos server environment and is fully supported by our team.
 </Accordion>
 
 <Accordion title="Can I use a different SMTP plugin?">
-  Technically yes — other SMTP plugins are compatible with WordPress and will work on WP Stratos. However, **WP Postman** is specifically configured for the WP Stratos environment, integrates with platform-level email diagnostics, and is the only SMTP plugin the support team can fully troubleshoot. If you choose to use an alternative plugin, note that support assistance for third-party SMTP configurations may be limited.
+  Technically yes, other SMTP plugins are compatible with WordPress and will work on WP Stratos. However, **WP Postman** is specifically configured for the WP Stratos environment, integrates with platform-level email diagnostics, and is the only SMTP plugin the support team can fully troubleshoot. If you choose to use an alternative plugin, note that support assistance for third-party SMTP configurations may be limited.
 </Accordion>
 
 ---
@@ -111,20 +101,15 @@ This page collects the most common questions WP Stratos customers ask about thei
 ## Support
 
 <Accordion title="How do I contact WP Stratos support?">
-  You can reach the support team through either of the following channels:
-
-  - **Email**: send a message to [missioncontrol@wpstratos.com](mailto:missioncontrol@wpstratos.com)
-  - **Support ticket**: log in to **Cloud Panel**, click your account menu in the top-right corner, and select **Open Support Ticket**
-
-  Both channels reach the same team. Response times vary by plan tier; urgent issues related to site downtime are prioritised.
+  You can reach out from the Cloud Panel: click your account menu in the top right corner and look for the support or help option there. For billing questions specifically, [billing.wpstratos.com](https://billing.wpstratos.com) has its own contact channel.
 </Accordion>
 
 <Accordion title="What information should I include in a support ticket?">
   To help the support team investigate quickly, include the following in every ticket:
 
-  - **Your site URL** — the full domain of the affected site
-  - **Description of the issue** — what is happening, when it started, and any steps you've already tried
-  - **System Info export** — go to **WP Stratos Environment → Server Info** and copy the system information output. See the [Server Info documentation](/plugins/wp-stratos-environment/server-info) for instructions on finding this page.
+  - **Your site's domain**, so the affected instance is easy to find.
+  - **What's happening**, when it started, and anything you've already tried.
+  - **A system info export**, available from the WP Stratos Environment plugin's Server Info page. See the [Server Info documentation](/plugins/wp-stratos-environment/server-info) for where to find it.
 
   Screenshots or screen recordings are also helpful for visual or intermittent issues.
 </Accordion>

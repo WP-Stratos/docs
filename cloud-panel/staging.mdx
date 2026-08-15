@@ -5,10 +5,10 @@ description: "Create a staging clone of your live WordPress site, test themes, p
 keywords: ["wordpress staging environment", "staging site wordpress hosting", "push staging to live wordpress", "test wordpress plugin updates safely", "one-click staging wordpress"]
 ---
 
-A staging environment is a private copy of your live site where you can make changes, test new plugins, or experiment with themes without any risk to your production site or visitors. WP Stratos gives every site a one-click staging environment that stays in sync with your live site — making it easy to work safely and ship changes with confidence.
+A staging environment is a private copy of your live site where you can make changes, test new plugins, or experiment with themes without any risk to your production site or visitors. WP Stratos gives every site a one-click staging environment, making it easy to work safely and ship changes with confidence.
 
 <Note>
-  Each site can have one staging environment at a time. If you need to start fresh, delete the existing staging site and create a new one.
+  Each instance gets **one** staging environment, never more. If you need to start fresh, delete the existing staging site and create a new one. Your staging environment also doesn't have to live on the same server or in the same region as your live site, WP Stratos provisions it wherever makes sense for the platform, so don't be surprised if it shows up on different infrastructure than production.
 </Note>
 
 ## Creating a Staging Site
@@ -44,7 +44,7 @@ Your staging environment is fully isolated from your live site, so anything you 
 - Test WordPress core or plugin updates to catch compatibility issues early.
 - Prototype new content, page layouts, or checkout flows.
 
-Changes you make on staging — including database updates, new posts, or configuration changes — have no effect on your live site until you explicitly push them.
+Changes you make on staging, including database updates, new posts, or configuration changes, have no effect on your live site until you explicitly push them.
 
 <Tip>
   Always test plugin updates on staging before applying them to your live site. This single habit prevents the vast majority of unexpected outages.
@@ -68,10 +68,10 @@ When you're satisfied with your changes on staging, push them to your production
   <Step title="Choose what to push">
     Select the scope of the push. WP Stratos compares your staging and live databases first, then gives you control over exactly what moves:
 
-    - **Overwrite files** — copies themes, plugins, uploads, and core files to live.
-    - **Push full database** — replaces the entire live database with staging's.
-    - **Push structure changes** — moves table structure changes (new tables, new columns) without touching existing data.
-    - **Push changed data only** — moves just the tables where data actually changed, leaving everything else on live untouched.
+    - **Overwrite files.** Copies themes, plugins, uploads, and core files to live.
+    - **Push full database.** Replaces the entire live database with staging's.
+    - **Push structure changes.** Moves table structure changes (new tables, new columns) without touching existing data.
+    - **Push changed data only.** Moves just the tables where data actually changed, leaving everything else on live untouched.
 
     This granularity matters if, say, you tested a plugin update on staging but a client also added new orders on the live site in the meantime. You can push the code changes without clobbering their new data.
   </Step>
@@ -98,7 +98,7 @@ Refresh your staging environment with the latest content and settings from your 
 
 ## Deleting a Staging Environment
 
-Each site supports one staging environment at a time. Delete your existing staging site when you want to start fresh or free up resources.
+Delete your existing staging site when you want to start fresh or free up resources. Remember, each instance can only have one staging environment, so you'll need to remove the current one before creating another.
 
 <Warning>
   Deleting a staging environment permanently removes all staging files and the staging database. Your live site is unaffected, but any changes made exclusively in staging will be lost. Push anything you want to keep to live before deleting.

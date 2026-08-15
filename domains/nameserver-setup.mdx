@@ -5,135 +5,48 @@ description: "Switch your domain to WP Stratos nameservers at any registrar to u
 keywords: ["point nameservers to wordpress host", "change domain nameservers", "wordpress hosting nameserver migration", "dns migration checklist wordpress", "switch dns provider wordpress hosting"]
 ---
 
-Nameservers are how the internet figures out which DNS provider is authoritative for your domain. By default, your domain uses whatever nameservers your registrar assigned it. Switching to WP Stratos nameservers hands DNS authority over to WP Stratos, which runs on an enterprise-grade Cloudflare-backed network, letting you manage every DNS record (A, CNAME, MX, TXT, and more) directly inside the Cloud Panel.
+Nameservers are how the internet figures out which DNS provider is authoritative for your domain. By default, your domain uses whatever nameservers your registrar assigned it. Switching to WP Stratos-managed nameservers hands DNS authority over to a Cloudflare-backed network, letting you manage every DNS record (A, CNAME, MX, TXT, and more) directly inside the Cloud Panel.
 
-## WP Stratos Nameservers
+## Your Nameservers Are Generated Per Domain
 
-Use these nameservers when updating your domain at any registrar:
-
-```text
-ns1.wpstratos.com
-ns2.wpstratos.com
-```
+Unlike a lot of hosts, WP Stratos doesn't hand every customer the same two nameserver addresses. Each domain you connect gets its own unique pair, generated when you open the **Set Your Domain** window and expand **Set Nameservers**. They'll look something like `norm.ns.cloudflare.com` and `thea.ns.cloudflare.com`, but the actual values are specific to your domain and will be different the next time you connect a different one.
 
 <Info>
-  Using WP Stratos nameservers unlocks the full DNS management experience inside the Cloud Panel. You can add, edit, and delete DNS records, and any domain connected to your site benefits from automatic SSL provisioning. Without WP Stratos nameservers, DNS records must be managed at your external provider.
+  Always copy the exact nameserver values shown to you in the Cloud Panel for the domain you're working on. Don't reuse a pair from a previous setup, a colleague's screenshot, or an old support ticket, they won't be authoritative for your domain.
 </Info>
 
 ---
 
 ## How to Update Nameservers
 
-The exact steps vary by registrar, but the process is similar everywhere: find the nameserver settings for your domain and replace the existing entries with the WP Stratos nameservers above.
+The exact menu labels vary by registrar, but the process is the same everywhere: find the nameserver settings for your domain, remove whatever is there now, and add the pair shown in your Cloud Panel.
 
-<Tabs>
-  <Tab title="Generic (Any Registrar)">
-    <Steps>
-      <Step title="Log in to your registrar">
-        Sign in to your domain registrar's control panel or account dashboard.
-      </Step>
-      <Step title="Locate your domain">
-        Find the domain you want to update in your list of registered domains and open its settings.
-      </Step>
-      <Step title="Find the nameserver settings">
-        Look for a section labelled **Nameservers**, **DNS Settings**, or **Name Server Management**. This is sometimes nested under **Advanced Settings** or **Domain Management**.
-      </Step>
-      <Step title="Switch to custom nameservers">
-        If your registrar defaults to its own nameservers, select the option for **Custom**, **Other**, or **Use my own nameservers**.
-      </Step>
-      <Step title="Replace existing nameservers">
-        Delete all existing nameserver entries and add the following two:
-
-        ```text
-        ns1.wpstratos.com
-        ns2.wpstratos.com
-        ```
-      </Step>
-      <Step title="Save your changes">
-        Click **Save** or **Update**. Your registrar may send a confirmation email or ask you to verify the change.
-      </Step>
-    </Steps>
-  </Tab>
-  <Tab title="GoDaddy">
-    <Steps>
-      <Step title="Log in to GoDaddy">
-        Go to [godaddy.com](https://www.godaddy.com) and sign in to your account.
-      </Step>
-      <Step title="Open your domain's DNS settings">
-        Click your name in the top-right, then select **My Products**. Find your domain and click **DNS** next to it.
-      </Step>
-      <Step title="Change nameservers">
-        Scroll to the **Nameservers** section at the bottom of the page and click **Change**.
-      </Step>
-      <Step title="Select custom nameservers">
-        Choose **I'll use my own nameservers** and enter:
-
-        ```text
-        ns1.wpstratos.com
-        ns2.wpstratos.com
-        ```
-      </Step>
-      <Step title="Save">
-        Click **Save** and confirm the change when prompted. GoDaddy may display a warning about leaving their DNS — proceed to confirm.
-      </Step>
-    </Steps>
-  </Tab>
-  <Tab title="Namecheap">
-    <Steps>
-      <Step title="Log in to Namecheap">
-        Go to [namecheap.com](https://www.namecheap.com) and sign in to your account.
-      </Step>
-      <Step title="Go to your domain list">
-        Click **Domain List** in the left sidebar and click **Manage** next to the domain you want to update.
-      </Step>
-      <Step title="Open the Nameservers section">
-        On the domain management page, find the **Nameservers** section near the top.
-      </Step>
-      <Step title="Switch to custom DNS">
-        Use the dropdown to select **Custom DNS** instead of Namecheap's default option.
-      </Step>
-      <Step title="Enter WP Stratos nameservers">
-        Add the following in the nameserver fields:
-
-        ```text
-        ns1.wpstratos.com
-        ns2.wpstratos.com
-        ```
-
-        Click the green checkmark to save.
-      </Step>
-    </Steps>
-  </Tab>
-  <Tab title="Google Domains / Squarespace">
-    <Steps>
-      <Step title="Log in to your account">
-        Google Domains domains are now managed through Squarespace. Go to [domains.squarespace.com](https://domains.squarespace.com) and sign in with your Google or Squarespace account.
-      </Step>
-      <Step title="Select your domain">
-        From the dashboard, click the domain you want to update.
-      </Step>
-      <Step title="Open DNS Settings">
-        In the domain settings panel, click **DNS** in the left-hand menu, then select **Nameservers**.
-      </Step>
-      <Step title="Use custom nameservers">
-        Click **Use custom nameservers** and remove any pre-filled entries.
-      </Step>
-      <Step title="Add WP Stratos nameservers">
-        Enter the following nameservers:
-
-        ```text
-        ns1.wpstratos.com
-        ns2.wpstratos.com
-        ```
-
-        Click **Save** to apply the changes.
-      </Step>
-    </Steps>
-  </Tab>
-</Tabs>
+<Steps>
+  <Step title="Open Change Domain in the Cloud Panel">
+    In [cloud.wpstratos.com](https://cloud.wpstratos.com), open your site, click **Change Domain**, and expand **Set Nameservers** in the **Set Your Domain** window. Note the two nameserver values shown there, you'll need them in a moment.
+  </Step>
+  <Step title="Log in to your registrar">
+    Sign in to your domain registrar's control panel or account dashboard.
+  </Step>
+  <Step title="Locate your domain">
+    Find the domain you want to update in your list of registered domains and open its settings.
+  </Step>
+  <Step title="Find the nameserver settings">
+    Look for a section labelled **Nameservers**, **DNS Settings**, or **Name Server Management**. This is sometimes nested under **Advanced Settings** or **Domain Management**.
+  </Step>
+  <Step title="Switch to custom nameservers">
+    If your registrar defaults to its own nameservers, select the option for **Custom**, **Other**, or **Use my own nameservers**.
+  </Step>
+  <Step title="Replace existing nameservers">
+    Remove the nameservers currently listed and enter the two values you copied from the Cloud Panel.
+  </Step>
+  <Step title="Save your changes">
+    Click **Save** or **Update**. Your registrar may send a confirmation email or ask you to verify the change.
+  </Step>
+</Steps>
 
 <Warning>
-  Changing nameservers can cause up to **48 hours** of DNS disruption for your domain. During propagation, some visitors may reach your old hosting provider while others reach WP Stratos. Plan nameserver changes during a low-traffic period and notify any stakeholders in advance.
+  Changing nameservers can cause a period of DNS disruption for your domain, usually somewhere between 2 minutes and a few hours, though it can occasionally stretch further depending on your previous TTL settings. During that window, some visitors may reach your old hosting provider while others reach WP Stratos. Plan nameserver changes during a low-traffic period and give any stakeholders a heads up.
 </Warning>
 
 ---
@@ -142,7 +55,7 @@ The exact steps vary by registrar, but the process is similar everywhere: find t
 
 Once your nameserver change has propagated, WP Stratos becomes fully authoritative for your domain's DNS. However, **DNS records from your previous provider are not automatically imported**. You'll need to manually recreate any records you rely on, such as MX records for email or CNAME records for third-party services, inside the Cloud Panel.
 
-Before you make the switch, write down (or export) every record at your current provider so you can recreate them without a gap. Pay special attention to MX records, since losing those means incoming email stops the moment the change propagates, and to TXT records for SPF, DKIM, DMARC, and any domain verification you have in place. Add MX records first once you're in the new DNS manager, since email is the most time-sensitive thing to get right. WP Stratos automatically creates the A record for your WordPress instance and the `www` CNAME, so you don't need to add those yourself.
+Before you make the switch, write down (or export) every record at your current provider so you can recreate them without a gap. Pay special attention to MX records, since losing those means incoming email stops the moment the change propagates, and to TXT records for SPF, DKIM, DMARC, and any domain verification you have in place. Add MX records first once you're in the new DNS manager, since email is the most time-sensitive thing to get right.
 
 See the [DNS Configuration](/domains/dns-configuration) guide for instructions on adding records in the Cloud Panel.
 

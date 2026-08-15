@@ -1,11 +1,11 @@
 ---
 title: "WP Stratos Cloud Panel: Your Hosting Control Center"
 sidebarTitle: "Overview"
-description: "The Cloud Panel at my.wpstratos.com is your central hub for managing WordPress sites, domains, backups, and staging environments on WP Stratos."
+description: "The Cloud Panel at cloud.wpstratos.com is your central hub for managing WordPress sites, domains, backups, and staging environments on WP Stratos."
 keywords: ["wordpress hosting control panel", "manage wordpress sites dashboard", "white label hosting control panel", "wordpress hosting client area", "wordpress site management dashboard"]
 ---
 
-The WP Stratos Cloud Panel is the control interface for everything you do on the platform. It's accessible at [my.wpstratos.com](https://my.wpstratos.com), and it gives you a clear view of every site on your account along with the tools to configure domains, protect your data with backups, and safely test changes in staging. None of it requires server expertise, and none of it requires a support ticket for routine work.
+The WP Stratos Cloud Panel is the control interface for everything you do on the platform. It's accessible at [cloud.wpstratos.com](https://cloud.wpstratos.com), and it gives you a clear view of every site on your account along with the tools to configure domains, protect your data with backups, and safely test changes in staging. None of it requires server expertise, and none of it requires a support ticket for routine work.
 
 If you're running WP Stratos as the backbone of your own small hosting business, the Cloud Panel is worth understanding well beyond the basics. It's a single pane you can use to manage every client site you host, tag and organize them however makes sense for your workflow, and hand a client secure, scoped access to their own site without giving them the keys to your whole account.
 
@@ -21,7 +21,7 @@ If you're running WP Stratos as the backbone of your own small hosting business,
   </Card>
 
   <Card title="Backups" icon="database" href="/cloud-panel/backups">
-    Trigger manual backups, browse your 30-day backup history, restore to any point, or download a backup zip.
+    Trigger manual backups, browse your backup history, restore to any point, or download a backup zip.
   </Card>
 
   <Card title="Staging" icon="flask" href="/cloud-panel/staging">
@@ -33,16 +33,17 @@ If you're running WP Stratos as the backbone of your own small hosting business,
 
 Beyond the four core sections above, each site's detail page carries a few more tools worth knowing about:
 
-- **One-click WP Admin** — a Log In button that uses single sign-on to drop you straight into a site's wp-admin, no separate WordPress password to remember.
-- **Traffic analytics** — visits, unique visitors, average session time, and bandwidth, charted over the last week, month, or year, so you can see whether a site's traffic pattern actually matches what a client is telling you.
-- **Tags and sharing** — tag sites however fits your workflow (by client, by plan, by priority) and share individual sites with teammates or clients using scoped, role-based access, so nobody needs your master login to check on their own site.
-- **Hosting-level tools** — every account also has an underlying hosting area with FTP/SFTP accounts, MySQL database access and phpMyAdmin, cron job scheduling, a file manager, and the DNS zone editor covered in [DNS Configuration](/domains/dns-configuration). Most day-to-day work never touches this layer, but it's there when you need direct file or database access.
+- **One-click WP Admin.** A Log In button that uses single sign-on to drop you straight into a site's wp-admin, no separate WordPress password to remember.
+- **Traffic analytics.** Visits, unique visitors, average session time, and bandwidth, charted over the last week, month, or year, so you can see whether a site's traffic pattern actually matches what a client is telling you.
+- **Tags and sharing.** Tag sites however fits your workflow (by client, by plan, by priority) and share individual sites with teammates or clients using scoped, role-based access, so nobody needs your master login to check on their own site.
+- **Hosting-level tools.** Every account also has an underlying hosting area with FTP/SFTP accounts, MySQL database access and phpMyAdmin, cron job scheduling, a file manager, and the DNS zone editor covered in [DNS Configuration](/domains/dns-configuration). Most day-to-day work never touches this layer, but it's there when you need direct file or database access.
+- **Developer tools.** SSH/SFTP, Git repository deployments, PHP version and settings management, debug and maintenance mode, phpMyAdmin access, and remote `wp-config.php` edits all live under a site's Advanced settings. See [Developer Settings](/cloud-panel/developer-settings) for the full breakdown.
 
 ## Logging In
 
 <Steps>
   <Step title="Go to the Cloud Panel">
-    Open your browser and navigate to [my.wpstratos.com](https://my.wpstratos.com).
+    Open your browser and navigate to [cloud.wpstratos.com](https://cloud.wpstratos.com).
   </Step>
   <Step title="Enter your credentials">
     Type in your account email address and password, then click **Sign In**.
@@ -54,14 +55,14 @@ Beyond the four core sections above, each site's detail page carries a few more 
 
 ## Dashboard Overview
 
-Once you're logged in, the Cloud Panel dashboard is organized into three main areas.
+Once you're logged in, the Cloud Panel dashboard is organized into a few main areas.
 
-**Sites list** — The central panel shows every WordPress site on your account. Each site card displays the site name, primary domain, current status, and quick-action buttons for wp-admin access and settings.
+**Instance list.** The central panel shows every WordPress site on your account, in either a list or tile view. Each entry displays the site name, domain, current status, and quick-action buttons for wp-admin access and settings.
 
-**Notifications** — A bell icon in the top navigation bar surfaces important alerts such as completed backups, SSL renewals, and available WordPress or plugin updates.
+**Notifications.** A bell icon in the top navigation bar surfaces important alerts such as completed backups, SSL status changes, and available WordPress or plugin updates.
 
-**Account settings** — Your profile menu in the top-right corner gives you access to billing, team members, API keys, and security settings such as two-factor authentication.
+**Account settings.** Your profile menu in the top right corner leads to **My Account**, where you manage two-factor authentication, your password, personal info, new device detection notifications, and your list of active logged-in devices. See [Security & Account Settings](/cloud-panel/security-and-account) for the full walkthrough. Billing is handled separately at [billing.wpstratos.com](https://billing.wpstratos.com).
 
 <Tip>
-  Bookmark [my.wpstratos.com](https://my.wpstratos.com) in your browser for instant access to the Cloud Panel whenever you need it.
+  Bookmark [cloud.wpstratos.com](https://cloud.wpstratos.com) in your browser for instant access to the Cloud Panel whenever you need it.
 </Tip>

@@ -54,6 +54,7 @@
             "pages": [
               "cloud-panel/overview",
               "cloud-panel/sites",
+              "cloud-panel/migrate-a-site",
               "cloud-panel/backups",
               "cloud-panel/staging"
             ]

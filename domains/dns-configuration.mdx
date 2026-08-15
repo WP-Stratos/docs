@@ -8,12 +8,12 @@ keywords: ["manage dns records wordpress hosting", "cloudflare proxy wordpress c
 WP Stratos includes a full-featured DNS manager built into the Cloud Panel, giving you complete control over your domain's DNS records without leaving your hosting dashboard. Records are served on an enterprise DNS network under the hood, so changes propagate quickly once you make them. You can add records for email routing, subdomain configuration, third-party service verification, and more, all in one place.
 
 <Note>
-  DNS management in the Cloud Panel is only available for domains that use **WP Stratos nameservers** (`ns1.wpstratos.com` and `ns2.wpstratos.com`). If your domain points to an external DNS provider, you must manage records there. See [Nameserver Setup](/domains/nameserver-setup) to switch.
+  DNS management in the Cloud Panel is only available for domains where you've chosen **Set Nameservers** when connecting the domain (WP Stratos-managed Cloudflare DNS). If you connected your domain using **Set DNS Records** instead, your DNS stays managed at your existing provider. See [Connect a Domain](/domains/connect-domain) for the difference between the two.
 </Note>
 
 ## Accessing DNS Settings
 
-To open the DNS manager, log in to the Cloud Panel at [my.wpstratos.com](https://my.wpstratos.com), select your site, click **Domains** in the sidebar, and then click **Manage DNS** next to the domain you want to configure. Before making changes, double check that you've selected the correct domain from the dropdown above the records table, especially if you manage several domains on one account.
+To open the DNS manager, log in to the Cloud Panel at [cloud.wpstratos.com](https://cloud.wpstratos.com), select your site, and open its DNS records. Before making changes, double check that you've selected the correct domain, especially if you manage several domains on one account.
 
 ---
 
@@ -48,10 +48,10 @@ The Cloud Panel supports the most common DNS record types. Use the table below a
   <Step title="Fill in the record fields">
     Complete the fields for your chosen record type:
 
-    - **Host** — The subdomain or `@` for the root domain.
-    - **Value** — The target IP address, hostname, or text string.
-    - **TTL** — Time to live in seconds. The default of `3600` (1 hour) is suitable for most use cases. Lower values allow faster propagation of future changes. Setting TTL to `1` means "automatic," and the network picks a sensible value on its own.
-    - **Priority** — Required for MX and SRV records; lower values indicate higher priority.
+    - **Host.** The subdomain or `@` for the root domain.
+    - **Value.** The target IP address, hostname, or text string.
+    - **TTL.** Time to live in seconds. The default of `3600` (1 hour) is suitable for most use cases. Lower values allow faster propagation of future changes. Setting TTL to `1` means "automatic," and the network picks a sensible value on its own.
+    - **Priority.** Required for MX and SRV records; lower values indicate higher priority.
   </Step>
   <Step title="Save the record">
     Click **Save**. The record appears in the DNS list immediately and begins propagating across the internet.
@@ -94,7 +94,7 @@ To route email through a third-party provider like Google Workspace or Microsoft
 | MX | `@` | `alt1.aspmx.l.google.com` | `5` |
 | MX | `@` | `alt2.aspmx.l.google.com` | `10` |
 
-Always use the exact values and priorities provided by your email service — these examples are for illustration only.
+Always use the exact values and priorities provided by your email service. These examples are for illustration only.
 
 ---
 
@@ -122,7 +122,7 @@ Replace the value with the exact string given to you by the service requesting v
   </Card>
 
   <Card title="Nameserver Setup" icon="server" href="/domains/nameserver-setup">
-    Point your domain's nameservers to WP Stratos so you can manage DNS from the Cloud Panel.
+    Switch to WP Stratos-managed nameservers so you can manage DNS from the Cloud Panel.
   </Card>
 
   <Card title="SSL Certificates" icon="lock" href="/domains/ssl-certificates">

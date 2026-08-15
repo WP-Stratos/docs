@@ -1,0 +1,55 @@
+---
+title: "Migrate an Existing WordPress Site to WP Stratos"
+sidebarTitle: "Migrate a Site"
+description: "Move a WordPress site you already run elsewhere into WP Stratos, using the built-in migration plugin or FTP/SFTP transfer."
+icon: "arrow-right-arrow-left"
+keywords: ["migrate wordpress site to new host", "wordpress migration plugin", "move wordpress site hosting", "wordpress site transfer FTP SFTP"]
+---
+
+If you already run a WordPress site somewhere else and want to bring it to WP Stratos, use the import flow instead of creating a blank site. It walks you through pointing at your current site, picking where the new copy will live, and choosing how the transfer itself happens.
+
+## Starting the Import
+
+<Steps>
+  <Step title="Click Add New">
+    In the Cloud Panel, click **Add New** in the top right corner of the header, next to your account menu.
+  </Step>
+  <Step title="Choose Import Existing WordPress Instance">
+    Select **Import Existing WordPress Instance** and hit **Continue**.
+  </Step>
+  <Step title="Enter your current site's URL">
+    Type in **Your Current WordPress Instance URL**. WP Stratos checks the URL to confirm WordPress is actually installed there before moving on.
+
+    If the domain isn't pointed anywhere yet or the check fails for a DNS reason, expand **Advanced** and enter the server IP directly under **Optional: Enter the server IP if your domain isn't working yet**.
+  </Step>
+  <Step title="Continue and pick a server location">
+    Click **Continue**, then choose which data center the new instance should live in:
+
+    - Ashburn, VA, USA
+    - Los Angeles, CA, USA
+    - Amsterdam, NL
+    - Dallas, TX, USA
+
+    Pick whichever is closest to the bulk of your visitors, then click **Continue** again.
+  </Step>
+</Steps>
+
+## Choosing How to Migrate
+
+At this point you're given two ways to actually move the site over:
+
+<CardGroup cols={2}>
+  <Card title="Simple Method (Recommended)" icon="wand-magic-sparkles">
+    Use the migration plugin for WordPress for a smooth,  automated process. This is the right choice for the overwhelming majority of migrations, and it's the one we'd pick ourselves.
+  </Card>
+
+  <Card title="Advanced Method" icon="terminal">
+    Provide your FTP/SFTP details and WP Stratos performs the migration for you directly, file by file. Reach for this if the migration plugin can't run on your current host for some reason (a locked-down security setup, an unusual server configuration, and so on).
+  </Card>
+</CardGroup>
+
+After you pick a method and complete the on-screen steps, WP Stratos handles the transfer in the background. Depending on the size of the site, this can take anywhere from a few minutes to a while for a large media library, and you can leave the page and check progress from your instance list.
+
+<Note>
+  A migration creates a new, separate instance on WP Stratos. Your original site stays online and untouched until you're ready to switch your domain over. Once you've confirmed the migrated copy looks right, follow the [Connect a Domain](/domains/connect-domain) guide to point your domain at the new instance.
+</Note>
