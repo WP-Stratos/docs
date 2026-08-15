@@ -2,20 +2,24 @@
 title: "WP Stratos: Managed WordPress Hosting, Made Simple"
 sidebarTitle: "Home"
 description: "WP Stratos is a fully managed WordPress hosting platform with automatic updates, SSL, staging environments, and built-in performance and email tools."
+keywords: ["managed wordpress hosting platform", "white label wordpress hosting", "wordpress hosting for agencies", "wordpress hosting control panel", "start a wordpress hosting business"]
 ---
 
-WP Stratos takes the complexity out of running WordPress. This documentation covers everything you need to get your site live, manage your domains, configure your built-in plugins, and make the most of the WP Stratos Cloud Panel.
+WP Stratos takes the complexity out of running WordPress. Whether you're launching one site or managing fifty under your own hosting brand, this documentation covers everything you need: getting a site live, connecting domains, configuring your built-in plugins, and getting the most out of the WP Stratos Cloud Panel.
 
 <CardGroup cols={2}>
   <Card title="Introduction" icon="book-open" href="/introduction">
     Learn what WP Stratos is, what's included in every hosting plan, and how the platform is structured.
   </Card>
+
   <Card title="Quickstart" icon="rocket" href="/quickstart">
     Get your WordPress site live in minutes. Follow the step-by-step guide from account creation to go-live.
   </Card>
+
   <Card title="Cloud Panel" icon="cloud" href="/cloud-panel/overview">
     Manage your sites, domains, backups, and staging environments from a single, intuitive control panel.
   </Card>
+
   <Card title="Connect a Domain" icon="globe" href="/domains/connect-domain">
     Point your custom domain to WP Stratos and get a free SSL certificate provisioned automatically.
   </Card>
@@ -27,13 +31,15 @@ Every WP Stratos site comes with three managed plugins pre-installed and ready t
 
 <CardGroup cols={3}>
   <Card title="WP Postman" icon="envelope" href="/plugins/wp-postman/overview">
-    Reliable SMTP email delivery for your WordPress site. Configure your email provider credentials and start sending transactional email right away.
+    Reliable email delivery for your WordPress site. Works out of the box with a managed API relay, plus optional SMTP if you'd rather use your own provider.
   </Card>
+
   <Card title="Aero" icon="gauge" href="/plugins/aero/overview">
     Caching and performance optimization built for WordPress. Aero is pre-configured with sensible defaults so your site loads fast from the moment it launches.
   </Card>
+
   <Card title="WP Stratos Environment" icon="code" href="/plugins/wp-stratos-environment/overview">
-    Control your PHP version and server-level environment settings directly from the WordPress admin — no SSH or server access required.
+    Identifies your site as WP Stratos-hosted and adds a managed plugins overview plus an email activity widget right to your WordPress dashboard.
   </Card>
 </CardGroup>
 
@@ -46,12 +52,12 @@ New to WP Stratos? Follow these four steps to go from sign-up to a fully configu
     Sign up at WP Stratos and verify your email address to activate your account.
   </Step>
   <Step title="Launch your site">
-    Open the Cloud Panel, create a new WordPress site, and select your plan and preferred server region.
+    Open the Cloud Panel and click **Add New**, then **Create New WordPress Instance**. Pick a theme, choose which hosting service to build on if you have more than one, and give your site a name. WP Stratos provisions the install in the background, usually within a few minutes.
   </Step>
   <Step title="Connect your domain">
-    Point your custom domain to WP Stratos by updating your nameservers or DNS records. SSL is provisioned automatically.
+    Open your site and click **Change Domain**. Choose **Set DNS Records** to point your domain at WP Stratos without touching your nameservers, or **Set Nameservers** to hand DNS over to a WP Stratos-managed Cloudflare pair generated for that domain. SSL is provisioned automatically once your domain resolves.
   </Step>
   <Step title="Configure your plugins">
-    Set up WP Postman with your SMTP credentials, review your Aero caching settings, and configure your PHP environment with WP Stratos Environment.
+    Add your API key or SMTP credentials in WP Postman so outbound email starts flowing, and confirm caching is active in Aero (it's on by default, so most sites don't need to touch it). WP Stratos Environment doesn't need any setup, it just gives you a quick overview of the other two.
   </Step>
 </Steps>
