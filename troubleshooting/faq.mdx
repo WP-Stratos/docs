@@ -18,16 +18,7 @@ This page collects the most common questions WP Stratos customers ask about thei
 </Accordion>
 
 <Accordion title="Can I change my site's PHP version?">
-  Yes. PHP version and PHP settings are managed per domain under a site's Advanced settings in the Cloud Panel. Changing the PHP version applies to every instance running on that domain, so test a version bump on staging first if you're not sure your theme and plugins are compatible. See [Developer Settings](/cloud-panel/developer-settings) for details.
-
-  - ~~SSH and SFTP access for direct file management~~ a
-  - ~~Git repository deployments with branch selection and auto-deploy~~
-  - ~~WordPress debug mode and maintenance mode toggles~~
-  - phpMyAdmin access
-  - Remote wp-config.php edits
-  - WordPress user management
-
-  All of this lives under a site's Advanced settings in the Cloud Panel. See [Developer Settings](/cloud-panel/developer-settings) for the full breakdown of each one.
+  Yes, but only through the Cloud Panel, not through the WP Stratos Environment plugin. Open your site's Developer Settings in the Cloud Panel to change the PHP version. It applies to every instance running on that domain, so test a version bump on staging first if you're not sure your theme and plugins are compatible. Other PHP configuration values, things like memory limits, execution time, and upload size, aren't self-service anywhere. If you need one adjusted for a specific domain, reach out to WP Stratos support at [missioncontrol@wpstratos.com](mailto:missioncontrol@wpstratos.com).
 </Accordion>
 
 <Accordion title="Does WP Stratos support WooCommerce?">
@@ -35,7 +26,7 @@ This page collects the most common questions WP Stratos customers ask about thei
 </Accordion>
 
 <Accordion title="Are WordPress core updates automatic?">
-  Automatic update behavior for WordPress core, plugins, and themes is configurable under a site's Advanced settings in the Cloud Panel. If you'd rather review updates manually before they apply, especially for a client site where you don't want surprises, you can turn automatic updates off there and update on your own schedule.\*\*\*\* x
+  Automatic update behavior for WordPress core, plugins, and themes is configurable under a site's Advanced settings in the Cloud Panel. If you'd rather review updates manually before they apply, especially for a client site where you don't want surprises, you can turn automatic updates off there and update on your own schedule.
 </Accordion>
 
 <Accordion title="How do I secure my Cloud Panel account?">
@@ -67,7 +58,7 @@ This page collects the most common questions WP Stratos customers ask about thei
 ## Backups
 
 <Accordion title="How often are backups taken?">
-  Your database is backed up **every hour**, and your full site is backed up **once a day**, covering files and database together. You can also trigger a **manual backup** at any time from your site's Backups tab in the Cloud Panel, for example before making significant changes to your theme or installing a major plugin update.
+  Your database is backed up **every hour**, and your full site is backed up **once a day**, covering files and database together. You can also trigger a **manual backup** at any time from your site's Backups tab in the Cloud Panel, for example before making significant changes to your theme or installing a major plugin update.
 </Accordion>
 
 <Accordion title="How long are backups retained?">
@@ -105,7 +96,7 @@ This page collects the most common questions WP Stratos customers ask about thei
 ## Support
 
 <Accordion title="How do I contact WP Stratos support?">
-  You can reach out from the Cloud Panel: click your account menu in the top right corner and look for the support or help option there. For billing questions specifically, [billing.wpstratos.com](https://billing.wpstratos.com) has its own contact channel.
+  You can reach out from the Cloud Panel, or email [missioncontrol@wpstratos.com](mailto:missioncontrol@wpstratos.com) directly. For billing questions specifically, [billing.wpstratos.com](https://billing.wpstratos.com) has its own contact channel.
 </Accordion>
 
 <Accordion title="What information should I include in a support ticket?">
@@ -113,7 +104,6 @@ This page collects the most common questions WP Stratos customers ask about thei
 
   - **Your site's domain**, so the affected instance is easy to find.
   - **What's happening**, when it started, and anything you've already tried.
-  - **A system info export**, available from the WP Stratos Environment plugin's Server Info page. See the [Server Info documentation](/plugins/wp-stratos-environment/server-info) for where to find it.
   - **Relevant error log lines**, if the issue is a fatal error or unexpected behavior. See [Logs](/cloud-panel/logs) for where to find them.
 
   Screenshots or screen recordings are also helpful for visual or intermittent issues.

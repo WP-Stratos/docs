@@ -8,11 +8,13 @@ keywords: ["wordpress developer tools hosting", "ssh sftp wordpress hosting", "g
 
 Everything that goes beyond day to day site management lives under a site's **Advanced** settings in the Cloud Panel. This is where developers, agencies, and anyone running more than a handful of sites end up spending time: PHP configuration, direct server access, Git deployments, and a remote editor for your `wp-config.php` file.
 
-## PHP Version and Settings
+## PHP Version
 
-Each domain has its own PHP version, checked and changeable from Advanced settings. Bumping the version applies to every instance running on that domain, so if you're not sure your theme and plugins are ready for a newer release, test it on staging first. The same PHP version and memory/upload settings are also manageable from inside WordPress itself through the [WP Stratos Environment plugin](/plugins/wp-stratos-environment/overview), pre-installed on every site, whichever place is more convenient for how you work.
+Each domain has its own PHP version, checked and changeable from Advanced settings. Bumping the version applies to every instance running on that domain, so if you're not sure your theme and plugins are ready for a newer release, test it on staging first.
 
-Alongside the version picker, **PHP Settings** lets you add, edit, or remove PHP configuration values specific to that domain (things like memory limits and upload sizes) without needing shell access to touch a php.ini file directly.
+<Note>
+  This is the only PHP configuration that's self-service. Other PHP values, memory limits, execution time, upload size, and similar, aren't adjustable from the Cloud Panel or from any plugin. If you need one of those changed for a specific domain, reach out to WP Stratos support at [missioncontrol@wpstratos.com](mailto:missioncontrol@wpstratos.com).
+</Note>
 
 ## SSH and SFTP Access
 

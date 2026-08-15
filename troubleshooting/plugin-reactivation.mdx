@@ -13,11 +13,11 @@ The following plugins are pre-installed on every WP Stratos site and are conside
 
 - **WP Postman**: handles all outgoing WordPress email. Ensures your site can reliably send transactional emails such as order confirmations, password resets, and contact form notifications.
 - **Aero**: provides full-stack caching and performance optimisation, including page caching, object caching, minification, image optimisation, and Edge management.
-- **WP Stratos Environment**: manages PHP version selection, server-level configuration, and exposes server diagnostic information within the WordPress admin.
+- **WP Stratos Environment**: identifies your site as WP Stratos-hosted, and adds a managed plugins overview plus an email activity widget to your WordPress dashboard. It does not manage PHP version or server configuration, that's handled from the Cloud Panel's [Developer Settings](/cloud-panel/developer-settings) instead.
 
 ## Why Does This Happen?
 
-These plugins are integral to how WP Stratos manages your hosting environment. They enable the platform to maintain correct PHP behaviour, deliver optimised page responses, and relay outgoing email through a properly configured mail relay. Disabling any of them can silently break features that you or your visitors depend on, without any obvious error message pointing back to the deactivated plugin.
+These plugins are integral to how WP Stratos manages your hosting environment. They enable the platform to deliver optimised page responses, relay outgoing email through a properly configured mail relay, and keep your site correctly identified as WP Stratos-hosted. Disabling any of them can silently break features that you or your visitors depend on, without any obvious error message pointing back to the deactivated plugin.
 
 WP Stratos automatically applies updates to managed plugins to deliver security patches, compatibility fixes, and new features without requiring manual action from you. As part of this update process, any deactivated managed plugin is reactivated to ensure it operates correctly under the new version. This safeguard exists because an update to a managed plugin may introduce changes that only take effect correctly when the plugin is active.
 
@@ -37,8 +37,8 @@ Rather than deactivating a managed plugin, disable the specific feature you don'
   This approach is preferable to deactivation because it keeps the plugin active and ready to resume sending the moment you add credentials back.
 </Accordion>
 
-<Accordion title="Hide WP Stratos Environment from admin users">
-  If you want to prevent certain WordPress users (such as Editor-role accounts) from seeing the WP Stratos Environment menu, use a role management plugin — such as **User Role Editor** or **Members** — to restrict access to the relevant admin menu pages. This keeps the plugin active and functional at the server level while removing the UI from users who don't need it.
+<Accordion title="Hide WP Stratos Environment's dashboard elements from other users">
+  If you want to prevent certain WordPress users (such as Editor-role accounts) from seeing the welcome banner or mail log widget, use a role management plugin, such as **User Role Editor** or **Members**, to restrict access to the relevant admin menu pages and dashboard widgets. This keeps the plugin active and functional while removing the UI from users who don't need it.
 </Accordion>
 
 <Info>
