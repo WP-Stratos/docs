@@ -64,7 +64,8 @@
               "cloud-panel/staging"
             ]
           }
-        ]
+        ],
+        "icon": "rocket-vertical"
       },
       {
         "tab": "Plugins",
@@ -121,7 +122,8 @@
               "troubleshooting/faq"
             ]
           }
-        ]
+        ],
+        "icon": "bug-slash"
       }
     ]
   },
