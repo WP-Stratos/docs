@@ -2,7 +2,7 @@
 title: "Aero Cache Warmer: Automatic Warming, llms.txt, and Priority Edge"
 sidebarTitle: "Cache Warmer"
 description: "Configure Aero's Cache Warmer to rebuild Batcache and Edge Cache automatically after every flush, using your sitemap, priority URLs, and llms.txt."
-keywords: ["cache warming wordpress", "llms.txt wordpress plugin", "sitemap cache warmer", "priority edge cache", "wp-cron cache warming", "crawl budget wordpress"]
+keywords: ["cache warming wordpress", "llms.txt wordpress plugin", "sitemap cache warmer", "priority edge cache", "wp-cron cache warming", "crawl budget wordpress", "automatic cache rewarm wordpress"]
 ---
 
 A cold cache is a trap. You purge (correctly) after a content change, and the very next visitor, maybe a real person, maybe Googlebot, pays the full render cost while the cache rebuilds around them. The Cache Warmer (**Aero → Cache Warmer**) exists to close that gap: it proactively re-requests your pages right after a flush, so [Batcache](/plugins/aero/caching) and [Edge Cache](/plugins/aero/edge-cache) are already warm before real traffic arrives.
@@ -44,6 +44,21 @@ A cold cache is a trap. You purge (correctly) after a content change, and the ve
 | **Sitemap URL** | auto-detect by default | Leave empty unless you have a nonstandard sitemap location. Yoast, RankMath, and core sitemap indexes are followed automatically, including nested sitemap-of-sitemaps structures. |
 | **Priority URLs** | one per line | Warmed first, every run, regardless of the limit above. Good candidates: pricing, contact, and any landing page you're actively driving paid or campaign traffic to. |
 | **Exclude from warming** | one per line, case-insensitive fragment match | Add anything dynamic that never benefits from caching: `/cart/`, `/my-account/`, search results pages, and similar. Warming these wastes requests on pages that shouldn't be cached in the first place. |
+
+## Re-warms
+
+This is the small, fast sibling to the full warm run above, and it's a different mechanism entirely. Edit a post, publish something, trash a page, approve a comment, or purge a single URL from [Purge & Schedule](/plugins/aero/purge-schedule): each of those actions purges a specific, small set of URLs, and this is what re-fills them before the next visitor lands on a cold page.
+
+You'll find the Re-warms panel on the Cache Warmer screen itself, sitting between the main warm queue and Priority Edge. It's empty outside of active purging, then fills in live as URLs move through pending, warming, and done, each row tagged with the reason it was purged in the first place.
+
+A few things worth knowing about how it behaves:
+
+- It's capped at 40 URLs and kicks off roughly 10 seconds after the purge settles. That short delay gives the Edge purge and the Batcache group bump time to finish, so the warm request captures fresh output instead of racing a purge that hasn't landed yet.
+- The homepage jumps to the front of the queue automatically, since it's the page almost every visitor hits first.
+- With Guest Mode isolation on and the bot bucket enabled, each URL here warms twice: once as a regular visitor, once as a bot, same behavior as the main warmer.
+- A full flush (manual, admin bar, scheduled, whatever the trigger) wipes this list entirely. Once a full flush happens, every entry in the re-warm history describes a cache entry that no longer exists, so Aero clears it out rather than showing you stale data.
+
+None of this needs configuring. It runs automatically whenever ["Warm automatically after every flush"](#warmer-settings) is on, and it's meant to stay invisible unless you're actively watching the screen while you edit content.
 
 ## Priority Edge
 
