@@ -7,6 +7,14 @@ keywords: ["cache warming wordpress", "llms.txt wordpress plugin", "sitemap cach
 
 A cold cache is a trap. You purge (correctly) after a content change, and the very next visitor, maybe a real person, maybe Googlebot, pays the full render cost while the cache rebuilds around them. The Cache Warmer (**Aero → Cache Warmer**) exists to close that gap: it proactively re-requests your pages right after a flush, so [Batcache](/plugins/aero/caching) and [Edge Cache](/plugins/aero/edge-cache) are already warm before real traffic arrives.
 
+## Warm Now and the queue
+
+Two controls sit at the top of the screen. **Warm Now** kicks off a run immediately, and **Cancel Run** stops one that's already going, marking anything still pending or warming as skipped rather than leaving it hanging. You won't need either one day to day once ["Warm automatically after every flush"](#warmer-settings) is on, but they're there for testing a settings change or manually recovering after something unusual happens to your cache.
+
+A status line tracks each run: Idle or Running, a one-line summary of what triggered it, and four live counts (warmed, warming, pending, failed) while it's in progress. Runs cap out at 2 hours, and if any single URL gets stuck at "warming" for more than 5 minutes, it's marked failed and the run keeps moving instead of stalling on one bad page.
+
+Below that, the Queue table lists the most recent run: URL, which variant hit it (regular visitor or bot), the HTTP status returned, whether the Cache column confirms it via a follow-up check, and how long the request took. **Refresh Cache Status** re-runs that check against the last 20 completed items without starting a new warm pass, handy if you want to confirm a page is still serving from cache well after the original run finished. Anything the check finds cold gets warmed by the act of checking it.
+
 ## Warmer settings
 
 <AccordionGroup>
@@ -23,7 +31,7 @@ A cold cache is a trap. You purge (correctly) after a content change, and the ve
   </Accordion>
 
   <Accordion title="Include URLs from llms.txt: Safe if you maintain an llms.txt file">
-    If a file exists at `/llms.txt`, the warmer treats it as a curated list of your most important pages and warms those ahead of the general sitemap crawl. Read the callout below before you file this under "SEO," because Google specifically says it doesn't count as one.
+    If a file exists at `/llms.txt`, the warmer treats it as a curated list of your most important pages and warms those ahead of the general sitemap crawl. A **Preview llms.txt** button shows you exactly which URLs get picked up (matches are highlighted), and **Re-scan llms.txt** re-checks for the file if you've just added or changed one, since detection doesn't happen on every page load. Read the callout below before you file this under "SEO," because Google specifically says it doesn't count as one.
   </Accordion>
 
   <Accordion title="Priority Edge, keeping top URLs admitted at the Edge: Safe, recommended">
