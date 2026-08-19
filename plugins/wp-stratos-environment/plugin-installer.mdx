@@ -1,0 +1,42 @@
+---
+title: "Installing Aero and WP Postman with One Click"
+sidebarTitle: "Plugin Installer"
+description: "How WP Stratos Environment downloads, verifies, and installs Aero and WP Postman straight from GitHub, since neither ships through the WordPress.org plugin directory."
+icon: "cloud-arrow-down"
+keywords: ["install aero plugin wordpress", "install wp postman plugin", "wordpress plugin installer github", "one click plugin install wordpress"]
+---
+
+Aero and WP Postman are WP Stratos's own plugins, and neither one is listed on WordPress.org. That means **Plugins → Add New** can't find them by search, the way it would for a typical plugin. WP Stratos Environment closes that gap with a small installer built directly into the welcome banner: point, click, done. No zip files to download by hand, no FTP.
+
+## Where you'll see it
+
+- In the [Performance section](/plugins/wp-stratos-environment/php-settings#performance) of the welcome banner, whenever Aero isn't installed, or is installed but not yet active.
+- In the [Mail Delivery card](/plugins/wp-stratos-environment/php-settings#mail-delivery), whenever WP Postman isn't installed or not yet active.
+
+## What happens when you click Download
+
+<Steps>
+  <Step title="Resolve the release">
+    The plugin checks the package's GitHub repository for its latest tagged release and shows you the version number and exact file size before anything downloads, so you know what you're about to pull down.
+  </Step>
+  <Step title="Download">
+    The archive streams into a private staging folder inside your uploads directory, one that's blocked from direct web access. A live progress bar tracks bytes as they land, so a slow connection looks like a slow bar rather than a frozen page.
+  </Step>
+  <Step title="Verify">
+    Once the download finishes, the plugin confirms the response was a genuine success, then checks that the file actually starts with a zip signature. That second check catches the case where a rate limit or a login wall quietly hands back an HTML page instead of a plugin archive. Only a file that passes both checks gets treated as installable.
+  </Step>
+  <Step title="Install">
+    The archive is unpacked using WordPress's own plugin installer, the exact code path **Plugins → Add New** uses for anything else. Anything on your site that hooks into a plugin install, logging, a security scanner, whatever, sees a completely normal one.
+  </Step>
+  <Step title="Activate">
+    The plugin is activated automatically.
+  </Step>
+</Steps>
+
+## Picking up where you left off
+
+Reload the page mid-download, or mid-install, and the button remembers what's already on disk. It offers to continue from there instead of starting the download over. A completed download stays staged for an hour and clears itself automatically after that, so there's no pile of half-finished archives building up in your uploads folder.
+
+## When a direct install isn't available
+
+Some sites don't allow WordPress to write plugin files on its own, for instance when `DISALLOW_FILE_MODS` is set, or when the account you're logged in with doesn't have install permissions. When that's the case, the Download button becomes a plain link straight to the release on GitHub instead, so you or whoever manages file access on the server can grab the archive and install it the usual way, through **Plugins → Add New → Upload Plugin**.

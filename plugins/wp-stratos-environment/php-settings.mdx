@@ -1,28 +1,65 @@
 ---
-title: "The WP Stratos Welcome Banner"
+title: "The WP Stratos Welcome Banner: Performance and Mail at a Glance"
 sidebarTitle: "Welcome Banner"
-description: "The WP Stratos Environment welcome banner gives you a quick overview of your managed plugins and a handful of at-a-glance settings, right in wp-admin."
-keywords: ["wp stratos environment plugin", "wordpress managed plugins overview", "wordpress admin dashboard banner"]
+description: "Every tile, pill, and button on the WP Stratos welcome banner: Aero's cache and optimization status, WP Postman's mail delivery health, and one-click actions for both."
+keywords: ["wp stratos environment plugin", "wordpress managed plugins overview", "wordpress admin dashboard banner", "wordpress performance dashboard", "aero cache status widget"]
+icon: "house"
 ---
 
-The **welcome banner** is what you'll actually see when you open WP Stratos Environment from your WordPress admin sidebar. It's a dashboard-style overview, not a settings panel, built to answer "what's WP Stratos actually doing on this site" at a glance rather than to expose configuration you're meant to change here.
+The welcome banner sits at the top of your WordPress **Dashboard**, the screen you land on right after logging in. It's not a settings panel. It's a live status board: Aero's cache and optimization state, WP Postman's mail health, and a handful of one-click actions for both, all pulled together in one place so you don't have to check three different screens to know how your site is doing.
 
-## What's on the Banner
+## The hero
 
-<AccordionGroup>
-  <Accordion title="Managed Plugins Overview">
-    A summary card for each of the three managed plugins, WP Postman, Aero, and WP Stratos Environment itself, showing whether it's active and giving you a one-click link into that plugin's own settings screen. If you're trying to remember which plugin handles email versus caching versus platform identification, this is the fastest place to check.
-  </Accordion>
+Across the top: a greeting with your first name, an "Operational" status pill, and two small chips reporting your site's PHP and WordPress versions. Nothing here is configurable, it's a confirmation that everything's running and current, at a glance.
 
-  <Accordion title="At-a-Glance Settings">
-    A handful of read-only or lightly configurable settings relevant to how the managed plugins behave together. This isn't a general-purpose settings screen, and it doesn't cover PHP version or server configuration, those live in the Cloud Panel, not here.
-  </Accordion>
-</AccordionGroup>
+## Performance
 
-<Note>
-  If you're looking to change your PHP version, that's done from the Cloud Panel's [Developer Settings](/cloud-panel/developer-settings), not from this plugin. Other PHP configuration values (memory limits, upload sizes, execution time) aren't self-service anywhere, plugin or Cloud Panel. Reach out to WP Stratos support at [missioncontrol@wpstratos.com](mailto:missioncontrol@wpstratos.com) if you need one of those adjusted for a specific domain.
-</Note>
+For administrators, once Aero is installed and active, this section fills in with live data pulled straight from Aero's own settings. If Aero isn't active yet, you'll see a short explanation of what it does and an install button instead. See [Installing Aero and WP Postman](/plugins/wp-stratos-environment/plugin-installer) for how that works.
 
-## Accessing the Welcome Banner
+### The score ring
 
-The banner is the first thing you see in the WordPress dashboard (wp-admin) so there's nothing special you need to do.
+A small ring in the corner of the section counts how many of Aero's optimization modules are switched on against the total available, for example 7 of 9. The ring's color shifts with that ratio: green once you're past roughly 70%, amber in the middle range, and red below 40%. It's a single number standing in for "how tuned is this site," worth a glance before you dig into anything else.
+
+### The four tiles
+
+Each tile reflects one part of Aero's caching and delivery pipeline. Click any of them to jump straight to the matching Aero screen.
+
+| Tile | Reflects | What you'll see |
+| --- | --- | --- |
+| **Edge Cache** | Aero's Edge Cache setting | Active, Defensive Mode (with time remaining while it's shielding a traffic spike), or Disabled |
+| **Page Cache** | Whether Aero's page-cache drop-in is loaded and confirmed | Active, Cloudflare, Enabled, Unverified, or Not enabled |
+| **Cache Warmer** | Aero's Cache Warmer | Disabled, Warming (with a live progress bar and a running count of pages rebuilt), or Ready, showing when it last ran or what schedule it follows |
+| **Images** | Aero's image delivery | On Aero 2.9 and later, this becomes the Image Optimizer tile: unavailable, dormant (installed but its master switch is off), converting, or active with the formats it's outputting. A separate **LCP Preload** tile appears alongside it. On earlier Aero builds (before 2.9), this tile shows LCP Preload on its own without the Image Optimizer. |
+
+### Optimization modules
+
+Below the tiles, a strip of small chips, one for every optimization Aero can apply: minify and cache CSS, minify and cache JS, compress HTML, defer JavaScript, delay JavaScript, async CSS, preload critical assets, preload the LCP image, font optimization, critical CSS, bloat removal, and image optimization where it's available. A lit chip means that module is on. The strip is read-only here; a **Tune** link takes you to Aero's own Optimization screen to actually flip anything.
+
+### Quick actions
+
+Four buttons sit below the modules strip:
+
+- **Warm cache now** starts a cache warmer run immediately. It's disabled while a run is already in progress, or if the warmer itself is switched off.
+- **Turn on image optimization** only appears when Aero's Image Optimizer exists but its master switch is off. One click enables it and flushes the site so delivery picks up the change right away.
+- **Flush all caches** runs Aero's sequential purge, object cache, then Batcache, then the edge, in the exact order configured on [Purge & Schedule](/plugins/aero/purge-schedule).
+- **Purge schedule** links straight to that same screen if you want to look at or change the order yourself.
+
+Every action here reports back with a short status message, and any tile tied to a running job (the warmer, image optimization) updates its own progress live without a page reload. Once the job finishes, everything settles back to its normal state on its own.
+
+## Mail Delivery
+
+Next to Performance, administrators also see a Mail Delivery card once WP Postman is installed. The status pill tells you exactly what's happening: **Delivering** with your chosen mailer and a DKIM-signed badge when everything's configured correctly, **PHP mail()** as a warning if you haven't set up a real mailer yet, **API key missing** if WP Stratos Relay is selected without its key defined, or **Inactive** and **Not installed** prompts if WP Postman isn't running.
+
+Once mail is flowing, a row of three numbers shows your last 30 days: total sent, delivered, and failed. Below that, links go straight to WP Postman's [Mail Log](/plugins/wp-postman/email-logs) and settings screen, or to the installer if WP Postman isn't active yet.
+
+## Resources and footer
+
+A short list of external links rounds out the banner: **Getting started** for setup and migration guidance, **Mission Control** for direct support, and **Community** for tips and release notes from other WP Stratos users. The footer beneath the whole banner links out to full documentation, the blog, system status, and the changelog. (Changelog is also available from the [Cloud Panel](/cloud-panel/overview) by clicking on the diamond in the top right hand corner.)
+
+## Who sees what
+
+The Performance and Mail Delivery sections are administrator surface, visible to anyone with the `manage_options` capability. Everyone else, editors, authors, subscribers, sees the hero greeting and vitals only. None of the cache or mail-log queries run for those users, so the banner stays simple for roles that shouldn't have details.
+
+## Hiding and restoring the banner
+
+The **×** button in the top corner opens a small dialog with three choices: **Hide permanently**, **Remind me tomorrow**, or **Cancel**. To bring the banner back later, open **Screen Options** at the top of the Dashboard screen and check **Show Welcome Banner**.

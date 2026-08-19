@@ -89,6 +89,7 @@
         "pages": [
           "plugins/wp-stratos-environment/overview",
           "plugins/wp-stratos-environment/php-settings",
+          "plugins/wp-stratos-environment/plugin-installer",
           "plugins/wp-stratos-environment/server-info"
         ]
       },
