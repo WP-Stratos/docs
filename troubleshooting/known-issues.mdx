@@ -1,0 +1,50 @@
+---
+title: "Known Issues: Non-WordPress Pages and Full-Site Redirects"
+sidebarTitle: "Known Issues"
+description: "Aero's caching and image optimization, plus Cloud Panel analytics, depend on WordPress actually answering the request. Here's what breaks when it isn't, and what keeps working anyway."
+icon: "triangle-exclamation"
+keywords: ["wordpress hosting known issues", "aero image optimization not working", "cache warmer not working", "full site redirect wordpress cache", "coming soon page wordpress caching", "wp stratos bandwidth monitoring"]
+---
+
+Aero and the Cloud Panel both assume WordPress is the thing answering requests for your domain. That assumption holds for the overwhelming majority of sites. When it doesn't, a specific set of features goes quiet, and it does so without an error message pointing at the cause. This page covers the two situations where that happens and exactly what stops working in each one.
+
+## Non-WordPress Pages
+
+This covers any case where the document root is serving something other than a WordPress page: a static HTML placeholder, a framework running instead of (or alongside) WordPress, a hand-dropped maintenance file, anything that isn't WordPress itself handling the request.
+
+Aero hooks into WordPress to do its job. No WordPress request, no hook, no feature. Concretely, that means:
+
+- **Image optimization** doesn't run. Aero never gets a WordPress media request to intercept, so nothing gets converted to WebP or AVIF, and nothing gets resized or served through Aero's delivery modes.
+- **Cache Warmer** doesn't run. It reads your sitemap and crawls URLs to keep pages pre-cached, but a non-WP page gives it nothing WordPress-shaped to warm.
+- The rest of Aero's caching and optimization stack sits idle for the same reason. Minification, deferral, and the various Batcache/Edge Cache purge triggers all live inside WordPress hooks that never fire.
+
+## Full-Site Redirects
+
+Different setup, same root cause. This is what happens when every URL on a domain gets redirected somewhere else, most commonly a "coming soon" page, a maintenance splash, or a temporary holding page while a real site gets built out behind the scenes.
+
+A visitor's browser gets bounced before WordPress ever finishes rendering a response. From Aero's perspective, that's functionally the same as there being no WordPress page there at all. Everything listed above under non-WordPress pages applies here too.
+
+## What Still Works
+
+**Bandwidth monitoring keeps working.** It's measured at the server level, not pulled from inside WordPress, so it has nothing to do with whether a WP page rendered or not. Traffic to a redirected or non-WP domain still shows up correctly in the Cloud Panel.
+
+Everything else under Site Details and Analytics (visits, unique visitors, average session time) reads data that WordPress itself needs to generate. No WordPress response, no data, so those charts stay flat.
+
+## Caching Never Kicks In
+
+Worth stating plainly since it trips people up: a non-WordPress page, or a page caught in a full-site redirect, is **never cached**, by any layer. Not Batcache, not Edge Cache, not anything else in the stack. Every single request hits the origin directly. If you're expecting a placeholder page to get faster after a few visits, it won't, and that's expected given there's nothing for Aero to cache in the first place.
+
+## Quick Reference
+
+| Feature | Non-WordPress page | Full-site redirect |
+| --- | --- | --- |
+| Image optimization (Aero) | Doesn't run | Doesn't run |
+| Cache Warmer | Doesn't run | Doesn't run |
+| Batcache / object cache | Never caches | Never caches |
+| Edge Cache | Never caches | Never caches |
+| Traffic analytics (visits, sessions) | Doesn't populate | Doesn't populate |
+| Bandwidth monitoring | Keeps working | Keeps working |
+
+<Note>
+  None of this needs manual fixing. If you're intentionally running a holding page before launch, this is just how the stack behaves in that state. The moment a real WordPress page starts answering requests at those URLs, Aero and the Cloud Panel's analytics pick back up on their own. Nothing needs to be re-enabled.
+</Note>

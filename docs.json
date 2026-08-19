@@ -113,7 +113,8 @@
               "troubleshooting/domain-propagation",
               "troubleshooting/email-delivery",
               "troubleshooting/cache-issues",
-              "troubleshooting/plugin-reactivation"
+              "troubleshooting/plugin-reactivation",
+              "troubleshooting/known-issues"
             ]
           },
           {
