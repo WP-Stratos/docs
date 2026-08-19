@@ -98,7 +98,7 @@ Where you click "DNS" or "Nameservers," and what it's called once you get there,
   <Accordion title="Cloudflare Registrar">
     Open the domain in your Cloudflare dashboard and click the **DNS** tab.
 
-    Add the A and CNAME records there. Cloudflare Registrar domains already run on Cloudflare nameservers, so there's no separate nameserver step, you're managing DNS directly. One thing worth getting right: leave the proxy status (the orange cloud icon) off for these records and keep it set to **DNS only**. WP Stratos runs its own Edge Cache in front of your site, and stacking Cloudflare's proxy on top of that causes cache conflicts rather than extra protection. See [DNS Configuration](/domains/dns-configuration) for the full explanation.
+    Add the A and CNAME records there. Cloudflare Registrar domains already run on Cloudflare nameservers, so there's no separate nameserver step, you're managing DNS directly. **Important:** leave the proxy status (the orange cloud icon) off for these records and keep it set to **DNS only**. WP Stratos runs its own Edge Cache in front of your site, and stacking Cloudflare's proxy on top of that causes cache conflicts rather than extra protection. See [DNS Configuration](/domains/dns-configuration) for the full explanation.
   </Accordion>
 
   <Accordion title="Squarespace Domains (formerly Google Domains)">
