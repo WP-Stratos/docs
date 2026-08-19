@@ -126,7 +126,8 @@
             "group": "Clarifications",
             "icon": "circle-question",
             "pages": [
-              "troubleshooting/what-is-wp-stratos"
+              "troubleshooting/what-is-wp-stratos",
+              "troubleshooting/apache-stratos-retired"
             ]
           }
         ],

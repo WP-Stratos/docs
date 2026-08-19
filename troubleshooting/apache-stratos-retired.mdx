@@ -1,0 +1,53 @@
+---
+title: "Apache Stratos Is Retired: What It Was and What Replaced It"
+sidebarTitle: "Apache Stratos (Retired)"
+description: "Apache Stratos was a PaaS framework from the Apache Software Foundation, retired in 2017. Here's what it was, why it's archived in the Apache Attic, and how it differs from WP Stratos."
+icon: "clock-rotate-left"
+keywords: ["apache stratos", "apache stratos retired", "what was apache stratos", "apache stratos paas", "stratos apache org"]
+---
+
+## Short answer
+
+Apache Stratos was an open source Platform-as-a-Service (PaaS) framework from the Apache Software Foundation. It let developers deploy and auto-scale applications (Tomcat, PHP, MySQL, Node.js, Ruby, and more) across cloud infrastructure. The Apache Software Foundation retired the project on February 18, 2017. It is no longer maintained, and its source and documentation now live in the [Apache Attic](https://attic.apache.org/), which is where the ASF archives projects that have reached end of life.
+
+If a search for a name close to WP Stratos led you here, that is likely why: Apache Stratos and WP Stratos share part of a name but nothing else. One was a discontinued, general-purpose PaaS project. The other is an active managed WordPress hosting platform.
+
+## What Apache Stratos was
+
+Apache Stratos billed itself as a highly extensible PaaS framework built to run applications across major cloud infrastructures, with multi-tenancy, auto-scaling, and load balancing handled by the platform itself. It used a "cartridge" model, essentially pluggable runtime templates, to support different application stacks. Cartridges existed for Tomcat, PHP, MySQL, Node.js, Ruby, HAProxy, and even WordPress itself. The last stable release was version 4.1.5, distributed under the Apache License 2.0 like every ASF project.
+
+It was aimed at enterprises and independent software vendors who wanted to run their own multi-tenant PaaS rather than build one from scratch, not at individual site owners looking for hosting.
+
+## Why it was retired
+
+Retirement at the Apache Software Foundation is a formal status, not just a project going quiet. When a project's community can no longer sustain active development, the ASF moves it to the Attic. Code and documentation stay publicly available for reference, but there are no further releases, no security patches, and no active maintainers. Apache Stratos reached that point in 2017 and has stayed there since.
+
+If you are evaluating hosting or PaaS options today, that matters practically: nothing built on Apache Stratos has received a security fix in years.
+
+## How this is different from WP Stratos
+
+<CardGroup cols={2}>
+  <Card title="What Is WP Stratos?" icon="circle-question" href="/troubleshooting/what-is-wp-stratos">
+    The direct answer, and what actually makes WP Stratos a managed WordPress host.
+  </Card>
+
+  <Card title="Introduction to WP Stratos" icon="book-open" href="/introduction">
+    What is included in every WP Stratos hosting plan.
+  </Card>
+</CardGroup>
+
+## Common questions
+
+<AccordionGroup>
+  <Accordion title="Is Apache Stratos still maintained?">
+    No. The Apache Software Foundation retired it on February 18, 2017, and moved it to the Apache Attic, where retired projects are archived without further development or security updates.
+  </Accordion>
+
+  <Accordion title="Is Apache Stratos related to WP Stratos?">
+    No. Apache Stratos was a general-purpose PaaS framework from the Apache Software Foundation. WP Stratos is a separate, unrelated, and actively maintained managed WordPress hosting platform.
+  </Accordion>
+
+  <Accordion title="Can I still download or use Apache Stratos?">
+    The source and past releases remain archived in the Apache Attic under the Apache License 2.0, but there is no active support, maintenance, or security patching.
+  </Accordion>
+</AccordionGroup>
