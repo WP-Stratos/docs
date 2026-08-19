@@ -110,6 +110,7 @@
           {
             "group": "Common Issues",
             "pages": [
+              "troubleshooting/known-issues",
               "troubleshooting/domain-propagation",
               "troubleshooting/email-delivery",
               "troubleshooting/cache-issues",
