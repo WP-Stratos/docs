@@ -64,6 +64,56 @@ Connecting a custom domain gives your WordPress site a real, branded web address
   DNS propagation time varies depending on your previous TTL settings and your visitors' DNS resolvers. You can use a tool like [whatsmydns.net](https://www.whatsmydns.net) to check propagation status from multiple locations worldwide.
 </Info>
 
+## Registrar-Specific Instructions
+
+Where you click "DNS" or "Nameservers," and what it's called once you get there, changes by registrar. Here's a map for the six you'll run into most.
+
+<AccordionGroup>
+  <Accordion title="GoDaddy">
+    Sign in and open **My Products**. Click the domain, then the three-dot menu next to it, then **Manage DNS**.
+
+    For DNS records, add the two A records and the `www` CNAME under the **Records** section. GoDaddy shows your existing records first, so delete any old A record pointing at `@` before adding the new ones. Otherwise both resolve and only one wins.
+
+    For nameservers, scroll to **Nameservers**, click **Change**, select **Enter my own nameservers (advanced)**, and paste in the pair from your Cloud Panel.
+  </Accordion>
+
+  <Accordion title="Namecheap">
+    Go to **Domain List**, find the domain, and click **Manage**.
+
+    For DNS records, open the **Advanced DNS** tab and use **Add New Record** for each row. Namecheap defaults new domains to "Namecheap BasicDNS," which is fine, you're just adding records on top of it.
+
+    For nameservers, stay on the main **Domain** tab, find **Nameservers**, switch the dropdown to **Custom DNS**, and enter both values.
+  </Accordion>
+
+  <Accordion title="Cloudflare Registrar">
+    Open the domain in your Cloudflare dashboard and click the **DNS** tab.
+
+    Add the A and CNAME records there. Cloudflare Registrar domains already run on Cloudflare nameservers, so there's no separate nameserver step, you're managing DNS directly. One thing worth getting right: leave the proxy status (the orange cloud icon) off for these records and keep it set to **DNS only**. WP Stratos runs its own Edge Cache in front of your site, and stacking Cloudflare's proxy on top of that causes cache conflicts rather than extra protection. See [DNS Configuration](/domains/dns-configuration) for the full explanation.
+  </Accordion>
+
+  <Accordion title="Squarespace Domains (formerly Google Domains)">
+    Log in, go to **Domains**, select the domain, and open the **DNS Settings** tab.
+
+    For DNS records, scroll to **Custom Records** and add each row there.
+
+    For nameservers, look for **Nameservers** on the same page, choose **Use custom nameservers**, and replace whatever's listed with the pair from your Cloud Panel.
+  </Accordion>
+
+  <Accordion title="Bluehost">
+    From the Bluehost dashboard, go to **Domains**, select the domain, and open the **DNS** tab, sometimes labeled **Zone Editor**.
+
+    Records and nameservers live on the same screen here. Add the A and CNAME records under **Zone Editor**, or scroll down to **Name Servers** if you're switching those instead.
+  </Accordion>
+
+  <Accordion title="Hostinger">
+    Go to **Domains**, click the domain, and open **DNS / Nameservers** from the left menu.
+
+    The DNS records table and the nameserver switch both sit on this page, just under different tabs. Add rows under **DNS Records**, or flip to **Nameservers** and choose **Change nameservers** if that's the route you're taking.
+  </Accordion>
+</AccordionGroup>
+
+Not seeing your registrar here? The pattern holds everywhere: find DNS or Nameservers in your domain's settings, then use the values from the **Set Your Domain** window above. For a slower, more detailed walkthrough of the nameserver path specifically, see [Nameserver Setup](/domains/nameserver-setup).
+
 ## Setting or Changing Your Main Domain
 
 If you've added more than one domain to a site, one of them is designated the **main domain**, marked with a filled star icon in your domain list. Any addon domain can be promoted to main: click the empty star next to it, confirm the change, and WP Stratos updates the hosting account to reflect the new main domain automatically. This is worth knowing if you rebrand a client site down the road and need the new domain to take over as primary without rebuilding the connection from scratch.
