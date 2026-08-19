@@ -1,36 +1,41 @@
 ---
-title: "WP Stratos Environment"
+title: "WP Stratos Environment: Platform Identification and the Managed Dashboard"
 sidebarTitle: "Overview"
-description: "WP Stratos Environment identifies your site as WP Stratos-hosted, adds a managed plugins overview to wp-admin, and surfaces WP Postman's mail activity on your dashboard."
-keywords: ["wp stratos environment plugin overview", "wordpress managed plugins", "wordpress hosting platform identification"]
+description: "WP Stratos Environment identifies your site as WP Stratos-hosted, adds a live performance and mail dashboard to wp-admin, and installs Aero and WP Postman with one click."
+keywords: ["wp stratos environment plugin", "wordpress managed plugins", "wordpress hosting platform identification", "wordpress performance dashboard plugin"]
+icon: "server"
 ---
 
-WP Stratos Environment is a lightweight plugin pre-installed and activated on every WP Stratos site. It doesn't manage PHP settings or expose server configuration, that's handled entirely from the Cloud Panel's [Developer Settings](/cloud-panel/developer-settings) instead. What this plugin actually does is smaller and more focused: it identifies your site as running on the WP Stratos platform, gives you a quick-glance overview of your managed plugins right in wp-admin, and surfaces your recent email activity without needing to leave the dashboard.
+WP Stratos Environment ships pre-installed and pre-activated on every WP Stratos site. It's the plugin doing the quiet, structural work behind the scenes: marking your site as WP Stratos-hosted, pulling live status from Aero and WP Postman into one dashboard view, and handling the install for both of those plugins, since neither one lives on WordPress.org.
 
-## What It Actually Does
+## What it does
 
 <CardGroup cols={2}>
   <Card title="Platform Headers" icon="server">
-    Adds identifying HTTP response headers to every request, so WP Stratos infrastructure (and support, when you reach out) can recognize your site as WP Stratos-hosted.
+    Adds identifying HTTP response headers to every frontend, admin, and REST request, so WP Stratos infrastructure, and support, can recognize your site as WP Stratos-hosted the moment they look at it.
   </Card>
 
   <Card title="Welcome Banner" icon="house" href="/plugins/wp-stratos-environment/php-settings">
-    A dashboard banner in wp-admin giving you a quick overview of the three managed plugins, WP Postman, Aero, and WP Stratos Environment itself, plus a handful of at-a-glance settings.
+    A live dashboard banner covering Aero's caching and optimization state, WP Postman's mail delivery health, and one-click actions for both, right where you land after logging in.
+  </Card>
+
+  <Card title="One-Click Plugin Install" icon="cloud-arrow-down" href="/plugins/wp-stratos-environment/plugin-installer">
+    Downloads and installs Aero and WP Postman straight from their GitHub releases, with a live progress bar, since neither plugin is distributed through the WordPress.org plugin directory.
   </Card>
 
   <Card title="Mail Log Widget" icon="envelope" href="/plugins/wp-stratos-environment/server-info">
-    Adds a WP Postman mail log widget to your wp-admin dashboard, so you can glance at recent outgoing email activity without opening WP Postman's own settings screen.
+    A WP Postman mail log widget on your main Dashboard screen: 30-day send stats and your most recent outgoing messages, no extra navigation required.
   </Card>
 </CardGroup>
 
+## Identifying your site
+
+Every response, whether it's a page load, an admin screen, or a REST API call, carries two headers: `Platform: WP Stratos` and `X-Powered-By: WP Stratos Managed Cloud`. That's how WP Stratos support and internal tooling confirm a site belongs to the platform without asking you first. Open your browser's developer console while inside wp-admin and you'll also find a small piece of ASCII branding printed there: harmless, admin-only, and purely cosmetic.
+
 <Note>
-  WP Stratos Environment is pre-installed on all WP Stratos sites. If you deactivate it, it will be automatically reactivated on the next plugin update. See [Plugin Reactivation](/troubleshooting/plugin-reactivation) if that's unexpected.
+  WP Stratos Environment is pre-installed on every site and reactivates automatically if it's ever switched off, since the headers and dashboard depend on it running. See [Plugin Reactivation](/troubleshooting/plugin-reactivation) if that catches you off guard.
 </Note>
-
-## What It Doesn't Do
-
-Worth being explicit about, since it's a common point of confusion: this plugin does not control your PHP version, memory limits, execution time, or upload size. PHP version is changed from the Cloud Panel's [Developer Settings](/cloud-panel/developer-settings), per domain. Other PHP configuration values (memory limits, upload sizes, and so on) aren't self-service anywhere, plugin or Cloud Panel, and require reaching out to WP Stratos support at [missioncontrol@wpstratos.com](mailto:missioncontrol@wpstratos.com).
 
 ## Accessing WP Stratos Environment
 
-Log in to your WordPress admin dashboard and the **WP Stratos Environment** modules are immediately and automatically visible.
+There's no separate settings screen to hunt for. Log in to wp-admin and the welcome banner is already on your Dashboard. The mail log widget sits below it, among your other dashboard widgets.

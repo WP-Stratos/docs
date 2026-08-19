@@ -1,24 +1,29 @@
 ---
-title: "WP Postman Mail Log Widget on the WordPress Dashboard"
+title: "The WP Postman Mail Log Widget"
 sidebarTitle: "Mail Log Widget"
-description: "WP Stratos Environment adds a WP Postman mail log widget to your WordPress dashboard, showing recent outgoing email activity at a glance."
-keywords: ["wordpress email dashboard widget", "wp postman mail log", "check outgoing email wordpress dashboard"]
+description: "WP Stratos Environment adds a WP Postman mail log widget to your WordPress Dashboard: 30-day send stats and your most recent outgoing email, refreshed on demand."
+keywords: ["wordpress email dashboard widget", "wp postman mail log", "check outgoing email wordpress dashboard", "wordpress email delivery stats"]
+icon: "envelope"
 ---
 
-WP Stratos Environment adds a small widget to your main WordPress **Dashboard** screen, alongside the usual "At a Glance" and Activity widgets. It shows recent outgoing email activity from WP Postman, the pre-installed SMTP plugin, so you can spot a delivery problem without navigating away from the dashboard.
+Separate from the welcome banner, WP Stratos Environment adds its own widget to your regular WordPress **Dashboard** screen, alongside the usual "At a Glance" and Activity widgets. It only shows up once WP Postman is installed and active, since there's nothing to report without it.
 
-## What the Widget Shows
+## Stats row
 
-The widget surfaces a compact view of your most recent send attempts: recipient, subject, delivery method, and status. It's meant for a quick glance, not deep investigation, if you're actually troubleshooting a specific failed message, the full [Mail Log](/plugins/wp-postman/email-logs) inside WP Postman's own settings has the complete detail: exact error text, HTTP response codes, and the full message body.
+Four numbers sit across the top: **Total (30d)**, **Sent**, **Delivered**, and **Failed**. They're pulled straight from WP Postman's own mail log table, so what you see here always lines up with what WP Postman itself is tracking.
+
+## Recent activity
+
+Below the stats, up to 15 of your most recent send attempts, each with a color-coded status badge (Sent, Delivered, Failed, or Pending), the subject line trimmed to a few words with the full text on hover, the recipient, and how long ago the message went out. Anything from the last hour reads as "Xm ago"; older mail rolls over to hours, then days, then a plain date.
+
+## Refresh
+
+The **Refresh** button pulls a fresh copy of both the stats and the log without reloading the whole dashboard page. Send a test message and hit refresh to confirm it landed without leaving the screen.
+
+## Going deeper
+
+This widget is a glance, not an investigation tool. For the full picture on any specific message, exact status, error text, and the rendered message body, open the [Mail Log](/plugins/wp-postman/email-logs) inside WP Postman's own settings, reachable directly from the widget's footer links: **Full Mail Log** and **Settings**.
 
 <Tip>
-  Think of this widget as an early-warning signal. If you land on your dashboard and see a run of Failed rows, that's your cue to open WP Postman's Mail Log and dig into what's actually going wrong. See [Email Delivery](/troubleshooting/email-delivery) for common causes and fixes.
+  A run of Failed rows here is your earliest signal that something's wrong with delivery. See [Email Delivery](/troubleshooting/email-delivery) for common causes and how to fix them.
 </Tip>
-
-## Where to Find It
-
-Log in to your WordPress admin and go to the main **Dashboard** (the screen you land on after logging in, or reachable from **Dashboard → Home** in the sidebar). The widget appears among your other dashboard widgets. If you don't see it, check that WP Stratos Environment hasn't been deactivated, see [Plugin Reactivation](/troubleshooting/plugin-reactivation) if it keeps disappearing.
-
-<Note>
-  This widget is display-only. You can't take action on a message from here, restore, resend, and detailed diagnostics all happen from WP Postman's own [Mail Log](/plugins/wp-postman/email-logs) screen.
-</Note>
