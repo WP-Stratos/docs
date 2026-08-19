@@ -3,9 +3,9 @@
   "theme": "aspen",
   "name": "WP Stratos",
   "colors": {
-    "primary": "#ef7025",
-    "light": "#eec9bc",
-    "dark": "#4fa1ab"
+    "primary": "#4a80f0",
+    "light": "#4a80f0",
+    "dark": "#4a80f0"
   },
   "favicon": {
     "light": "/images/wpstratos-logomark-light.png",
@@ -29,110 +29,92 @@
     }
   },
   "navigation": {
-    "tabs": [
+    "groups": [
       {
-        "tab": "Getting Started",
-        "groups": [
-          {
-            "group": "Welcome",
-            "pages": [
-              "introduction",
-              "quickstart"
-            ]
-          },
-          {
-            "group": "Domains & DNS",
-            "pages": [
-              "domains/connect-domain",
-              "domains/dns-configuration",
-              "domains/nameserver-setup",
-              "domains/ssl-certificates"
-            ]
-          },
-          {
-            "group": "Cloud Panel",
-            "pages": [
-              "cloud-panel/overview",
-              "cloud-panel/sites",
-              "cloud-panel/migrate-a-site",
-              "cloud-panel/backups",
-              "cloud-panel/developer-settings",
-              "cloud-panel/security-and-account",
-              "cloud-panel/plugins-and-themes",
-              "cloud-panel/edge-cache-and-cloudflare",
-              "cloud-panel/logs",
-              "cloud-panel/staging"
-            ]
-          }
-        ],
-        "icon": "rocket-vertical"
+        "group": "Welcome",
+        "pages": [
+          "introduction",
+          "quickstart"
+        ]
       },
       {
-        "tab": "Plugins",
-        "groups": [
-          {
-            "group": "WP Postman",
-            "pages": [
-              "plugins/wp-postman/overview",
-              "plugins/wp-postman/smtp-configuration",
-              "plugins/wp-postman/email-logs"
-            ],
-            "icon": "send"
-          },
-          {
-            "group": "Aero",
-            "pages": [
-              "plugins/aero/overview",
-              "plugins/aero/caching",
-              "plugins/aero/edge-cache",
-              "plugins/aero/cache-warmer",
-              "plugins/aero/purge-schedule",
-              "plugins/aero/optimization",
-              "plugins/aero/images",
-              "plugins/aero/experimental",
-              "plugins/aero/debug"
-            ]
-          },
-          {
-            "group": "WP Stratos Environment",
-            "pages": [
-              "plugins/wp-stratos-environment/overview",
-              "plugins/wp-stratos-environment/php-settings",
-              "plugins/wp-stratos-environment/server-info"
-            ]
-          }
-        ],
-        "icon": "plug"
+        "group": "Domains & DNS",
+        "pages": [
+          "domains/connect-domain",
+          "domains/dns-configuration",
+          "domains/nameserver-setup",
+          "domains/ssl-certificates"
+        ]
       },
       {
-        "tab": "Troubleshooting",
-        "groups": [
-          {
-            "group": "Common Issues",
-            "pages": [
-              "troubleshooting/known-issues",
-              "troubleshooting/domain-propagation",
-              "troubleshooting/email-delivery",
-              "troubleshooting/cache-issues",
-              "troubleshooting/plugin-reactivation"
-            ]
-          },
-          {
-            "group": "FAQ",
-            "pages": [
-              "troubleshooting/faq"
-            ]
-          },
-          {
-            "group": "Clarifications",
-            "icon": "circle-question",
-            "pages": [
-              "troubleshooting/what-is-wp-stratos",
-              "troubleshooting/apache-stratos-retired"
-            ]
-          }
-        ],
-        "icon": "bug-slash"
+        "group": "Cloud Panel",
+        "pages": [
+          "cloud-panel/overview",
+          "cloud-panel/sites",
+          "cloud-panel/migrate-a-site",
+          "cloud-panel/backups",
+          "cloud-panel/developer-settings",
+          "cloud-panel/security-and-account",
+          "cloud-panel/plugins-and-themes",
+          "cloud-panel/edge-cache-and-cloudflare",
+          "cloud-panel/logs",
+          "cloud-panel/staging"
+        ]
+      },
+      {
+        "group": "WP Postman",
+        "icon": "send",
+        "pages": [
+          "plugins/wp-postman/overview",
+          "plugins/wp-postman/smtp-configuration",
+          "plugins/wp-postman/email-logs"
+        ]
+      },
+      {
+        "group": "Aero",
+        "pages": [
+          "plugins/aero/overview",
+          "plugins/aero/caching",
+          "plugins/aero/edge-cache",
+          "plugins/aero/cache-warmer",
+          "plugins/aero/purge-schedule",
+          "plugins/aero/optimization",
+          "plugins/aero/images",
+          "plugins/aero/experimental",
+          "plugins/aero/debug"
+        ]
+      },
+      {
+        "group": "WP Stratos Environment",
+        "pages": [
+          "plugins/wp-stratos-environment/overview",
+          "plugins/wp-stratos-environment/php-settings",
+          "plugins/wp-stratos-environment/server-info"
+        ]
+      },
+      {
+        "group": "Common Issues",
+        "pages": [
+          "troubleshooting/known-issues",
+          "troubleshooting/domain-propagation",
+          "troubleshooting/email-delivery",
+          "troubleshooting/cache-issues",
+          "troubleshooting/plugin-reactivation"
+        ]
+      },
+      {
+        "group": "FAQ",
+        "pages": [
+          "troubleshooting/faq"
+        ]
+      },
+      {
+        "group": "Clarifications",
+        "icon": "circle-question",
+        "pages": [
+          "troubleshooting/what-is-wp-stratos",
+          "troubleshooting/apache-stratos-retired"
+        ]
       }
     ]
   },
