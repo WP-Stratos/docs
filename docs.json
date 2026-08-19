@@ -8,8 +8,8 @@
     "dark": "#4fa1ab"
   },
   "favicon": {
-    "light": "/images/wpstratos-logomark.svg",
-    "dark": "/images/wpstratos-logomark-dark.svg"
+    "light": "/images/wpstratos-logomark-light.png",
+    "dark": "/images/wpstratos-logomark-dark.png"
   },
   "logo": {
     "light": "/images/light.svg",
@@ -124,6 +124,18 @@
           }
         ],
         "icon": "bug-slash"
+      },
+      {
+        "tab": "Stratos University",
+        "icon": "graduation-cap",
+        "groups": [
+          {
+            "group": "Instances",
+            "pages": [
+              "untitled-page"
+            ]
+          }
+        ]
       }
     ]
   },

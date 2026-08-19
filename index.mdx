@@ -1,10 +1,3 @@
----
-title: "WP Stratos: Managed WordPress Hosting, Made Simple"
-sidebarTitle: "Home"
-description: "WP Stratos is a fully managed WordPress hosting platform with automatic updates, SSL, staging environments, and built-in performance and email tools."
-keywords: ["managed wordpress hosting platform", "white label wordpress hosting", "wordpress hosting for agencies", "wordpress hosting control panel", "start a wordpress hosting business"]
----
-
 WP Stratos takes the complexity out of running WordPress. Whether you're launching one site or managing fifty under your own hosting brand, this documentation covers everything you need: getting a site live, connecting domains, configuring your built-in plugins, and getting the most out of the WP Stratos Cloud Panel.
 
 <CardGroup cols={2}>
@@ -25,6 +18,8 @@ WP Stratos takes the complexity out of running WordPress. Whether you're launchi
   </Card>
 </CardGroup>
 
+---
+
 ## What's included
 
 Every WP Stratos site comes with three managed plugins pre-installed and ready to use from day one.
@@ -42,6 +37,8 @@ Every WP Stratos site comes with three managed plugins pre-installed and ready t
     Identifies your site as WP Stratos-hosted and adds a managed plugins overview plus an email activity widget right to your WordPress dashboard.
   </Card>
 </CardGroup>
+
+---
 
 ## Get up and running
 
@@ -61,3 +58,46 @@ New to WP Stratos? Follow these four steps to go from sign-up to a fully configu
     Add your API key or SMTP credentials in WP Postman so outbound email starts flowing, and confirm caching is active in Aero (it's on by default, so most sites don't need to touch it). WP Stratos Environment doesn't need any setup, it just gives you a quick overview of the other two.
   </Step>
 </Steps>
+
+---
+
+## Migrate an existing site, with zero downtime
+
+Already running WordPress somewhere else? You don't have to take the site offline to move it. WP Stratos builds your migrated site as a new, separate instance, so the original keeps serving visitors the entire time you're moving it over.
+
+<Steps>
+  <Step title="Point WP Stratos at your current site">
+    In the Cloud Panel, click **Add New**, then **Import Existing WordPress Instance**, and enter your current site's URL. If the domain isn't resolving yet, expand **Advanced** and enter the server IP directly instead.
+  </Step>
+  <Step title="Pick a data center">
+    Choose Ashburn (VA), Los Angeles (CA), Amsterdam (NL), or Dallas (TX), whichever sits closest to the bulk of your visitors.
+  </Step>
+  <Step title="Choose your transfer method">
+    The migration plugin handles the overwhelming majority of sites automatically. If your current host won't allow it, provide FTP/SFTP details instead and WP Stratos pulls the files over directly.
+  </Step>
+  <Step title="Review the copy, then cut over on your own schedule">
+    Once the migrated site checks out, follow the [Connect a Domain](/domains/connect-domain) guide to point your domain at the new instance. Nothing about your original site changes until you make that switch.
+  </Step>
+</Steps>
+
+<Note>
+  A migration never touches your original site. It stays online, exactly as it is, until you decide to repoint the domain, so there's no downtime window to plan around.
+</Note>
+
+<CardGroup cols={2}>
+  <Card title="Migrate a Site" icon="arrow-right-arrow-left" href="/cloud-panel/migrate-a-site">
+    The full import walkthrough: both transfer methods, all four data centers, and what to check before cutover.
+  </Card>
+
+  <Card title="Connect a Domain" icon="globe" href="/domains/connect-domain">
+    Point your domain at the new instance once you're ready to go live, with SSL provisioned automatically.
+  </Card>
+
+  <Card title="Staging" icon="send-backward" href="/cloud-panel/staging">
+    Clone your migrated site to test themes, plugins, and updates before anything reaches production.
+  </Card>
+
+  <Card title="SSL Certificates" icon="lock" href="/domains/ssl-certificates">
+    See how free, automatic Let's Encrypt certificates work once your domain is connected.
+  </Card>
+</CardGroup>
