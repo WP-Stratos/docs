@@ -189,5 +189,12 @@
   },
   "interaction": {
     "drilldown": true
-  }
+  },
+  "redirects": [
+    {
+      "source": "/getting-started",
+      "destination": "/introduction",
+      "permanent": true
+    }
+  ]
 }
