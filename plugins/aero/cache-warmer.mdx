@@ -2,10 +2,36 @@
 title: "Aero Cache Warmer: Automatic Warming, llms.txt, and Priority Edge"
 sidebarTitle: "Cache Warmer"
 description: "Configure Aero's Cache Warmer to rebuild Batcache and Edge Cache automatically after every flush, using your sitemap, priority URLs, and llms.txt."
-keywords: ["cache warming wordpress", "llms.txt wordpress plugin", "sitemap cache warmer", "priority edge cache", "wp-cron cache warming", "crawl budget wordpress"]
+keywords: ["cache warming wordpress", "llms.txt wordpress plugin", "sitemap cache warmer", "priority edge cache", "wp-cron cache warming", "crawl budget wordpress", "automatic cache rewarm wordpress"]
+icon: "fire-flame-curved"
 ---
 
 A cold cache is a trap. You purge (correctly) after a content change, and the very next visitor, maybe a real person, maybe Googlebot, pays the full render cost while the cache rebuilds around them. The Cache Warmer (**Aero → Cache Warmer**) exists to close that gap: it proactively re-requests your pages right after a flush, so [Batcache](/plugins/aero/caching) and [Edge Cache](/plugins/aero/edge-cache) are already warm before real traffic arrives.
+
+## Warm Now and the queue
+
+Two controls sit at the top of the screen. **Warm Now** kicks off a run immediately, and **Cancel Run** stops one that's already going, marking anything still pending or warming as skipped rather than leaving it hanging. You won't need either one day to day once ["Warm automatically after every flush"](#warmer-settings) is on, but they're there for testing a settings change or manually recovering after something unusual happens to your cache.
+
+A status line tracks each run: Idle or Running, a one-line summary of what triggered it, and four live counts (warmed, warming, pending, failed) while it's in progress. Runs cap out at 2 hours, and if any single URL gets stuck at "warming" for more than 5 minutes, it's marked failed and the run keeps moving instead of stalling on one bad page.
+
+Below that, the Queue table lists the most recent run: URL, which variant hit it (regular visitor or bot), the HTTP status returned, whether the Cache column confirms it via a follow-up check, and how long the request took. **Refresh Cache Status** re-runs that check against the last 20 completed items without starting a new warm pass, handy if you want to confirm a page is still serving from cache well after the original run finished. Anything the check finds cold gets warmed by the act of checking it.
+
+## Reading the Variant and Cache columns
+
+Both the Queue table above and the Re-warms table further down share these two columns, and they mean the same thing in each, just displayed a little differently.
+
+**Variant** is which browser signature made the request. In the Queue table, every row is tagged **HUMAN** or **BOT**: a normal-browser request versus one sent with a PageSpeed/Lighthouse-style user agent, which only shows up when [warming the Guest bucket](#warmer-settings) is on. The Re-warms table condenses this into one row per URL instead of two, so its Variants column reads **H** for a human-only warm or **H\+B** when the same URL got warmed as both a visitor and a bot.
+
+**Cache** is the actual result of checking the page, and a couple of these states look like problems when they're not:
+
+| Status | What it means |
+| --- | --- |
+| **EDGE HIT** | Best case. The page served straight from [Edge Cache](/plugins/aero/edge-cache), the fastest tier there is. Once the Edge is answering, Batcache's own state stops being relevant, the response headers at that point are a frozen snapshot from admission time, not live data. |
+| **REFRESHING** | Stale-while-revalidate doing exactly what it's supposed to. The Edge served a technically-stale cached copy instantly while a fresh copy builds behind the scenes; the next request gets the fresh one. Expect to see this briefly right after a flush, it isn't a failure. |
+| **BC HIT** | The page served from [Batcache](/plugins/aero/caching) at the origin server. A solid, expected result for a page the Edge hasn't taken over yet. |
+| **BC SET** | This specific check is the one that generated and stored the page in Batcache. A moment ago it wasn't cached; now it is, and the next request gets BC HIT. |
+| **NO HIT** | The follow-up check went all the way to origin and still came back without a Batcache hit. Usually means the page genuinely can't be cached: it's setting cookies, sending no-store headers, or matches an [exclusion rule](#warming-behavior). Worth a look if you expected this page to cache. |
+| **—** | No cache-state data yet. Normal for anything still pending or warming. |
 
 ## Warmer settings
 
@@ -23,7 +49,7 @@ A cold cache is a trap. You purge (correctly) after a content change, and the ve
   </Accordion>
 
   <Accordion title="Include URLs from llms.txt: Safe if you maintain an llms.txt file">
-    If a file exists at `/llms.txt`, the warmer treats it as a curated list of your most important pages and warms those ahead of the general sitemap crawl. Read the callout below before you file this under "SEO," because Google specifically says it doesn't count as one.
+    If a file exists at `/llms.txt`, the warmer treats it as a curated list of your most important pages and warms those ahead of the general sitemap crawl. A **Preview llms.txt** button shows you exactly which URLs get picked up (matches are highlighted), and **Re-scan llms.txt** re-checks for the file if you've just added or changed one, since detection doesn't happen on every page load. Read the callout below before you file this under "SEO," because Google specifically says it doesn't count as one.
   </Accordion>
 
   <Accordion title="Priority Edge, keeping top URLs admitted at the Edge: Safe, recommended">
@@ -44,6 +70,21 @@ A cold cache is a trap. You purge (correctly) after a content change, and the ve
 | **Sitemap URL** | auto-detect by default | Leave empty unless you have a nonstandard sitemap location. Yoast, RankMath, and core sitemap indexes are followed automatically, including nested sitemap-of-sitemaps structures. |
 | **Priority URLs** | one per line | Warmed first, every run, regardless of the limit above. Good candidates: pricing, contact, and any landing page you're actively driving paid or campaign traffic to. |
 | **Exclude from warming** | one per line, case-insensitive fragment match | Add anything dynamic that never benefits from caching: `/cart/`, `/my-account/`, search results pages, and similar. Warming these wastes requests on pages that shouldn't be cached in the first place. |
+
+## Re-warms
+
+This is the small, fast sibling to the full warm run above, and it's a different mechanism entirely. Edit a post, publish something, trash a page, approve a comment, or purge a single URL from [Purge & Schedule](/plugins/aero/purge-schedule): each of those actions purges a specific, small set of URLs, and this is what re-fills them before the next visitor lands on a cold page.
+
+You'll find the Re-warms panel on the Cache Warmer screen itself, sitting between the main warm queue and Priority Edge. It's empty outside of active purging, then fills in live as URLs move through pending, warming, and done, each row tagged with the reason it was purged in the first place.
+
+A few things worth knowing about how it behaves:
+
+- It's capped at 40 URLs and kicks off roughly 10 seconds after the purge settles. That short delay gives the Edge purge and the Batcache group bump time to finish, so the warm request captures fresh output instead of racing a purge that hasn't landed yet.
+- The homepage jumps to the front of the queue automatically, since it's the page almost every visitor hits first.
+- With Guest Mode isolation on and the bot bucket enabled, each URL here warms twice: once as a regular visitor, once as a bot, same behavior as the main warmer, shown as **H\+B** in the Variants column (see [Reading the Variant and Cache columns](#reading-the-variant-and-cache-columns) for what all these column values mean).
+- A full flush (manual, admin bar, scheduled, whatever the trigger) wipes this list entirely. Once a full flush happens, every entry in the re-warm history describes a cache entry that no longer exists, so Aero clears it out rather than showing you stale data.
+
+None of this needs configuring. It runs automatically whenever ["Warm automatically after every flush"](#warmer-settings) is on, and it's meant to stay invisible unless you're actively watching the screen while you edit content.
 
 ## Priority Edge
 
