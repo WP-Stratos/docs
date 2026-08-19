@@ -1,5 +1,5 @@
 ---
-title: "Known Issues: Non-WordPress Pages and Full-Site Redirects"
+title: "Known WordPress Issues: Non-WordPress Pages and Full-Site Redirects"
 sidebarTitle: "Known Issues"
 description: "Aero's caching and image optimization, plus Cloud Panel analytics, depend on WordPress actually answering the request. Here's what breaks when it isn't, and what keeps working anyway."
 icon: "triangle-exclamation"
@@ -20,9 +20,14 @@ Aero hooks into WordPress to do its job. No WordPress request, no hook, no featu
 
 ## Full-Site Redirects
 
-Different setup, same root cause. This is what happens when every URL on a domain gets redirected somewhere else, most commonly a "coming soon" page, a maintenance splash, or a temporary holding page while a real site gets built out behind the scenes.
+Different setup, same root cause. This is what happens when every URL on a domain gets redirected somewhere else, most commonly a "coming soon" page, a maintenance splash, or a temporary holding page.
 
 A visitor's browser gets bounced before WordPress ever finishes rendering a response. From Aero's perspective, that's functionally the same as there being no WordPress page there at all. Everything listed above under non-WordPress pages applies here too.
+
+### Exceptions to Full-Site Redirects
+
+- If a full-site redirect points to a WordPress page, analytics will work for the destination WordPress page, but won't work for the source pages. 
+- [Cache warming](/plugins/aero/cache-warmer) will work for the destination page, but not any source page. 
 
 ## What Still Works
 
@@ -36,15 +41,15 @@ Worth stating plainly since it trips people up: a non-WordPress page, or a page 
 
 ## Quick Reference
 
-| Feature | Non-WordPress page | Full-site redirect |
-| --- | --- | --- |
-| Image optimization (Aero) | Doesn't run | Doesn't run |
-| Cache Warmer | Doesn't run | Doesn't run |
-| Batcache / object cache | Never caches | Never caches |
-| Edge Cache | Never caches | Never caches |
-| Traffic analytics (visits, sessions) | Doesn't populate | Doesn't populate |
-| Bandwidth monitoring | Keeps working | Keeps working |
+| Feature | Non-WordPress page | Full-site redirect | Full-site but WP |
+| --- | --- | --- | --- |
+| Image optimization (Aero) | Doesn't run | Doesn't run | Runs only on destination page images |
+| Cache Warmer | Doesn't run | Doesn't run | Runs only on destination |
+| Batcache / object cache | Never caches | Never caches | Caches |
+| Edge Cache | Never caches | Never caches | Caches |
+| Traffic analytics (visits, sessions) | Doesn't populate | Doesn't populate | Populates only on destination |
+| Bandwidth monitoring | Keeps working | Keeps working | Keeps working |
 
 <Note>
-  None of this needs manual fixing. If you're intentionally running a holding page before launch, this is just how the stack behaves in that state. The moment a real WordPress page starts answering requests at those URLs, Aero and the Cloud Panel's analytics pick back up on their own. Nothing needs to be re-enabled.
+  None of this needs manual fixing. If you're intentionally running a holding page before launch, this is just how the WP Stratos stack behaves in that state. The moment a real WordPress page starts answering requests at those URLs, Aero and the Cloud Panel's analytics pick back up on their own. Nothing needs to be re-enabled.
 </Note>

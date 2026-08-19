@@ -110,11 +110,11 @@
           {
             "group": "Common Issues",
             "pages": [
+              "troubleshooting/known-issues",
               "troubleshooting/domain-propagation",
               "troubleshooting/email-delivery",
               "troubleshooting/cache-issues",
-              "troubleshooting/plugin-reactivation",
-              "troubleshooting/known-issues"
+              "troubleshooting/plugin-reactivation"
             ]
           },
           {
