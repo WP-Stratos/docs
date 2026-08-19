@@ -29,7 +29,7 @@ Each tile reflects one part of Aero's caching and delivery pipeline. Click any o
 | **Edge Cache** | Aero's Edge Cache setting | Active, Defensive Mode (with time remaining while it's shielding a traffic spike), or Disabled |
 | **Page Cache** | Whether Aero's page-cache drop-in is loaded and confirmed | Active, Cloudflare, Enabled, Unverified, or Not enabled |
 | **Cache Warmer** | Aero's Cache Warmer | Disabled, Warming (with a live progress bar and a running count of pages rebuilt), or Ready, showing when it last ran or what schedule it follows |
-| **Images** | Aero's image delivery | On Aero 2.10 and later, this becomes the Image Optimizer tile: unavailable, dormant (installed but its master switch is off), converting, or active with the formats it's outputting. A separate **LCP Preload** tile appears alongside it. On earlier Aero builds, this tile shows LCP Preload on its own. |
+| **Images** | Aero's image delivery | On Aero 2.9 and later, this becomes the Image Optimizer tile: unavailable, dormant (installed but its master switch is off), converting, or active with the formats it's outputting. A separate **LCP Preload** tile appears alongside it. On earlier Aero builds (before 2.9), this tile shows LCP Preload on its own without the Image Optimizer. |
 
 ### Optimization modules
 
@@ -54,11 +54,11 @@ Once mail is flowing, a row of three numbers shows your last 30 days: total sent
 
 ## Resources and footer
 
-A short list of external links rounds out the banner: **Getting started** for setup and migration guidance, **Mission Control** for direct support, and **Community** for tips and release notes from other WP Stratos users. The footer beneath the whole banner links out to full documentation, the blog, system status, and the changelog.
+A short list of external links rounds out the banner: **Getting started** for setup and migration guidance, **Mission Control** for direct support, and **Community** for tips and release notes from other WP Stratos users. The footer beneath the whole banner links out to full documentation, the blog, system status, and the changelog. (Changelog is also available from the [Cloud Panel](/cloud-panel/overview) by clicking on the diamond in the top right hand corner.)
 
 ## Who sees what
 
-The Performance and Mail Delivery sections are administrator surface, visible to anyone with the `manage_options` capability. Everyone else, editors, authors, subscribers, sees the hero greeting and vitals only. None of the cache or mail-log queries run for those users, so the banner stays fast and simple for roles that don't need the detail.
+The Performance and Mail Delivery sections are administrator surface, visible to anyone with the `manage_options` capability. Everyone else, editors, authors, subscribers, sees the hero greeting and vitals only. None of the cache or mail-log queries run for those users, so the banner stays simple for roles that shouldn't have details.
 
 ## Hiding and restoring the banner
 
