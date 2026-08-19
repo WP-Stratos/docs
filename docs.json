@@ -121,21 +121,17 @@
             "pages": [
               "troubleshooting/faq"
             ]
+          },
+          {
+            "group": "Clarifications",
+            "icon": "circle-question",
+            "pages": [
+              "troubleshooting/what-is-wp-stratos",
+              "troubleshooting/apache-stratos-retired"
+            ]
           }
         ],
         "icon": "bug-slash"
-      },
-      {
-        "tab": "Stratos University",
-        "icon": "graduation-cap",
-        "groups": [
-          {
-            "group": "Instances",
-            "pages": [
-              "untitled-page"
-            ]
-          }
-        ]
       }
     ]
   },
@@ -169,5 +165,17 @@
       "display": "interactive"
     }
   },
-  "description": "Documentation, guides, tutorials for WP Stratos, recognized as the fastest WordPress hosting in benchmarks. Deep WordPress integrations and support."
+  "description": "Documentation, guides, tutorials for WP Stratos, recognized as the fastest WordPress hosting in benchmarks. Deep WordPress integrations and support.",
+  "seo": {
+    "organization": {
+      "name": "WP Stratos",
+      "legalName": "WP Stratos",
+      "url": "https://wpstratos.com",
+      "logo": "https://wpstratos.com/images/wpstratos-logomark-light.png",
+      "sameAs": [
+        "http://linkedin.com/company/wpstratos",
+        "https://www.instagram.com/wpstratos/"
+      ]
+    }
+  }
 }
