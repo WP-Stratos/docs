@@ -177,5 +177,13 @@
         "https://www.instagram.com/wpstratos/"
       ]
     }
+  },
+  "integrations": {
+    "ga4": {
+      "measurementId": "G-LNHLBN4K2N"
+    },
+    "telemetry": {
+      "enabled": true
+    }
   }
 }
