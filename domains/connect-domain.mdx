@@ -2,7 +2,7 @@
 title: "How to Connect a Custom Domain to Your WP Stratos Site"
 sidebarTitle: "Connect Domain"
 description: "Learn how to connect a custom domain to your WP Stratos WordPress site using either WP Stratos DNS or your existing external DNS provider."
-keywords: ["connect custom domain wordpress hosting", "point domain to wordpress host", "add domain wordpress cloud panel", "main domain vs addon domain", "wordpress hosting dns setup"]
+keywords: ["connect custom domain wordpress hosting", "point domain to wordpress host", "add domain wordpress cloud panel", "main domain vs addon domain", "wordpress hosting dns setup", "connect godaddy domain wordpress hosting", "point namecheap domain to wordpress hosting", "connect cloudflare registrar domain wordpress", "point squarespace domain to wordpress", "connect bluehost domain wordpress hosting", "connect hostinger domain to wordpress", "how to point a domain to wordpress host", "add www cname record wordpress hosting"]
 ---
 
 Connecting a custom domain gives your WordPress site a real, branded web address instead of a placeholder URL. Whether you use WP Stratos's built-in DNS management or keep DNS with your existing registrar, this page walks through every step, from adding the domain in the Cloud Panel to confirming SSL is live.
@@ -63,6 +63,66 @@ Connecting a custom domain gives your WordPress site a real, branded web address
 <Info>
   DNS propagation time varies depending on your previous TTL settings and your visitors' DNS resolvers. You can use a tool like [whatsmydns.net](https://www.whatsmydns.net) to check propagation status from multiple locations worldwide.
 </Info>
+
+## Not Sure Who Your Registrar Is?
+
+Plenty of people bought a domain years ago and forgot where. If that's you, the registrar-specific steps below won't do much good until you know which one to follow. Good news, figuring it out takes about ten seconds.
+
+<Tip>
+  Run your domain through [ICANN Lookup](https://lookup.icann.org/en) and check the **Registrar** field in the results. That's who you need to log in to below. WHOIS privacy services mask your personal contact details, not this field, so it shows up even when everything else in the report is hidden.
+</Tip>
+
+If ICANN Lookup comes back empty, or the domain shows a status like "pending delete" or doesn't resolve at all, search your email inbox for "domain" or "renewal." Whoever sent that first purchase receipt is your registrar, and their name is usually right there in the sender address.
+
+## Registrar-Specific Instructions
+
+Where you click "DNS" or "Nameservers," and what it's called once you get there, changes by registrar. Here's a map for the six you'll run into most.
+
+<AccordionGroup>
+  <Accordion title="GoDaddy">
+    Sign in and open **My Products**. Click the domain, then the three-dot menu next to it, then **Manage DNS**.
+
+    For DNS records, add the two A records and the `www` CNAME under the **Records** section. GoDaddy shows your existing records first, so delete any old A record pointing at `@` before adding the new ones. Otherwise both resolve and only one wins.
+
+    For nameservers, scroll to **Nameservers**, click **Change**, select **Enter my own nameservers (advanced)**, and paste in the pair from your Cloud Panel.
+  </Accordion>
+
+  <Accordion title="Namecheap">
+    Go to **Domain List**, find the domain, and click **Manage**.
+
+    For DNS records, open the **Advanced DNS** tab and use **Add New Record** for each row. Namecheap defaults new domains to "Namecheap BasicDNS," which is fine, you're just adding records on top of it.
+
+    For nameservers, stay on the main **Domain** tab, find **Nameservers**, switch the dropdown to **Custom DNS**, and enter both values.
+  </Accordion>
+
+  <Accordion title="Cloudflare Registrar">
+    Open the domain in your Cloudflare dashboard and click the **DNS** tab.
+
+    Add the A and CNAME records there. Cloudflare Registrar domains already run on Cloudflare nameservers, so there's no separate nameserver step, you're managing DNS directly. **Important:** leave the proxy status (the orange cloud icon) off for these records and keep it set to **DNS only**. WP Stratos runs its own Edge Cache in front of your site, and stacking Cloudflare's proxy on top of that causes cache conflicts rather than extra protection. See [DNS Configuration](/domains/dns-configuration) for the full explanation.
+  </Accordion>
+
+  <Accordion title="Squarespace Domains (formerly Google Domains)">
+    Log in, go to **Domains**, select the domain, and open the **DNS Settings** tab.
+
+    For DNS records, scroll to **Custom Records** and add each row there.
+
+    For nameservers, look for **Nameservers** on the same page, choose **Use custom nameservers**, and replace whatever's listed with the pair from your Cloud Panel.
+  </Accordion>
+
+  <Accordion title="Bluehost">
+    From the Bluehost dashboard, go to **Domains**, select the domain, and open the **DNS** tab, sometimes labeled **Zone Editor**.
+
+    Records and nameservers live on the same screen here. Add the A and CNAME records under **Zone Editor**, or scroll down to **Name Servers** if you're switching those instead.
+  </Accordion>
+
+  <Accordion title="Hostinger">
+    Go to **Domains**, click the domain, and open **DNS / Nameservers** from the left menu.
+
+    The DNS records table and the nameserver switch both sit on this page, just under different tabs. Add rows under **DNS Records**, or flip to **Nameservers** and choose **Change nameservers** if that's the route you're taking.
+  </Accordion>
+</AccordionGroup>
+
+Not seeing your registrar here? The pattern holds everywhere: find DNS or Nameservers in your domain's settings, then use the values from the **Set Your Domain** window above. For a slower, more detailed walkthrough of the nameserver path specifically, see [Nameserver Setup](/domains/nameserver-setup).
 
 ## Setting or Changing Your Main Domain
 
