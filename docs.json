@@ -35,7 +35,8 @@
         "pages": [
           "introduction",
           "quickstart"
-        ]
+        ],
+        "icon": "hand-metal"
       },
       {
         "group": "Domains & DNS",
@@ -44,7 +45,8 @@
           "domains/dns-configuration",
           "domains/nameserver-setup",
           "domains/ssl-certificates"
-        ]
+        ],
+        "icon": "network"
       },
       {
         "group": "Cloud Panel",
@@ -59,7 +61,8 @@
           "cloud-panel/edge-cache-and-cloudflare",
           "cloud-panel/logs",
           "cloud-panel/staging"
-        ]
+        ],
+        "icon": "monitor-cloud"
       },
       {
         "group": "WP Postman",
@@ -82,7 +85,9 @@
           "plugins/aero/images",
           "plugins/aero/experimental",
           "plugins/aero/debug"
-        ]
+        ],
+        "icon": "feather",
+        "tag": "BEST IN CLASS"
       },
       {
         "group": "WP Stratos Environment",
@@ -91,7 +96,8 @@
           "plugins/wp-stratos-environment/php-settings",
           "plugins/wp-stratos-environment/plugin-installer",
           "plugins/wp-stratos-environment/server-info"
-        ]
+        ],
+        "icon": "leaf"
       },
       {
         "group": "Common Issues",
@@ -101,17 +107,19 @@
           "troubleshooting/email-delivery",
           "troubleshooting/cache-issues",
           "troubleshooting/plugin-reactivation"
-        ]
+        ],
+        "icon": "life-buoy"
       },
       {
         "group": "FAQ",
         "pages": [
           "troubleshooting/faq"
-        ]
+        ],
+        "icon": "badge-question-mark"
       },
       {
         "group": "Clarifications",
-        "icon": "circle-question",
+        "icon": "glasses",
         "pages": [
           "troubleshooting/what-is-wp-stratos",
           "troubleshooting/apache-stratos-retired"

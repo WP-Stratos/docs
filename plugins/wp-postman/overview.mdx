@@ -3,6 +3,7 @@ title: "WP Postman: Reliable Email Delivery for Your WordPress Site"
 sidebarTitle: "Overview"
 description: "WP Postman replaces WordPress's default mail system with a custom API relay for WP Stratos websites with optional SMTP delivery, ensuring your transactional emails reach the inbox every time."
 keywords: ["wordpress smtp plugin", "reliable email delivery wordpress", "wp postman email plugin", "transactional email wordpress hosting", "fix wordpress not sending email"]
+icon: "view"
 ---
 
 WordPress ships with one method for sending mail: PHP's `mail()` function, called through the `wp_mail()` wrapper every plugin and theme relies on. It works fine in a demo. It falls apart the moment a real inbox provider gets involved, because a message sent through local `mail()` carries no authentication, no reputation, and no way for Gmail or Outlook to confirm your server is who it says it is. Password resets, order receipts, and quote requests routed this way are guesswork, not delivery.
