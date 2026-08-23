@@ -1,6 +1,6 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "theme": "aspen",
+  "theme": "mint",
   "name": "WP Stratos",
   "colors": {
     "primary": "#4a80f0",
@@ -120,7 +120,9 @@
     ]
   },
   "footer": {
-    "socials": {}
+    "socials": {
+      "github": "https://github.com/WP-Stratos"
+    }
   },
   "appearance": {
     "strict": false
@@ -179,5 +181,8 @@
       "destination": "/introduction",
       "permanent": true
     }
-  ]
+  ],
+  "icons": {
+    "library": "lucide"
+  }
 }
