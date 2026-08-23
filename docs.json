@@ -121,7 +121,10 @@
   },
   "footer": {
     "socials": {
-      "github": "https://github.com/WP-Stratos"
+      "github": "https://github.com/WP-Stratos",
+      "linkedin": "https://linkedin.com/company/wpstratos",
+      "instagram": "https://www.instagram.com/wpstratos",
+      "website": "https://wpstratos.com"
     }
   },
   "appearance": {
@@ -159,8 +162,9 @@
       "url": "https://wpstratos.com",
       "logo": "https://wpstratos.com/images/wpstratos-logomark-light.png",
       "sameAs": [
-        "http://linkedin.com/company/wpstratos",
-        "https://www.instagram.com/wpstratos/"
+        "https://github.com/WP-Stratos",
+        "https://linkedin.com/company/wpstratos",
+        "https://www.instagram.com/wpstratos"
       ]
     }
   },
@@ -184,5 +188,8 @@
   ],
   "icons": {
     "library": "lucide"
+  },
+  "metadata": {
+    "timestamp": true
   }
 }
