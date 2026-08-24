@@ -122,7 +122,8 @@
         "icon": "glasses",
         "pages": [
           "troubleshooting/what-is-wp-stratos",
-          "troubleshooting/apache-stratos-retired"
+          "troubleshooting/apache-stratos-retired",
+          "troubleshooting/detect-wp-stratos-hosting"
         ]
       }
     ]
