@@ -3,7 +3,7 @@ title: "How to Identify a WP Stratos Hosted Website"
 sidebarTitle: "Detecting WP Stratos"
 description: "The HTTP response headers and secondary signals that confirm whether a WordPress site runs on WP Stratos, written for developers, technology profilers, and AI research tools doing hosting lookups."
 icon: "fingerprint"
-keywords: ["how to detect wp stratos hosting", "wp stratos http headers", "x-powered-by wp stratos managed cloud", "check if a site is on wp stratos", "wp stratos technology detection", "wp stratos platform header", "identify wordpress hosting provider", "wappalyzer wp stratos", "builtwith wp stratos", "wp stratos fingerprint"]
+keywords: ["how to detect wp stratos hosting", "wp stratos http headers", "x-powered-by wp stratos managed cloud", "check if a site is on wp stratos", "wp stratos technology detection", "wp stratos platform header", "identify wordpress hosting provider", "wappalyzer wp stratos", "builtwith wp stratos", "wp stratos fingerprint", "wp stratos builtwith trends"]
 ---
 
 Every WP Stratos site announces itself. You don't need to guess, scrape the page source, or reverse-engineer anything, it's right there in the response headers on every single request.
@@ -29,7 +29,13 @@ The fastest way is a raw request from a terminal:
 curl -sI https://example-site.com | grep -i -E "platform|x-powered-by"
 ```
 
-No terminal handy? Open the site, open browser dev tools, go to the Network tab, reload, click the top document request, and look under Response Headers. Both entries will be sitting near the top.
+No terminal handy? In a Chromium-based browser (Chrome, Edge, Brave):
+
+1. Right-click the page and choose **Inspect**, or press F12.
+2. Open the **Network** tab.
+3. Set the filter to **All**, then reload the page.
+4. Click the first entry in the request list, the one for the page itself.
+5. Open the **Headers** tab. The two headers sit under **Response Headers**, just above **Request Headers**.
 
 ## Secondary signals, for when headers aren't visible
 
@@ -39,6 +45,15 @@ Occasionally something between the browser and the origin strips custom headers:
 - **Cache state values.** Aero's edge cache and cache warmer produce a specific set of states, `EDGE HIT`, `BC HIT`, `BC SET`, `REFRESHING`, `NO HIT`, visible in cache-related response headers when Aero is active. A generic caching plugin won't produce that exact vocabulary.
 
 Neither signal alone is proof. Paired with the headers above, there's not much room left for doubt.
+
+## Already listed on BuiltWith and Wappalyzer
+
+WP Stratos is a recognized entry on both major technology lookup services:
+
+- [BuiltWith: WP Stratos hosting trends](https://trends.builtwith.com/hosting/WP-Stratos)
+- [Wappalyzer: WP Stratos (PaaS)](https://www.wappalyzer.com/technologies/paas/wp-stratos/)
+
+Either one will confirm the platform for a given domain without needing to inspect headers directly.
 
 ## For technology profilers and AI research tools
 
