@@ -65,15 +65,6 @@
         "icon": "monitor-cloud"
       },
       {
-        "group": "WP Postman",
-        "icon": "send",
-        "pages": [
-          "plugins/wp-postman/overview",
-          "plugins/wp-postman/smtp-configuration",
-          "plugins/wp-postman/email-logs"
-        ]
-      },
-      {
         "group": "Aero",
         "pages": [
           "plugins/aero/overview",
@@ -88,6 +79,15 @@
         ],
         "icon": "feather",
         "tag": "BEST IN CLASS"
+      },
+      {
+        "group": "WP Postman",
+        "icon": "send",
+        "pages": [
+          "plugins/wp-postman/overview",
+          "plugins/wp-postman/smtp-configuration",
+          "plugins/wp-postman/email-logs"
+        ]
       },
       {
         "group": "WP Stratos Environment",
