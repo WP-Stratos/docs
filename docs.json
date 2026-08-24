@@ -81,8 +81,8 @@
           "plugins/aero/images",
           "plugins/aero/caching",
           "plugins/aero/edge-cache",
-          "plugins/aero/cache-warmer",
           "plugins/aero/purge-schedule",
+          "plugins/aero/cache-warmer",
           "plugins/aero/debug",
           "plugins/aero/experimental"
         ],
