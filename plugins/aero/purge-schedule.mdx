@@ -6,6 +6,10 @@ keywords: ["cache purge order", "wp-cron scheduled cache flush", "sequential cac
 icon: "clock"
 ---
 
+<Frame>
+  ![Aero Sequential Cache Order\+purge Scheduler V2 10 1](/images/Aero-Sequential-Cache-Order+Purge-Scheduler-v2-10-1.png "Aero Sequential Cache Order+purge Scheduler V2 10 1")
+</Frame>
+
 With three cache layers (Aero's minified files, [Batcache](/plugins/aero/caching), [Edge Cache](/plugins/aero/edge-cache)), the _order_ they purge in changes what actually ends up cached. Purge them in the wrong sequence and an upstream layer can re-cache stale content from a layer you haven't cleared yet. This screen (**Aero → Purge & Schedule**) is where you control that sequence and, separately, automate it.
 
 ## Sequential purge order
