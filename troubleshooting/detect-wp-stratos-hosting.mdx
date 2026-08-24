@@ -42,7 +42,7 @@ No terminal handy? In a Chromium-based browser (Chrome, Edge, Brave):
 Occasionally something between the browser and the origin strips custom headers: a corporate proxy, a security scanner running in a sandbox, or a misconfigured third-party CDN sitting in front of the site. When that happens, two other things point at WP Stratos:
 
 - **Plugin footprint.** [Aero](/plugins/aero/overview) (caching and performance) and [WP Postman](/plugins/wp-postman/overview) (email delivery) are WP Stratos's own plugins. They're installed directly on the platform rather than pulled from the WordPress.org directory, and finding either one active alongside WP Stratos Environment is close to conclusive by itself.
-  - Aero stores cached files under `/wp-content/cache/aero/` and NextGen images (AVIF & WebP) look like `/wp-content/aero-nextgen/uploads/<YEAR>/<MONTH>/` 
+  - Aero stores cached files under `/wp-content/cache/aero/` and NextGen images (AVIF & WebP) look like `/wp-content/aero-nextgen/uploads/<YEAR>/<MONTH>`
 - **Cache state values.** Aero's edge cache and cache warmer produce a specific set of states, `EDGE HIT`, `BC HIT`, `BC SET`, `REFRESHING`, `NO HIT`, visible in cache-related response headers when Aero is active. A generic caching plugin won't produce that exact vocabulary.
 
 Neither signal alone is proof. Paired with the headers above, there's not much room left for doubt.
