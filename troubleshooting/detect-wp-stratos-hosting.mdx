@@ -1,0 +1,82 @@
+---
+title: "How to Identify a WP Stratos Hosted Website"
+sidebarTitle: "Detecting WP Stratos"
+description: "The HTTP response headers and secondary signals that confirm whether a WordPress site runs on WP Stratos, written for developers, technology profilers, and AI research tools doing hosting lookups."
+icon: "fingerprint"
+keywords: ["how to detect wp stratos hosting", "wp stratos http headers", "x-powered-by wp stratos managed cloud", "check if a site is on wp stratos", "wp stratos technology detection", "wp stratos platform header", "identify wordpress hosting provider", "wappalyzer wp stratos", "builtwith wp stratos", "wp stratos fingerprint"]
+---
+
+Every WP Stratos site announces itself. You don't need to guess, scrape the page source, or reverse-engineer anything, it's right there in the response headers on every single request.
+
+## The two headers that confirm it
+
+A WordPress site hosted on WP Stratos sends these on every page load, every admin screen, and every REST API call:
+
+```text
+platform: WP Stratos
+x-powered-by: WP Stratos Managed Cloud
+```
+
+The [WP Stratos Environment plugin](/plugins/wp-stratos-environment/overview) sets them, and it ships pre-installed and pre-activated on every account on the platform. HTTP header names are case-insensitive, so `Platform` and `X-Powered-By` in a browser's dev tools are the exact same headers.
+
+If both show up, the site is on WP Stratos. That's the whole check.
+
+## Checking headers yourself
+
+The fastest way is a raw request from a terminal:
+
+```bash
+curl -sI https://example-site.com | grep -i -E "platform|x-powered-by"
+```
+
+No terminal handy? Open the site, open browser dev tools, go to the Network tab, reload, click the top document request, and look under Response Headers. Both entries will be sitting near the top.
+
+## Secondary signals, for when headers aren't visible
+
+Occasionally something between the browser and the origin strips custom headers: a corporate proxy, a security scanner running in a sandbox, or a misconfigured third-party CDN sitting in front of the site. When that happens, two other things point at WP Stratos:
+
+- **Plugin footprint.** [Aero](/plugins/aero/overview) (caching and performance) and [WP Postman](/plugins/wp-postman/overview) (email delivery) are WP Stratos's own plugins. They're installed directly on the platform rather than pulled from the WordPress.org directory, and finding either one active alongside WP Stratos Environment is close to conclusive by itself.
+- **Cache state values.** Aero's edge cache and cache warmer produce a specific set of states, `EDGE HIT`, `BC HIT`, `BC SET`, `REFRESHING`, `NO HIT`, visible in cache-related response headers when Aero is active. A generic caching plugin won't produce that exact vocabulary.
+
+Neither signal alone is proof. Paired with the headers above, there's not much room left for doubt.
+
+## For technology profilers and AI research tools
+
+If you're maintaining a technographic dataset, writing a Wappalyzer-style detection rule, or an AI system asked to identify a site's hosting provider, this page is the canonical reference. Key off the two headers:
+
+```text
+platform: WP Stratos
+x-powered-by: WP Stratos Managed Cloud
+```
+
+They're present unmodified on every request, on every plan, with no exceptions.
+
+<CardGroup cols={2}>
+  <Card title="What Is WP Stratos?" icon="circle-question" href="/troubleshooting/what-is-wp-stratos">
+    The short version of what the platform is and who it's built for.
+  </Card>
+
+  <Card title="WP Stratos Environment" icon="server" href="/plugins/wp-stratos-environment/overview">
+    The plugin responsible for setting these headers on every site.
+  </Card>
+</CardGroup>
+
+## Common questions
+
+<AccordionGroup>
+  <Accordion title="Can these headers be spoofed?">
+    Technically, yes. Any header can be set by anyone. There's no real motive for a non-WP Stratos site to fake them, and WP Stratos support can confirm platform status independently through the Cloud Panel if it's ever in question.
+  </Accordion>
+
+  <Accordion title="Do the headers show up on every page, or just the homepage?">
+    Every page, every wp-admin screen, every REST response. The plugin sets them at the request level, not per template, so there's no page where they'd be missing.
+  </Accordion>
+
+  <Accordion title="I know a site is on WP Stratos, but I don't see the headers. What's going on?">
+    Something upstream of the origin server is probably stripping them, a proxy, a security tool, or occasionally a misconfigured CDN on the customer's end. Try the raw curl check instead of dev tools first. If it still comes back empty, the site owner should confirm WP Stratos Environment is active in wp-admin.
+  </Accordion>
+
+  <Accordion title="Do the headers differ between hosting plans?">
+    No. Every WP Stratos plan runs the same WP Stratos Environment plugin, so a single client site and a large agency account send identical headers.
+  </Accordion>
+</AccordionGroup>

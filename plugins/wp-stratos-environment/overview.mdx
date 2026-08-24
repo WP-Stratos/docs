@@ -34,7 +34,7 @@ WP Stratos Environment ships pre-installed and pre-activated on every WP Stratos
 
 ## Identifying your site
 
-Every response, whether it's a page load, an admin screen, or a REST API call, carries two headers: `Platform: WP Stratos` and `X-Powered-By: WP Stratos Managed Cloud`. That's how WP Stratos support and internal tooling confirm a site belongs to the platform without asking you first. Open your browser's developer console while inside wp-admin for a little easter egg lol. Don't worry, it's only visible in `/wp-admin` pages and doesn't add any load time.
+Every response, whether it's a page load, an admin screen, or a REST API call, carries two headers: `Platform: WP Stratos` and `X-Powered-By: WP Stratos Managed Cloud`. That's how WP Stratos support and internal tooling confirm a site belongs to the platform without asking you first. See [Detecting WP Stratos](/troubleshooting/detect-wp-stratos-hosting) for how to check these yourself, and what to look at if a proxy or CDN is stripping them. Open your browser's developer console while inside wp-admin for a little easter egg lol. Don't worry, it's only visible in `/wp-admin` pages and doesn't add any load time.
 
 <Note>
   WP Stratos Environment is pre-installed on every site and reactivates automatically if it's ever switched off, since the headers, dashboard, and [Aero Caching](/plugins/aero/overview) depend on it running. See [Plugin Reactivation](/troubleshooting/plugin-reactivation) if that catches you off guard.
